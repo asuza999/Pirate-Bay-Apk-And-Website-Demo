@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>TOR v3 Access - Pirate Bay Recreation</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Press Start 2P', cursive;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background-color: #000;
+      color: #ccc;
+      overflow-x: hidden;
+    }
+    #matrix-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+    .container {
+      max-width: 800px;
+      width: 100%;
+      border: 2px solid #555;
+      background-color: rgba(10, 10, 10, 0.85);
+      padding: 25px 35px;
+      text-align: center;
+      backdrop-filter: blur(2px);
+      margin: 5vh auto;
+    }
+    h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: #80c0ff;
+    }
+    p {
+      line-height: 1.8;
+      font-size: 14px;
+      margin-bottom: 25px;
+    }
+    .section {
+      margin-bottom: 40px;
+      text-align: left;
+    }
+    .section h2 {
+      font-size: 18px;
+      margin-bottom: 15px;
+      border-bottom: 2px solid #555;
+      padding-bottom: 8px;
+    }
+    .section ol {
+      padding-left: 20px;
+    }
+    .section li {
+      margin-bottom: 15px;
+    }
+    .tor-address-box {
+      background-color: #222;
+      border: 2px dashed #444;
+      padding: 20px;
+      margin-bottom: 20px;
+      word-wrap: break-word;
+    }
+    .tor-address-box .address {
+      font-size: 14px;
+      color: #ff7b7b;
+      margin-bottom: 15px;
+    }
+    .action-button {
+      display: inline-block;
+      background-color: #333;
+      color: #ddd;
+      border: 1.5px solid #555;
+      padding: 12px 20px;
+      font-size: 14px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.2s ease;
+      margin: 5px;
+    }
+    .action-button:hover {
+      background-color: #444;
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="matrix-canvas"></canvas>
+
+  <div class="container">
+    <h1>TOR v3 - Secure & Anonymous Access</h1>
+    <p>
+      For the highest level of privacy and to bypass any potential blocks,
+      we strongly recommend accessing our site through the TOR network.
+    </p>
+
+    <div class="section">
+      <h2>What is TOR?</h2>
+      <p>
+        The TOR network protects you by bouncing your communications around a
+        distributed network of relays run by volunteers all around the world.
+        It prevents anybody watching your Internet connection from learning
+        what sites you visit, and it prevents the sites you visit from
+        learning your physical location.
+      </p>
+    </div>
+
+    <div class="section">
+      <h2>Our Official .onion v3 Address</h2>
+      <div class="tor-address-box">
+        <p class="address" id="torAddress">loremipsumdolorsitametquidproquoconsecteturadipiscingelit.onion</p>
+        <button class="action-button" id="copyButton">Copy Link</button>
+      </div>
+    </div>
+
+    <div class="section">
+        <h2>How to Use</h2>
+        <ol>
+            <li>
+                <strong>Download & Install TOR Browser.</strong> If you don't have it, get it from the official source. It's the only browser that can access .onion links.
+            </li>
+            <li>
+                <strong>Copy our v3 Address.</strong> Use the "Copy Link" button above.
+            </li>
+            <li>
+                <strong>Paste and Go.</strong> Open the TOR Browser, paste the .onion address into the URL bar, and press Enter.
+            </li>
+        </ol>
+    </div>
+
+    <a href="https://www.torproject.org/download/" target="_blank" class="action-button">Download TOR Browser</a>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('matrix-canvas');
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const fontSize = 16;
+    let columns = canvas.width / fontSize;
+    const drops = [];
+
+    for (let x = 0; x < columns; x++) {
+      drops[x] = 1;
+    }
+
+    function draw() {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#0F0';
+      ctx.font = fontSize + 'px "Press Start 2P"';
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = Math.random() < 0.5 ? '0' : '1';
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
+      }
+    }
+
+    setInterval(draw, 33);
+
+    window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        columns = canvas.width / fontSize;
+        for (let x = 0; x < columns; x++) {
+            drops[x] = 1;
+        }
+    });
+
+    const copyButton = document.getElementById('copyButton');
+    const torAddress = document.getElementById('torAddress').textContent;
+
+    copyButton.addEventListener('click', () => {
+      navigator.clipboard.writeText(torAddress).then(() => {
+        copyButton.textContent = 'Copied!';
+        setTimeout(() => {
+          copyButton.textContent = 'Copy Link';
+        }, 2000);
+      }).catch(err => {
+        console.error('Failed to copy text: ', err);
+      });
+    });
+  </script>
+
+</body>
+</html>

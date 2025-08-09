@@ -1,0 +1,1998 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>_{\_\_/\_^\_-_#_*[_**_</title>
+
+  <link rel="icon" type="image/png" href="logo.png" sizes="192x192" />
+  <link rel="apple-touch-icon" href="logo.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Merriweather:wght@400;700&family=Source+Code+Pro:wght@400;500&family=Press+Start+2P&family=Lato&family=Montserrat&family=Open+Sans&family=Poppins&family=Nunito&family=Playfair+Display&family=Fira+Code&family=Ubuntu&family=Oswald&family=Raleway&family=Inter&family=VT323&display=swap" rel="stylesheet">
+
+
+  <style>
+    :root {
+      --body-font: 'Roboto', sans-serif;
+      --light-bg: #F7F9FF; --dark-bg: #000000;
+      --light-surface: #FFFFFF; --dark-surface: #1E2025;
+      --light-primary-text: #1F1F1F; --dark-primary-text: #E3E3E3;
+      --light-secondary-text: #5F6B81; --dark-secondary-text: #A0AEC0;
+      --light-border: #DDE2EA; --dark-border: #353842;
+      --seed-color: #4CAF50; --leech-color: #F44336;
+      --accent-color: #3A78D0;
+      --accent-color-dark: #6CA3E8;
+    }
+    html[data-theme="green"] {
+      --accent-color: #4CAF50;
+      --accent-color-dark: #81C784;
+    }
+    html[data-theme="purple"] {
+      --accent-color: #9C27B0;
+      --accent-color-dark: #CE93D8;
+    }
+    html[data-theme="orange"] {
+      --accent-color: #FF9800;
+      --accent-color-dark: #FFB74D;
+    }
+    html[data-theme="teal"] {
+      --accent-color: #009688;
+      --accent-color-dark: #4DB6AC;
+    }
+    html { height: 100%; background-color: #333; }
+    body {
+      margin: 0; padding: 20px; height: 100%; display: flex;
+      justify-content: center; align-items: center;
+      font-family: 'Roboto', sans-serif;
+      box-sizing: border-box;
+    }
+    button, input, textarea, .torrent-card {
+        font-family: inherit;
+    }
+    #phone-container {
+      width: 390px; height: 844px; min-width: 340px; min-height: 600px;
+      max-width: 95vw; max-height: 95vh; padding: 8px; background-color: #111;
+      border-radius: 44px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.6);
+      position: relative; display: flex;
+      resize: none;
+      overflow: hidden;
+      background-size: cover;
+      background-position: center;
+      transition: background-image 0.5s ease-in-out;
+    }
+    #phone-screen {
+      width: 100%; height: 100%; border-radius: 36px; position: relative;
+      overflow: hidden; display: flex; flex-direction: column;
+      background-color: var(--light-bg); color: var(--light-primary-text);
+      transition: background-color 0.3s ease, filter 0.2s ease;
+    }
+    #phone-screen.dark-mode {
+        background-color: var(--dark-bg);
+        color: var(--dark-primary-text);
+    }
+    #status-bar {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 12px 24px 8px 24px; flex-shrink: 0; font-size: 14px;
+        font-weight: 500; cursor: pointer; z-index: 150;
+        position: absolute; top: 0; left: 0; right: 0;
+        color: #000;
+        transition: color 0.3s ease;
+    }
+    .status-icons { display: flex; align-items: center; gap: 8px; }
+    .status-icons svg { width: 20px; height: 20px; fill: currentColor; }
+    #vpn-icon-container { display: none; }
+    #phone-container[data-os-theme="dark"] #status-bar {
+        color: #FFF;
+    }
+    #app-container {
+        flex-grow: 1; background-color: var(--light-bg);
+        display: none; flex-direction: column; overflow: hidden; position: relative;
+        padding-bottom: 25px; box-sizing: border-box;
+        font-family: var(--body-font);
+        padding-top: 50px;
+    }
+    #phone-screen.dark-mode #app-container { background-color: var(--dark-bg); }
+    .app-header { padding: 10px 16px; display: flex; align-items: center; gap: 16px;}
+    #menu-toggle { background: transparent; border: none; padding: 6px; cursor: pointer; color: var(--light-secondary-text); }
+    #menu-toggle:hover { color: var(--light-primary-text); }
+    #phone-screen.dark-mode #menu-toggle { color: var(--dark-secondary-text); }
+    #phone-screen.dark-mode #menu-toggle:hover { color: var(--dark-primary-text); }
+    #menu-toggle svg { width: 24px; height: 24px; fill: currentColor; }
+    #app-title {
+        flex-grow: 1;
+        margin: 0;
+        font-size: 16px;
+        font-weight: 700;
+        font-family: 'Press Start 2P', cursive;
+    }
+    .header-actions { display: flex; align-items: center; gap: 12px; flex-shrink: 0; min-width: 150px; justify-content: flex-end; }
+    .header-links { text-align: right; }
+    .header-links a { font-size: 14px; font-weight: 500; text-decoration: none; color: var(--accent-color); margin-left: 8px; }
+    #phone-screen.dark-mode .header-links a { color: var(--accent-color-dark); }
+    .header-links span { font-size: 14px; color: var(--light-secondary-text); white-space: nowrap; }
+    #phone-screen.dark-mode .header-links span { color: var(--dark-secondary-text); }
+    #theme-toggle { background: var(--light-surface); border: 1px solid var(--light-border); border-radius: 50%; width: 36px; height: 36px; cursor: pointer; display: flex; justify-content: center; align-items: center; padding: 6px; }
+    #phone-screen.dark-mode #theme-toggle { background: var(--dark-surface); border-color: var(--dark-border); }
+    #theme-toggle svg { fill: var(--light-secondary-text); }
+    #theme-toggle .moon { display: none; }
+    #phone-screen.dark-mode #theme-toggle .sun { display: none; }
+    #phone-screen.dark-mode #theme-toggle .moon { display: block; }
+    #app-content { flex-grow: 1; overflow: hidden; padding: 0; display: flex; position: relative; }
+    #main-content-view, #web-view-container, #downloads-view-container {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      display: flex; flex-direction: column;
+      transition: transform 0.35s ease-in-out, opacity 0.35s ease-in-out;
+      box-sizing: border-box;
+    }
+    #main-content-view {
+        padding: 0;
+        align-items: center;
+    }
+    #main-content-view.home-view {
+        justify-content: center;
+        align-items: center;
+    }
+     #main-content-view:not(.home-view) #top-controls {
+        flex-grow: 0;
+    }
+    #web-view-container, #downloads-view-container {
+      transform: translateX(100%);
+      visibility: hidden; opacity: 0; padding: 20px;
+      background-color: var(--light-bg);
+    }
+    #phone-screen.dark-mode #web-view-container, #phone-screen.dark-mode #downloads-view-container {
+      background-color: var(--dark-bg);
+    }
+    #phone-screen.web-view-visible #main-content-view, #phone-screen.downloads-view-visible #main-content-view {
+      transform: translateX(-100%);
+      visibility: hidden; opacity: 0;
+    }
+    #phone-screen.web-view-visible #web-view-container, #phone-screen.downloads-view-visible #downloads-view-container {
+      transform: translateX(0); visibility: visible; opacity: 1;
+    }
+    #top-controls {
+        flex-shrink: 0;
+        padding: 20px;
+        background-color: var(--light-bg);
+        z-index: 10;
+        width: 100%;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        flex-grow: 1;
+    }
+    #phone-screen.dark-mode #top-controls { background-color: var(--dark-bg); }
+    .home-view #top-controls {
+        background-color: transparent;
+    }
+    .search-container { display: flex; justify-content: center; }
+    #main-search { width: 100%; padding: 12px 16px; font-size: 14px; border: 1px solid var(--light-border); border-radius: 24px; background-color: var(--light-surface); color: var(--light-primary-text); box-sizing: border-box; }
+    #main-search:disabled { background-color: var(--light-border); cursor: not-allowed; }
+    #phone-screen.dark-mode #main-search { background-color: var(--dark-surface); border-color: var(--dark-border); color: var(--dark-primary-text); }
+    #phone-screen.dark-mode #main-search:disabled { background-color: var(--dark-border); }
+    #main-search::placeholder, #main-search::-webkit-input-placeholder { color: var(--light-secondary-text); opacity: 1; }
+    #phone-screen.dark-mode #main-search::placeholder, #phone-screen.dark-mode #main-search::-webkit-input-placeholder { color: var(--dark-secondary-text); }
+    .category-chips {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 24px;
+      padding-bottom: 24px;
+    }
+    .chip {
+      padding: 8px 12px;
+      background-color: var(--light-surface);
+      border: 1px solid var(--light-border);
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      color: var(--light-secondary-text);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 8px;
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .chip:hover {
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+      transform: translateY(-2px);
+    }
+    .chip svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+      flex-shrink: 0;
+    }
+    .chip.active {
+      background-color: var(--accent-color);
+      color: white;
+      border-color: var(--accent-color);
+    }
+    #phone-screen.dark-mode .chip {
+      background-color: var(--dark-surface);
+      border-color: var(--dark-border);
+      color: var(--dark-secondary-text);
+    }
+    #phone-screen.dark-mode .chip:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    #phone-screen.dark-mode .chip.active {
+      background-color: var(--accent-color-dark);
+      color: var(--dark-bg);
+      border-color: var(--accent-color-dark);
+    }
+    .notification-badge { position: absolute; top: -5px; right: -5px; background-color: var(--leech-color); color: white; width: 20px; height: 20px; border-radius: 50%; font-size: 12px; font-weight: 700; display: flex; justify-content: center; align-items: center; border: 2px solid var(--light-surface); transition: opacity 0.3s, transform 0.3s; }
+    .notification-badge.hidden { opacity: 0; transform: scale(0); }
+    #phone-screen.dark-mode .notification-badge { border-color: var(--dark-surface); }
+    .results-list { display: flex; flex-direction: column; align-items: center; gap: 12px; flex-grow: 1; overflow-y: auto; padding: 20px; outline: none; width: 100%;}
+    .results-list::-webkit-scrollbar { display: none; }
+    .home-view .results-list { display: none; }
+    .torrent-card { background: var(--light-surface); border-radius: 16px; padding: 16px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.05); opacity: 0; transform: translateY(30px); transition: opacity 0.4s ease-out, transform 0.4s ease-out; width: 100%; max-width: 450px; box-sizing: border-box; }
+    .torrent-card.visible { opacity: 1; transform: translateY(0); }
+    #phone-screen.dark-mode .torrent-card { background-color: var(--dark-surface); box-shadow: none; border: 1px solid var(--dark-border); }
+    .card-main-info { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-bottom: 12px; text-align: center; }
+    .card-main-info h3 { font-size: 16px; margin: 0; line-height: 1.4; color: var(--light-primary-text); font-weight: 500; }
+    #phone-screen.dark-mode .card-main-info h3 { color: var(--dark-primary-text); }
+    .card-type { font-size: 11px; font-weight: 500; text-transform: uppercase; padding: 5px 10px; background-color: var(--dark-border); color: var(--dark-primary-text); border-radius: 8px; flex-shrink: 0; }
+    #phone-screen .card-type { background-color: var(--light-border); color: var(--light-secondary-text); }
+    .card-stats { display: flex; gap: 16px; font-size: 14px; font-weight: 500; justify-content: center; width: 100%; }
+    .stat { color: var(--light-secondary-text); }
+    #phone-screen.dark-mode .stat { color: var(--dark-secondary-text); }
+    .stat.seeders { color: var(--seed-color); }
+    .stat.leechers { color: var(--leech-color); }
+    .card-details { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--light-border); font-size: 14px; line-height: 1.6; display: none; border-radius: 0 0 12px 12px; width: 100%; text-align: left; }
+    #phone-screen.dark-mode .card-details { border-color: var(--dark-border); }
+    .torrent-card.expanded .card-details { display: block; }
+    .card-details h4 { font-size: 12px; text-transform: uppercase; color: var(--light-secondary-text); margin: 12px 0 4px 0; }
+    .card-details p { margin: 0 0 8px 0; color: var(--light-primary-text); white-space: pre-wrap; }
+    #phone-screen.dark-mode .card-details p { color: var(--dark-primary-text); }
+    .download-button { display: inline-block; margin-top: 16px; padding: 10px 20px; background-color: var(--accent-color); color: white; border-radius: 20px; font-size: 14px; font-weight: 500; text-decoration: none; border: none; cursor: pointer; }
+    #phone-screen.dark-mode .download-button { background-color: var(--accent-color-dark); color: var(--dark-bg); }
+    .card-details .download-button { display: block; width: fit-content; margin-left: auto; margin-right: auto; }
+    #phone-screen.dark-mode .card-details { background-color: var(--details-dark-bg); border-top: 1px solid var(--accent-color-dark); padding: 16px; margin: 16px -16px -16px -16px; }
+    #phone-screen.dark-mode .card-details h4 { color: var(--details-dark-header); }
+    #phone-screen.dark-mode .card-details p { color: var(--details-dark-text); }
+    #phone-screen.dark-mode .card-details .download-button { background-color: var(--accent-color-dark); color: var(--details-dark-bg); }
+    #modal-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 100; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0s 0.3s; }
+    #phone-screen.modal-visible #modal-overlay, #phone-screen.drawer-visible #modal-overlay, #phone-screen.quick-settings-visible #modal-overlay { opacity: 1; visibility: visible; transition-delay: 0s; }
+    #bottom-sheet { position: absolute; bottom: 0; left: 0; right: 0; background: var(--light-surface); border-radius: 24px 24px 0 0; box-shadow: 0 -10px 30px rgba(0,0,0,0.1); padding: 24px; transform: translateY(100%); transition: transform 0.3s ease; z-index: 101; }
+    #phone-screen.dark-mode #bottom-sheet { background: var(--dark-surface); border-top: 1px solid var(--dark-border); }
+    #phone-screen.modal-visible #bottom-sheet { transform: translateY(0); }
+    .modal-dialog { display: none; text-align: center; }
+    .modal-dialog h3 { font-size: 20px; margin: 0 0 16px 0; }
+    .modal-dialog p { line-height: 1.6; color: var(--light-secondary-text); }
+    #phone-screen.dark-mode .modal-dialog p { color: var(--dark-secondary-text); }
+    .form-group { margin-bottom: 16px; text-align: left; }
+    .form-group label { font-size: 14px; margin-bottom: 8px; display: block; color: var(--light-secondary-text); }
+    .form-group input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--light-border); background-color: var(--light-bg); color: var(--light-primary-text); font-size: 14px; box-sizing: border-box;}
+    #phone-screen.dark-mode .form-group input { background-color: var(--dark-bg); border-color: var(--dark-border); color: var(--dark-primary-text); }
+    .modal-actions { display: flex; gap: 12px; justify-content: center; margin-top: 24px; }
+    .modal-button { padding: 10px 20px; border-radius: 20px; border: none; font-size: 14px; font-weight: 500; cursor: pointer; }
+    .modal-button.primary { background-color: var(--accent-color); color: white; }
+    .modal-button.text { background: transparent; color: var(--accent-color); }
+    #phone-screen.dark-mode .modal-button.primary { background-color: var(--accent-color-dark); color: var(--dark-bg); }
+    #phone-screen.dark-mode .modal-button.text { color: var(--accent-color-dark); }
+    .error-message { color: #D32F2F; font-size: 13px; min-height: 18px; margin-top: -8px; margin-bottom: 8px; }
+    #side-drawer {
+        position: absolute; top: 0; left: 0; bottom: 0; width: 260px;
+        background-color: var(--light-surface); z-index: 200;
+        transform: translateX(-100%); transition: transform 0.3s ease;
+        padding: 0 16px;
+        display: flex; flex-direction: column;
+        box-shadow: 5px 0 25px rgba(0,0,0,0.1);
+        padding-top: 50px;
+    }
+    #phone-screen.dark-mode #side-drawer { background-color: var(--dark-surface); border-right: 1px solid var(--dark-border); box-shadow: none; }
+    #phone-screen.drawer-visible #side-drawer { transform: translateX(0); }
+    .drawer-profile {
+        padding-top: 10px;
+        margin-bottom: 24px;
+        text-align: center; cursor: pointer; position: relative;
+    }
+    .drawer-profile-pic { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent-color); }
+    .drawer-profile .edit-icon { position: absolute; bottom: 0; right: 80px; background: var(--accent-color); color: white; border-radius: 50%; padding: 6px; display: flex; align-items: center; justify-content: center;}
+    .drawer-profile .edit-icon svg { width: 16px; height: 16px; fill: currentColor; }
+    #side-drawer ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+    }
+    #side-drawer li {
+        width: 100%;
+    }
+    #side-drawer li a {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 16px;
+        padding: 12px 20px;
+        text-decoration: none;
+        color: var(--light-primary-text);
+        font-size: 16px;
+        font-weight: 500;
+        border-radius: 12px;
+        transition: background-color: 0.2s ease;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    #side-drawer li a:hover { background-color: var(--light-border); }
+    #phone-screen.dark-mode #side-drawer li a { color: var(--dark-primary-text); }
+    #phone-screen.dark-mode #side-drawer li a:hover { background-color: var(--dark-border); }
+    #side-drawer li a svg { flex-shrink: 0; width: 24px; height: 24px; fill: var(--light-secondary-text); }
+    #phone-screen.dark-mode #side-drawer li a svg { fill: var(--dark-secondary-text); }
+    #quick-settings-panel {
+        position: absolute; top: 0; left: 0; right: 0;
+        background-color: rgba(247, 249, 255, 0.85);
+        backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+        z-index: 140;
+        transform: translateY(-110%);
+        transition: transform 0.35s ease, background-color 0.3s ease;
+        padding: 70px 20px 20px 20px;
+        border-radius: 0 0 24px 24px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+    #phone-container[data-os-theme="dark"] #quick-settings-panel {
+        background-color: rgba(30, 32, 37, 0.85);
+    }
+    #phone-screen.quick-settings-visible #quick-settings-panel {
+        transform: translateY(0);
+    }
+    .brightness-control { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+    .brightness-control svg { fill: #5F6B81; }
+    #phone-container[data-os-theme="dark"] .brightness-control svg { fill: #A0AEC0; }
+    #brightness-slider { flex-grow: 1; -webkit-appearance: none; appearance: none; width: 100%; height: 6px; background: #DDE2EA; border-radius: 3px; outline: none; transition: opacity 0.2s; }
+    #phone-container[data-os-theme="dark"] #brightness-slider { background: #353842; }
+    #brightness-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 20px; height: 20px; background: #FFFFFF; border: 1px solid #DDE2EA; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    #phone-container[data-os-theme="dark"] #brightness-slider::-webkit-slider-thumb { background: #1E2025; border-color: #353842; }
+    .quick-toggles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .toggle-btn { background: rgba(0,0,0,0.05); border: none; width: 100%; aspect-ratio: 1/1; border-radius: 18px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; cursor: pointer; color: #5F6B81; transition: background-color: 0.2s ease, color: 0.2s ease; }
+    .toggle-btn svg { width: 24px; height: 24px; fill: currentColor; }
+    .toggle-btn span { font-size: 11px; font-weight: 500; }
+    #phone-container[data-os-theme="dark"] .toggle-btn { background: rgba(255,255,255,0.05); color: #A0AEC0; }
+    .toggle-btn.active { background-color: var(--accent-color); color: white; }
+    #phone-container[data-os-theme="dark"] .toggle-btn.active { background-color: var(--accent-color-dark); color: var(--dark-bg); }
+    .color-picker-control { display: flex; align-items: center; gap: 12px; margin-top: 16px; padding-top: 16px; border-top: 1px solid #DDE2EA; }
+    #phone-container[data-os-theme="dark"] .color-picker-control { border-color: #353842; }
+    .color-picker-control .color-swatches { display: flex; justify-content: space-around; flex-grow: 1; }
+    .color-swatch { width: 28px; height: 28px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: border-color 0.2s ease, transform 0.2s ease; }
+    .color-swatch:hover { transform: scale(1.1); }
+    .color-swatch.active { border-color: var(--accent-color); }
+    #phone-container[data-os-theme="dark"] .color-swatch.active { border-color: var(--accent-color-dark); }
+    .view-header { display: flex; align-items: center; gap: 16px; padding-bottom: 20px; flex-shrink: 0; }
+    .view-header h3 { margin: 0; font-size: 20px; }
+    #web-content-frame { flex-grow: 1; border: 1px solid var(--light-border); border-radius: 16px; background-color: var(--light-surface); }
+    #phone-screen.dark-mode #web-content-frame { border-color: var(--dark-border); background-color: var(--dark-surface); }
+    #external-link-content { text-align: center; padding: 40px 20px; line-height: 1.6; }
+    #external-link-content p { margin-bottom: 24px; }
+    #app-footer {
+      background-color: transparent;
+      flex-shrink: 0;
+      height: 12px;
+    }
+    .chip, #theme-toggle, .modal-button, .download-button, #menu-toggle, #main-search { transition: transform 0.15s ease, background-color: 0.2s ease; }
+    .chip:active, #theme-toggle:active, .modal-button:active, .download-button:active, #menu-toggle:active { transform: scale(0.95); }
+    #main-search:active { transform: scale(0.99); }
+    #toast-container { position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%); z-index: 200; display: flex; flex-direction: column; align-items: center; gap: 10px; width: calc(100% - 40px); pointer-events: none; }
+    .toast { padding: 12px 20px; border-radius: 24px; font-size: 14px; font-weight: 500; box-shadow: 0 4px 12px rgba(0,0,0,0.15); opacity: 0; animation: toast-in 0.5s forwards; pointer-events: all; }
+    .toast.toast--success { background-color: var(--seed-color); color: white; }
+    .toast.toast--error { background-color: var(--leech-color); color: white; }
+    .toast.toast--info { background-color: var(--accent-color); color: white; }
+    #phone-screen.dark-mode .toast.toast--info { background-color: var(--accent-color-dark); color: var(--dark-bg); }
+    .toast.removing { animation: toast-out 0.5s forwards; }
+    @keyframes toast-in { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes toast-out { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(20px); } }
+    #no-wifi-overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 90;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      text-align: center;
+      font-size: 16px;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+    #no-wifi-overlay.visible {
+      display: flex;
+    }
+    #phone-notification-banner {
+      position: absolute;
+      top: 0;
+      left: 16px;
+      right: 16px;
+      z-index: 999;
+      background-color: var(--light-surface);
+      color: var(--light-primary-text);
+      border-radius: 16px;
+      padding: 12px 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+      transform: translateY(-150%);
+      transition: transform 0.4s ease-in-out;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    #phone-notification-banner.visible {
+      transform: translateY(16px);
+    }
+    #phone-screen.dark-mode #phone-notification-banner {
+      background-color: var(--dark-surface);
+      color: var(--dark-primary-text);
+      border: 1px solid var(--dark-border);
+    }
+    #phone-notification-banner .icon {
+      flex-shrink: 0;
+    }
+    #phone-notification-banner .icon svg {
+      width: 24px;
+      height: 24px;
+      fill: var(--accent-color);
+    }
+    #phone-screen.dark-mode #phone-notification-banner .icon svg {
+       fill: var(--accent-color-dark);
+    }
+    #phone-notification-banner .content h4 {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 700;
+    }
+     #phone-notification-banner .content p {
+      margin: 2px 0 0 0;
+      font-size: 13px;
+    }
+    #downloads-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex-grow: 1;
+      overflow-y: auto;
+    }
+    #downloads-list::-webkit-scrollbar { display: none; }
+    .download-item-card {
+      background-color: var(--light-surface);
+      border-radius: 12px;
+      padding: 16px;
+      cursor: pointer;
+      border: 1px solid var(--light-border);
+    }
+    #phone-screen.dark-mode .download-item-card {
+      background-color: var(--dark-surface);
+      border-color: var(--dark-border);
+    }
+    #share-files-btn {
+        display: none;
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        width: 56px;
+        height: 56px;
+        background-color: var(--light-primary-text);
+        color: var(--light-bg);
+        border-radius: 50%;
+        border: none;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        cursor: pointer;
+        z-index: 50;
+        align-items: center;
+        justify-content: center;
+        transition: background-color: 0.2s ease, filter: 0.3s ease, color: 0.2s ease;
+    }
+    #phone-screen.dark-mode #share-files-btn {
+        background-color: var(--dark-primary-text);
+        color: var(--dark-bg);
+    }
+    #share-files-btn svg {
+      width: 24px;
+      height: 24px;
+      fill: currentColor;
+    }
+    .custom-file-upload {
+      border: 1px dashed var(--light-border);
+      display: inline-block;
+      padding: 12px 20px;
+      cursor: pointer;
+      border-radius: 12px;
+      width: 100%;
+      box-sizing: border-box;
+      color: var(--light-secondary-text);
+    }
+    #phone-screen.dark-mode .custom-file-upload {
+      border-color: var(--dark-border);
+      color: var(--dark-secondary-text);
+    }
+    #file-upload-input {
+      display: none;
+    }
+    #file-name-display {
+      margin-top: 12px;
+      font-style: italic;
+      font-size: 13px;
+      min-height: 18px;
+    }
+    #shareDialog .dialog-icon {
+        width: 64px;
+        height: 64px;
+        background-color: var(--accent-color);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 16px;
+    }
+    #phone-screen.dark-mode #shareDialog .dialog-icon {
+        background-color: var(--accent-color-dark);
+    }
+    #shareDialog .dialog-icon svg {
+        width: 32px;
+        height: 32px;
+        fill: white;
+    }
+    #phone-screen.dark-mode #shareDialog .dialog-icon svg {
+        fill: var(--dark-bg);
+    }
+    #share-sheet-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        margin-top: 24px;
+    }
+    .share-target {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        background: none;
+        border: none;
+        color: var(--light-primary-text);
+        font-size: 12px;
+    }
+    #phone-screen.dark-mode .share-target {
+        color: var(--dark-primary-text);
+    }
+    .share-target .icon-bg {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background-color: var(--light-bg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    #phone-screen.dark-mode .share-target .icon-bg {
+        background-color: var(--dark-bg);
+    }
+    .share-target svg {
+        width: 32px;
+        height: 32px;
+    }
+    #fontDialog .modal-content {
+        display: flex;
+        flex-direction: column;
+        height: 450px;
+    }
+    #font-search {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 16px;
+        border-radius: 20px;
+        border: 1px solid var(--light-border);
+        background-color: var(--light-bg);
+        color: var(--light-primary-text);
+        font-size: 14px;
+        box-sizing: border-box;
+    }
+    #phone-screen.dark-mode #font-search {
+        background-color: var(--dark-bg);
+        border-color: var(--dark-border);
+        color: var(--dark-primary-text);
+    }
+    #font-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        flex-grow: 1;
+        overflow-y: auto;
+        border: 1px solid var(--light-border);
+        border-radius: 12px;
+    }
+     #phone-screen.dark-mode #font-list {
+        border-color: var(--dark-border);
+     }
+    .font-item {
+        padding: 16px;
+        cursor: pointer;
+        border-bottom: 1px solid var(--light-border);
+        font-size: 18px;
+        transition: background-color: 0.2s ease;
+    }
+     #phone-screen.dark-mode .font-item {
+        border-color: var(--dark-border);
+     }
+    .font-item:last-child {
+        border-bottom: none;
+    }
+    .font-item:hover {
+        background-color: var(--light-border);
+    }
+     #phone-screen.dark-mode .font-item:hover {
+        background-color: var(--dark-border);
+     }
+    #power-button {
+      position: absolute;
+      right: -2px;
+      top: 180px;
+      width: 4px;
+      height: 100px;
+      background-color: #333;
+      border: 1px solid #444;
+      border-left: none;
+      border-radius: 0 2px 2px 0;
+      cursor: pointer;
+      z-index: 10;
+    }
+    #boot-screen {
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background-color: #000;
+        z-index: 1001;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+    }
+    #boot-box {
+        text-align: center;
+    }
+    #boot-text {
+        font-family: 'Press Start 2P', cursive;
+        font-size: 20px;
+        color: white;
+        text-align: center;
+        position: relative;
+        text-shadow: 0 0 5px #fff, 0 0 10px #fff;
+    }
+    #boot-text::before,
+    #boot-text::after {
+        content: attr(data-text);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #000;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+    }
+    #boot-text.glitch::before {
+        left: 3px;
+        text-shadow: -2px 0 #ff00c1;
+        animation: glitch-anim-1 1s infinite linear alternate-reverse;
+    }
+    #boot-text.glitch::after {
+        left: -3px;
+        text-shadow: -2px 0 #00fff9, 2px 2px #ff00c1;
+        animation: glitch-anim-2 1s infinite linear alternate-reverse;
+    }
+    @keyframes glitch-anim-1 {
+      0% { clip: rect(42px, 9999px, 44px, 0); } 5% { clip: rect(12px, 9999px, 60px, 0); } 10% { clip: rect(40px, 9999px, 40px, 0); } 15% { clip: rect(80px, 9999px, 100px, 0); } 20% { clip: rect(40px, 9999px, 80px, 0); } 25% { clip: rect(50px, 9999px, 70px, 0); } 30% { clip: rect(90px, 9999px, 85px, 0); } 35% { clip: rect(110px, 9999px, 100px, 0); } 40% { clip: rect(130px, 9999px, 120px, 0); } 45% { clip: rect(10px, 9999px, 85px, 0); } 50% { clip: rect(60px, 9999px, 50px, 0); } 55% { clip: rect(80px, 9999px, 75px, 0); } 60% { clip: rect(10px, 9999px, 30px, 0); } 65% { clip: rect(90px, 9999px, 80px, 0); } 70% { clip: rect(10px, 9999px, 40px, 0); } 75% { clip: rect(30px, 9999px, 20px, 0); } 80% { clip: rect(120px, 9999px, 130px, 0); } 85% { clip: rect(60px, 9999px, 70px, 0); } 90% { clip: rect(20px, 9999px, 15px, 0); } 95% { clip: rect(90px, 9999px, 110px, 0); } 100% { clip: rect(10px, 9999px, 50px, 0); }
+    }
+    @keyframes glitch-anim-2 {
+      0% { clip: rect(65px, 9999px, 119px, 0); } 5% { clip: rect(10px, 9999px, 100px, 0); } 10% { clip: rect(10px, 9999px, 90px, 0); } 15% { clip: rect(80px, 9999px, 50px, 0); } 20% { clip: rect(20px, 9999px, 10px, 0); } 25% { clip: rect(50px, 9999px, 130px, 0); } 30% { clip: rect(90px, 9999px, 40px, 0); } 35% { clip: rect(10px, 9999px, 10px, 0); } 40% { clip: rect(140px, 9999px, 130px, 0); } 45% { clip: rect(100px, 9999px, 85px, 0); } 50% { clip: rect(60px, 9999px, 40px, 0); } 55% { clip: rect(120px, 9999px, 115px, 0); } 60% { clip: rect(100px, 9999px, 130px, 0); } 65% { clip: rect(90px, 9999px, 120px, 0); } 70% { clip: rect(10px, 9999px, 40px, 0); } 75% { clip: rect(40px, 9999px, 70px, 0); } 80% { clip: rect(120px, 9999px, 140px, 0); } 85% { clip: rect(60px, 9999px, 70px, 0); } 90% { clip: rect(20px, 9999px, 15px, 0); } 95% { clip: rect(90px, 9999px, 110px, 0); } 100% { clip: rect(10px, 9999px, 50px, 0); }
+    }
+    #lock-screen {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #000;
+      color: #fff;
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      transition: opacity 0.3s ease;
+      font-family: 'Roboto', sans-serif;
+    }
+    #lock-screen-time {
+      font-size: 80px;
+      font-weight: 300;
+      margin: 0;
+    }
+    #pin-dots {
+        display: flex;
+        gap: 20px;
+        margin: 40px 0;
+    }
+    .pin-dot {
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        border: 2px solid #fff;
+        transition: background-color: 0.2s;
+    }
+    .pin-dot.filled {
+        background-color: #fff;
+    }
+    #pin-dots.shake {
+        animation: shake 0.5s;
+    }
+    #pin-pad {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        max-width: 280px;
+    }
+    .pin-button {
+        width: 75px;
+        height: 75px;
+        border-radius: 50%;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        font-size: 32px;
+        font-weight: 300;
+        cursor: pointer;
+        transition: background-color: 0.2s;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .pin-button:hover, .pin-button:active {
+        background: rgba(255, 255, 255, 0.3);
+    }
+    .pin-button.utility {
+        background: transparent;
+        border: none;
+    }
+    .pin-button svg {
+        width: 32px;
+        height: 32px;
+        fill: #fff;
+    }
+    #phone-screen.screen-off {
+        background-color: #000;
+    }
+    #phone-screen.screen-off > *:not(#boot-screen):not(#lock-screen) {
+        visibility: hidden;
+    }
+    #os-home-screen {
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        z-index: 5;
+        background-color: #000;
+        background-image: none;
+        display: none;
+        padding-top: 50px;
+        padding-bottom: 25px;
+        box-sizing: border-box;
+        transition: background-color 0.3s ease;
+    }
+    #app-dock {
+        position: absolute;
+        bottom: 30px;
+        left: 10px; right: 10px;
+        height: 90px;
+        background-color: rgba(255,255,255,0.1);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-radius: 20px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        padding: 0 10px;
+        transition: background-color 0.3s ease;
+    }
+    #drawer-handle {
+        position: absolute;
+        bottom: 125px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 40px;
+        height: 40px;
+        background: none;
+        border: none;
+        cursor: pointer;
+    }
+    #drawer-handle svg {
+        width: 100%;
+        height: 100%;
+        fill: #fff;
+        opacity: 0.7;
+        transition: fill 0.3s ease;
+    }
+    #app-drawer {
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background-color: rgba(0,0,0,0.8);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        z-index: 10;
+        transform: translateY(100%);
+        transition: transform 0.3s ease-in-out, background-color 0.3s ease;
+        border-radius: 36px;
+        overflow-y: auto;
+    }
+    #app-drawer.open {
+        transform: translateY(0);
+    }
+    #app-drawer-content {
+        padding: 20px;
+        padding-top: 50px;
+    }
+    #os-search-bar {
+        width: 100%;
+        padding: 12px 16px;
+        font-size: 16px;
+        border: none;
+        border-radius: 24px;
+        background-color: rgba(255, 255, 255, 0.2);
+        color: #fff;
+        box-sizing: border-box;
+        margin-bottom: 24px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+     #os-search-bar::placeholder {
+        color: rgba(255, 255, 255, 0.7);
+        transition: color 0.3s ease;
+    }
+    #app-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        padding: 0 10px;
+    }
+    .app-icon {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        color: #fff;
+        text-decoration: none;
+        font-size: 13px;
+        text-align: center;
+        transition: color 0.3s ease;
+    }
+    .app-icon .icon-bg {
+        width: 60px;
+        height: 60px;
+        background-color: transparent;
+        border-radius: 12px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .app-icon img, .app-icon svg {
+        width: 48px;
+        height: 48px;
+        filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.7));
+        transition: filter 0.3s ease;
+    }
+    #phone-container[data-os-theme="light"] #os-home-screen {
+        background-color: #F0F2F5;
+    }
+    #phone-container[data-os-theme="light"] .app-icon {
+        color: #000;
+    }
+    #phone-container[data-os-theme="light"] .app-icon img,
+    #phone-container[data-os-theme="light"] .app-icon svg {
+        filter: invert(1) drop-shadow(0 0 3px rgba(0, 0, 0, 0.3));
+    }
+    #phone-container[data-os-theme="light"] #drawer-handle svg {
+        fill: #000;
+    }
+    #phone-container[data-os-theme="light"] #app-dock {
+        background-color: rgba(255, 255, 255, 0.5);
+    }
+    #phone-container[data-os-theme="light"] #app-drawer {
+        background-color: rgba(240, 242, 245, 0.85);
+    }
+    #phone-container[data-os-theme="light"] #os-search-bar {
+        background-color: rgba(0, 0, 0, 0.1);
+        color: #000;
+    }
+    #phone-container[data-os-theme="light"] #os-search-bar::placeholder {
+        color: rgba(0, 0, 0, 0.6);
+    }
+    #phone-container[data-os-theme="light"] #gesture-bar {
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+    #gesture-bar-container {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 25px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 160;
+        cursor: pointer;
+        display: none;
+    }
+    #gesture-bar {
+        width: 130px;
+        height: 5px;
+        background-color: rgba(255, 255, 255, 0.5);
+        border-radius: 2.5px;
+        transition: background-color 0.3s ease;
+    }
+    #glitter-container {
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        overflow: hidden;
+        pointer-events: none;
+        z-index: -1;
+    }
+    .glitter {
+        position: absolute;
+        border-radius: 50%;
+        animation: twinkle 2s infinite ease-in-out;
+        opacity: 0;
+    }
+    #phone-container[data-os-theme="dark"] .glitter {
+        background-color: white;
+    }
+    #phone-container[data-os-theme="light"] .glitter {
+        background-color: black;
+    }
+    @keyframes twinkle {
+        0%, 100% {
+            opacity: 0;
+            transform: scale(0.5);
+        }
+        50% {
+            opacity: 0.8;
+            transform: scale(1);
+        }
+    }
+
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-10px); }
+      75% { transform: translateX(10px); }
+    }
+  </style>
+</head>
+<body>
+
+<div id="phone-container" data-os-theme="dark">
+  <div id="phone-screen">
+    <div id="boot-screen">
+        <div id="boot-box">
+            <h2 id="boot-text" data-text="0x20 Creation">0x20 Creation</h2>
+        </div>
+    </div>
+    <div id="lock-screen">
+        <h1 id="lock-screen-time"></h1>
+        <div id="pin-dots">
+            <div class="pin-dot"></div>
+            <div class="pin-dot"></div>
+            <div class="pin-dot"></div>
+            <div class="pin-dot"></div>
+        </div>
+        <div id="pin-pad">
+            <button class="pin-button" data-value="1">1</button>
+            <button class="pin-button" data-value="2">2</button>
+            <button class="pin-button" data-value="3">3</button>
+            <button class="pin-button" data-value="4">4</button>
+            <button class="pin-button" data-value="5">5</button>
+            <button class="pin-button" data-value="6">6</button>
+            <button class="pin-button" data-value="7">7</button>
+            <button class="pin-button" data-value="8">8</button>
+            <button class="pin-button" data-value="9">9</button>
+            <button class="pin-button utility"></button>
+            <button class="pin-button" data-value="0">0</button>
+            <button class="pin-button utility" data-value="backspace"><svg viewBox="0 0 24 24"><path d="M22,3H7C6.31,3 5.77,3.35 5.41,3.88L0,12L5.41,20.11C5.77,20.64 6.31,21 7,21H22A2,2 0 0,0 24,19V5A2,2 0 0,0 22,3M19,15.59L17.59,17L14,13.41L10.41,17L9,15.59L12.59,12L9,8.41L10.41,7L14,10.59L17.59,7L19,8.41L15.41,12"/></svg></button>
+        </div>
+    </div>
+    <div id="status-bar">
+      <span id="time">9:41</span>
+      <div class="status-icons">
+        <span id="vpn-icon-container">
+            <svg viewBox="0 0 24 24"><path d="M12,2A9,9 0 0,1 21,11V15A1,1 0 0,1 20,16H14.2A5,5 0 0,0,18,10A6,6 0 0,0 6,10C6,12.42 7.6,14.44 9.8,15.2L9,16H4A1,1 0 0,1 3,15V11A9,9 0 0,1 12,2M12,4A4,4 0 0,0 8,8A4,4 0 0,0 12,12A4,4 0 0,0 16,8A4,4 0 0,0 12,4Z"/></svg>
+        </span>
+        <svg viewBox="0 0 24 24"><path d="M12,21L15.2,16.8C13.8,15.86 11.4,14.33 9.2,14.33C7,14.33 4.8,15.33 3.2,16.5L6.4,20.7C7.3,20.06 8.2,19.66 9.2,19.66C10.2,19.66 11.3,20.13 12,21M18.8,15.2L22,11C19.2,8.8 15.8,7 12,7C8.2,7 4.8,8.8 2,11L5.2,15.2C7.2,13.8 9.6,12.83 12,12.83C14.4,12.83 16.8,13.8 18.8,15.2M12,4L7.6,8.4C9.6,7.2 12.4,6.33 15.2,6.33C18,6.33 20.8,7.2 22.4,8.4L24,7L12,4Z" /></svg>
+        <span id="battery-icon-container">
+            <svg viewBox="0 0 24 24"><path d="M17,17.5V19H15V17.5C15,16.12 16.12,15 17.5,15C18.88,15 20,16.12 20,17.5V19H18V17.5C18,17.22 17.78,17 17.5,17C17.22,17 17,17.22 17,17.5M21,13H14V4H21V13M21,2H14A2,2 0 0,0 12,4V13A2,2 0 0,0 14,15H15V16A4,4 0 0,0 11,20V21A1,1 0 0,0 12,22H23A1,1 0 0,0 24,21V20A4,4 0 0,0 20,16V15H21A2,2 0 0,0 23,13V4A2,2 0 0,0 21,2Z" /></svg>
+        </span>
+      </div>
+    </div>
+    <div id="quick-settings-panel">
+      <div class="brightness-control">
+        <svg viewBox="0 0 24 24" width="24" height="24"><path d="M12,8A4,4 0 0,0 8,12A4,4 0 0,0 12,16A4,4 0 0,0 16,12A4,4 0 0,0 12,8M12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6A6,6 0 0,1 18,12A6,6 0 0,1 12,18M20,12C20,13.11 19.6,14.14 19,15L20.5,16.5C21.4,15.23 22,13.68 22,12C22,10.32 21.4,8.77 20.5,7.5L19,9C19.6,9.86 20,10.89 20,12M3.5,7.5L5,9C4.4,9.86 4,10.89 4,12C4,13.11 4.4,14.14 5,15L3.5,16.5C2.6,15.23 2,13.68 2,12C2,10.32 2.6,8.77 3.5,7.5M12,4C10.89,4 9.86,4.4 9,5L7.5,3.5C8.77,2.6 10.32,2 12,2C13.68,2 15.23,2.6 16.5,3.5L15,5C14.14,4.4 13.11,4 12,4M12,20C13.11,20 14.14,19.6 15,19L16.5,20.5C15.23,21.4 13.68,22 12,22C10.32,22 8.77,21.4 7.5,20.5L9,19C9.86,19.6 10.89,20 12,20Z"/></svg>
+        <input type="range" min="0.3" max="1" value="1" step="0.01" id="brightness-slider">
+      </div>
+      <div class="quick-toggles">
+        <button id="wifi-toggle-btn" class="toggle-btn active" data-toast-on="Wi-Fi turned on" data-toast-off="Wi-Fi turned off"><svg viewBox="0 0 24 24"><path d="M12 3C7.95 3 4.21 4.34 1.2 6.6L3 8.4C5.4 6.5 8.55 5.5 12 5.5S18.6 6.5 21 8.4L22.8 6.6C19.79,4.34 16.05,3 12 3M12 9C10.13 9 8.42 9.44 6.93 10.2L8.73 12C9.57 11.62 10.74 11.5 12 11.5S14.43 11.62 15.27 12L17.07 10.2C15.58 9.44 13.87 9 12 9M12 15C11.25 15 10.5 15.19 9.81 15.5L12 17.7L14.19 15.5C13.5 15.19 12.75 15 12 15Z"/></svg><span>WiFi</span></button>
+        <button id="vpn-toggle-btn" class="toggle-btn" data-toast-on="VPN Connected" data-toast-off="VPN Disconnected"><svg viewBox="0 0 24 24"><path d="M12,12H19C19,8.14 15.86,5 12,5C11.16,5 10.35,5.15 9.59,5.41L12,7.83V12M4.78,4.78L2.05,7.5L3.83,9.28C3.3,10.04 3,10.97 3,12C3,16.97 7.03,21 12,21C13.03,21 13.96,20.7 14.72,20.17L16.5,21.95L19.22,19.22L4.78,4.78M12,19C8.14,19 5,15.86 5,12C5,11.84 5,11.67 5.04,11.5L12.5,19H12Z"/></svg><span>VPN</span></button>
+        <button id="root-toggle-btn" class="toggle-btn" data-toast-on="Root Access Enabled" data-toast-off="Root Access Disabled"><svg viewBox="0 0 24 24"><path d="M18.5,7.5C18.5,8.3 17.8,9 17,9C16.2,9 15.5,8.3 15.5,7.5C15.5,6.7 16.2,6 17,6C17.8,6 18.5,6.7 18.5,7.5M12,20.19L8.27,15.5C8.61,15.1 9,14.79 9.5,14.61L12,17L14.5,14.61C15,14.79 15.39,15.1 15.73,15.5L12,20.19M5,4H19C20.11,4 21,4.9 21,6V18C21,19.11 20.11,20 19,20H5C3.89,20 3,19.11 3,18V6C3,4.9 3.89,4 5,4M5.5,7.5C5.5,8.3 6.2,9 7,9C7.8,9 8.5,8.3 8.5,7.5C8.5,6.7 7.8,6 7,6C6.2,6 5.5,6.7 5.5,7.5M12,13C10.9,13 10,12.1 10,11C10,9.9 10.9,9 12,9C13.1,9 14,9.9 14,11C14,12.1 13.1,13 12,13Z" /></svg><span>Root</span></button>
+        <button id="os-theme-toggle-btn" class="toggle-btn active" data-toast-on="Dark Mode" data-toast-off="Light Mode"><svg viewBox="0 0 24 24"><path d="M12 3C13.1 3 14.12 3.29 15 3.82A6.98 6.98 0 0 0 12 2C8.69 2 6 4.69 6 8C6 10.27 7.21 12.22 9 13.25V13.25C6.1 14.37 4 17.43 4 21H6C6 18.33 8.13 16.25 10.75 16V16C8.78 15.19 7.27 13.79 6.8 11.93C7.88 11.08 9.34 10.5 11 10.5H12C12.39 10.5 12.78 10.54 13.15 10.62C15.22 10.13 17.5 11.23 18.53 13.07C19.5 14.8 19.15 17.14 17.93 18.65C17.55 19.21 17.04 19.68 16.43 20.04C16.8 20.35 17.15 20.65 17.43 21H19.53C19.53 18.57 18.37 16.43 16.59 15.19C18.11 14.53 19.22 13.1 19.5 11.37C18.73 10.22 17.13 9.5 15.5 9.5C14.47 9.5 13.53 9.77 12.75 10.25C12.5 7.03 9.54 4.5 6.23 4.5C5.07 4.5 4 4.88 3.09 5.5C3.54 4.38 4.69 3.53 6 3.25V3.25C6.9 3.09 7.82 3 8.75 3C10.03 3 11.22 3.33 12 3.87C12 3.58 12 3.3 12 3Z" /></svg><span>DM/LM</span></button>
+      </div>
+      <div class="color-picker-control">
+          <svg viewBox="0 0 24 24" width="24" height="24"><path d="M12,3A9,9 0 0,0 3,12A9,9 0 0,0 12,21A9,9 0 0,0 21,12A9,9 0 0,0 12,3M6.2,16.5L9.5,12L6.2,7.5H11.2L12,9L12.8,7.5H17.8L14.5,12L17.8,16.5H12.8L12,15L11.2,16.5H6.2Z" /></svg>
+          <div class="color-swatches">
+              <button class="color-swatch" data-color="default" style="background-color: #3A78D0;"></button>
+              <button class="color-swatch" data-color="green" style="background-color: #4CAF50;"></button>
+              <button class="color-swatch" data-color="purple" style="background-color: #9C27B0;"></button>
+              <button class="color-swatch" data-color="orange" style="background-color: #FF9800;"></button>
+              <button class="color-swatch" data-color="teal" style="background-color: #009688;"></button>
+          </div>
+      </div>
+    </div>
+    <div id="os-home-screen">
+        <div id="glitter-container"></div>
+        <button id="drawer-handle">
+            <svg viewBox="0 0 24 24"><path d="M7.41,15.41L12,10.83L16.59,15.41L18,14L12,8L6,14L7.41,15.41Z" /></svg>
+        </button>
+        <div id="app-dock"></div>
+        <div id="app-drawer">
+            <div id="app-drawer-content">
+                <input type="text" id="os-search-bar" placeholder="Search apps...">
+                <div id="app-grid"></div>
+            </div>
+        </div>
+    </div>
+    <div id="app-container">
+       <div id="no-wifi-overlay">
+         <div>
+           <svg style="width:48px;height:48px;fill:currentColor;margin-bottom:12px;" viewBox="0 0 24 24"><path d="M12,3C7.95,3 4.21,4.34 1.2,6.6L3,8.4C5.4,6.5 8.55,5.5 12,5.5S18.6 6.5 21 8.4L22.8,6.6C19.79,4.34 16.05,3 12,3M3.28,8.72L2,10L4.86,12.86L3.41,14.31L4.83,15.72L6.76,13.79C7.94,14.9 9.3,15.65 10.78,16.05L9.88,17H14.12L13.22,16.05C15.89,15.39 17.9,13.29 18.41,10.69L22,14.28L23.41,12.86L3.28,8.72Z" /></svg>
+           <p>No internet connection</p>
+         </div>
+       </div>
+      <header class="app-header">
+          <button id="menu-toggle">
+            <svg viewBox="0 0 24 24"><path d="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z" /></svg>
+          </button>
+          <h2 id="app-title">PIRATE BAY</h2>
+          <div class="header-actions">
+            <div class="header-links" id="userAuthLinks"></div>
+            <button id="theme-toggle" title="Toggle Theme">
+                <svg class="sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5s2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.02-.39-1.41 0s-.39 1.02 0 1.41l1.06 1.06c.39.39 1.02.39 1.41 0s.39-1.02 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.02-.39-1.41 0s-.39 1.02 0 1.41l1.06 1.06c.39.39 1.02.39 1.41 0s.39-1.02 0-1.41l-1.06-1.06zm1.06-10.96c.39-.39.39-1.02 0-1.41s-1.02-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.02 0 1.41s1.02.39 1.41 0l1.06-1.06zM7.05 18.36c.39-.39.39-1.02 0-1.41s-1.02-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.02 0 1.41s1.02.39 1.41 0l1.06-1.06z"/></svg>
+                <svg class="moon" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" viewBox="0 0 24 24" width="24" height="24"><path d="M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36c-0.98,1.37-2.58,2.26-4.4,2.26c-3.31,0-6-2.69-6-6c0-1.82,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3z"/></svg>
+            </button>
+          </div>
+      </header>
+
+      <main id="app-content">
+        <div id="main-content-view" class="home-view">
+            <div id="top-controls">
+                <div class="search-container">
+                  <input type="text" id="main-search" placeholder="Search..." autocomplete="off">
+                </div>
+                <div class="category-chips" id="category-chips-container">
+                    <button class="chip" data-category="All"><svg viewBox="0 0 24 24"><path d="M3,5V19V5M5,3H19A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V5A2,2 0 0,1 5,3M10.21,17L8.79,15.58L10.79,13.58L8.79,11.58L10.21,10.17L12.21,12.17L14.21,10.17L15.62,11.58L13.62,13.58L15.62,15.58L14.21,17L12.21,15L10.21,17Z" /></svg><span>All</span></button>
+                    <button class="chip" data-category="Win"><svg viewBox="0 0 24 24"><path d="M3,12V6.75L9,5.43V11.91L3,12M21,12V4.5L9,2V11.91L21,12M3,13L9,13.09V18.57L3,17.25V13M21,13L9,13.09V22L21,20.5V13Z" /></svg><span>Win</span></button>
+                    <button class="chip" data-category="Linux"><svg viewBox="0 0 24 24"><path d="M14.2,21.84C14.1,21.95 14,22 13.84,22H10.16C10,22 9.9,21.95 9.8,21.84L9.4,21.06C9,20.5 8.44,20.06 7.78,19.82L6.89,19.5C6.72,19.43 6.6,19.29 6.56,19.11L6.1,17.26C6.03,16.89 6,16.5 6,16.11V12.13C6,11.33 6.2,10.56 6.5,9.88L6.2,9.5C6.1,9.35 6.1,9.15 6.2,9L7.2,7.2C7.3,7.05 7.5,6.95 7.64,7L8.5,7.29C8.78,7.43 9,7.6 9.2,7.82L9.65,7.35C10.25,6.75 11,6.34 11.83,6.18L12.18,5.42C12.35,5.08 12.75,4.89 13.15,4.95L15.4,5.33C15.5,5.33 15.6,5.4 15.64,5.5L16.2,6.5C16.3,6.65 16.2,6.85 16.1,7L15.75,7.35C16,7.5 16.25,7.65 16.5,7.8L17.36,7.29C17.5,7.22 17.7,7.3 17.8,7.45L18.8,9.23C18.9,9.38 18.9,9.58 18.8,9.73L18.5,10C18.8,10.6 19,11.29 19,12V16.11C19,16.5 18.97,16.89 18.9,17.26L18.44,19.11C18.4,19.29 18.28,19.43 18.11,19.5L17.22,19.82C16.56,20.06 16,20.5 15.6,21.06L15.19,21.84H15C14.8,21.84 14.4,21.84 14.2,21.84M13,10A1,1 0 0,0 12,9A1,1 0 0,0 11,10A1,1 0 0,0 12,11A1,1 0 0,0 13,10M16,10A1,1 0 0,0 15,9A1,1 0 0,0 14,10A1,1 0 0,0 15,11A1,1 0 0,0 16,10M10.25,15.5C10.25,16.33 10.92,17 11.75,17H12.25C13.08,17 13.75,16.33 13.75,15.5V14H10.25V15.5Z" /></svg><span>Linux</span></button>
+                    <button class="chip" data-category="Mac"><svg viewBox="0 0 24 24"><path d="M19.31 19.31C18.43 20.16 17.33 21 16 21H8C5.83 21 4.2 19.33 4 17.21C5.73 17.62 7.5 16.8 8.44 15.31C9.03 14.41 9.16 13.29 8.81 12.25C8.81 12.25 10.13 11.94 11.31 12.81C12.5 13.75 12.31 15.31 13.44 16.38C14.5 17.38 15.81 17.38 16.69 16.56C17.03 16.25 17.25 15.84 17.38 15.41C16.38 14.41 16.5 12.63 17.81 11.69C19.13 10.75 20.5 11.13 20.5 11.13C19.91 13.25 20.19 18.46 19.31 19.31M15.41 4.28C14.75 3.31 13.75 3 13 3C11.5 2.88 10.13 3.88 9.5 5C8.88 6.13 8.75 7.5 9.5 8.75C10.13 9.75 11.13 10 12 10C13.5 10.13 14.88 9.13 15.5 8C16.13 6.88 16.13 5.38 15.41 4.28Z" /></svg><span>Mac</span></button>
+                    <button class="chip" data-category="Droid"><svg viewBox="0 0 24 24"><path d="M15,18H9V16H15V18M16,11.25A1.25,1.25 0 0,1 14.75,10A1.25,1.25 0 0,1 16,8.75A1.25,1.25 0 0,1 17.25,10A1.25,1.25 0 0,1 16,11.25M8,11.25A1.25,1.25 0 0,1 6.75,10A1.25,1.25 0 0,1 8,8.75A1.25,1.25 0 0,1 9.25,10A1.25,1.25 0 0,1 8,11.25M19.95,13.5A0.66,0.66 0 0,1 19.3,13L18,11.7V7A1,1 0 0,0 17,6H7A1,1 0 0,0 6,7V11.7L4.7,13C4,13.67 4.5,14.83 5.4,14.83H6V19A1,1 0 0,0 7,20H17A1,1 0 0,0 18,19V14.83H18.6C19.5,14.83 20,13.67 19.95,13.5M20.28,6.1L19.13,4.94L18.06,6H16.89L15,4.1L13.88,5.19L14.39,7.54L13.17,8.76L11,6.58L9.83,7.75L11.5,9.43L10.13,10.8L7.88,8.55L6.71,9.72L8.83,11.84L6,14.66V7A3,3 0 0,1 9,4H15A3,3 0 0,1 18,7V14.66L15.17,11.84L17.29,9.72L16.12,8.55L13.87,10.8L12.5,9.43L14.17,7.75L13,6.58L10.83,8.76L9.61,7.54L10.12,5.19L9,4.1L7.11,6H5.94L4.87,4.94L3.72,6.1L4.5,6.88C3.8,7.9 3.5,9.15 3.75,10.35L2,12.1V12.9L3.5,14.4C3.5,14.4 3.5,14.4 3.5,14.44C3,15.16 3,16.05 3,17V19A3,3 0 0,0 6,22H18A3,3 0 0,0 21,19V17C21,16.05 21,15.16 20.5,14.44C20.5,14.4 20.5,14.4 20.5,14.4L22,12.9V12.1L20.25,10.35C20.5,9.15 20.2,7.9 19.5,6.88L20.28,6.1Z" /></svg><span>Droid</span></button>
+                    <button class="chip" data-category="Audio"><svg viewBox="0 0 24 24"><path d="M12,3V13.55C11.41,13.21 10.73,13 10,13C7.79,13 6,14.79 6,17C6,19.21 7.79,21 10,21C12.21,21 14,19.21 14,17V7H18V3H12Z" /></svg><span>Audio</span></button>
+                    <button class="chip" data-category="Notif"><svg viewBox="0 0 24 24"><path d="M12,22A2,2 0 0,0 14,20H10A2,2 0 0,0 12,22M18,16.5V11C18,7.93 16.36,5.36 13.5,4.68V4A1.5,1.5 0 0,0 12,2.5A1.5,1.5 0 0,0 10.5,4V4.68C7.64,5.36 6,7.93 6,11V16.5L4,18.5V19H20V18.5L18,16.5Z" /></svg><span>Notif</span><span class="notification-badge hidden" id="notification-badge">4</span></button>
+                    <button class="chip" data-category="Other"><svg viewBox="0 0 24 24"><path d="M16,12A2,2 0 0,1 14,14A2,2 0 0,1 12,12A2,2 0 0,1 14,10A2,2 0 0,1 16,12M10,12A2,2 0 0,1 8,14A2,2 0 0,1 6,12A2,2 0 0,1 8,10A2,2 0 0,1 10,12M22,12A2,2 0 0,1 20,14A2,2 0 0,1 18,12A2,2 0 0,1 20,10A2,2 0 0,1 22,12Z" /></svg><span>Other</span></button>
+                </div>
+            </div>
+            <div class="results-list" id="results-list"></div>
+            <button id="share-files-btn"><svg viewBox="0 0 24 24"><path d="M2,21L23,12L2,3V10L17,12L2,14V21Z" /></svg></button>
+        </div>
+        <div id="web-view-container">
+            <div class="view-header">
+                <button id="web-view-back-button" class="chip"><svg style="width:20px;height:20px;fill:currentColor;" viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"></path></svg></button>
+                <h3 id="web-view-title">Web View</h3>
+            </div>
+            <iframe id="web-content-frame" src="about:blank"></iframe>
+            <div id="external-link-content" style="display:none;"></div>
+        </div>
+        <div id="downloads-view-container">
+            <div class="view-header">
+                <button id="downloads-back-button" class="chip"><svg style="width:20px;height:20px;fill:currentColor;" viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"></path></svg></button>
+                <h3>Downloads</h3>
+            </div>
+            <div id="downloads-list"></div>
+        </div>
+      </main>
+      <footer id="app-footer"></footer>
+    </div>
+
+    <div id="gesture-bar-container">
+        <div id="gesture-bar"></div>
+    </div>
+
+
+    <div id="side-drawer">
+        <div class="drawer-profile" id="drawer-profile-container">
+            <img src="https://i.ibb.co/6yT4R2G/a.png" alt="Profile Picture" class="drawer-profile-pic" id="profile-pic-img">
+            <div class="edit-icon">
+                <svg viewBox="0 0 24 24"><path d="M20.71,7.04C21.1,6.65 21.1,6.02 20.71,5.63L18.37,3.29C17.98,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z" /></svg>
+            </div>
+        </div>
+        <ul>
+            <li>
+                <a data-link-type="local" data-title="TOR V3" data-url="file:///home/admin/Desktop/New Folder/TORV3.html">
+                    <svg viewBox="0 0 24 24"><path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8Z"/></svg>
+                    <span>TOR V3</span>
+                </a>
+            </li>
+            <li>
+                <a data-link-type="local" data-title="VPN" data-url="file:///home/admin/Desktop/New Folder/VPN.HTML">
+                    <svg viewBox="0 0 24 24"><path d="M12,12H19C19,8.14 15.86,5 12,5C11.16,5 10.35,5.15 9.59,5.41L12,7.83V12M4.78,4.78L2.05,7.5L3.83,9.28C3.3,10.04 3,10.97 3,12C3,16.97 7.03,21 12,21C13.03,21 13.96,20.7 14.72,20.17L16.5,21.95L19.22,19.22L4.78,4.78M12,19C8.14,19 5,15.86 5,12C5,11.84 5,11.67 5.04,11.5L12.5,19H12Z"/></svg>
+                    <span>VPN</span>
+                </a>
+            </li>
+            <li>
+                <a data-link-type="external" data-title="Forum" data-url="https://pirates-forum.org/">
+                    <svg viewBox="0 0 24 24"><path d="M12,3L1,9L12,15L23,9L12,3M5,13.18V17.18L12,21L19,17.18V13.18L12,17L5,13.18Z"/></svg>
+                    <span>Forum</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" id="downloads-btn">
+                     <svg viewBox="0 0 24 24"><path d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z" /></svg>
+                    <span>Downloads</span>
+                </a>
+            </li>
+             <li>
+                <a href="#" id="change-font-btn">
+                    <svg viewBox="0 0 24 24"><path d="M9.6,14L12,7.7L14.4,14M11,5L5.5,19H7.7L8.8,16H15.2L16.3,19H18.5L13,5H11Z"/></svg>
+                    <span>Change Font</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div id="modal-overlay"></div>
+    <div id="bottom-sheet">
+        <div id="fontDialog" class="modal-dialog" style="display:none;">
+            <h3>Choose a Font</h3>
+            <div class="modal-content">
+                <input type="text" id="font-search" placeholder="Search fonts...">
+                <ul id="font-list">
+                </ul>
+            </div>
+        </div>
+        <div id="shareSheetDialog" class="modal-dialog" style="display:none;">
+            <h3>Share "<span id="share-sheet-file-name"></span>" via...</h3>
+            <div id="share-sheet-grid">
+                <button class="share-target" data-app="Messages">
+                    <div class="icon-bg" style="background-color: #4CAF50;"><svg viewBox="0 0 24 24"><path fill="#FFFFFF" d="M20,2H4A2,2 0 0,0 2,4V22L6,18H20A2,2 0 0,0 22,16V4A2,2 0 0,0 20,2Z" /></svg></div>
+                    <span>Messages</span>
+                </button>
+                <button class="share-target" data-app="Mail">
+                    <div class="icon-bg" style="background-color: #3A78D0;"><svg viewBox="0 0 24 24"><path fill="#FFFFFF" d="M20,8L12,13L4,8V6L12,11L20,6M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.1,4 20,4Z" /></svg></div>
+                    <span>Mail</span>
+                </button>
+                <button class="share-target" data-app="Facebook">
+                    <div class="icon-bg" style="background-color: #1877F2;"><svg viewBox="0 0 24 24"><path fill="#FFFFFF" d="M12 2.04C6.5 2.04 2 6.53 2 12.06C2 17.06 5.66 21.21 10.44 21.96V14.96H7.9V12.06H10.44V9.85C10.44 7.32 11.93 5.96 14.22 5.96C15.31 5.96 16.45 6.15 16.45 6.15V8.62H15.19C13.95 8.62 13.56 9.39 13.56 10.18V12.06H16.34L15.89 14.96H13.56V21.96A10 10 0 0 0 12 2.04Z" /></svg></div>
+                    <span>Facebook</span>
+                </button>
+            </div>
+        </div>
+        <div id="shareDialog" class="modal-dialog" style="display:none;">
+          <div class="dialog-icon">
+            <svg viewBox="0 0 24 24"><path d="M2,21L23,12L2,3V10L17,12L2,14V21Z" /></svg>
+          </div>
+          <h3>Send Files</h3>
+          <p>Select a file to send to another device.</p>
+          <label for="file-upload-input" class="modal-button primary">Choose a file...</label>
+          <input type="file" id="file-upload-input">
+          <p id="file-name-display">No file selected.</p>
+          <div class="modal-actions">
+              <button type="button" class="modal-button text" id="share-cancel-btn">Cancel</button>
+              <button type="button" class="modal-button primary" id="share-confirm-btn">Send</button>
+          </div>
+        </div>
+        <div id="installDialog" class="modal-dialog" style="display:none;">
+          <h3 id="install-dialog-title">Install File?</h3>
+          <p>Would you like to install <strong id="install-file-name"></strong>?</p>
+          <div class="modal-actions">
+              <button type="button" class="modal-button text" id="install-cancel-btn">Cancel</button>
+              <button type="button" class="modal-button primary" id="install-confirm-btn">Install</button>
+          </div>
+        </div>
+        <div id="authDialog" class="modal-dialog">
+          <form id="loginForm">
+              <h3>Login</h3>
+              <div class="form-group"><label for="loginUsername">Username</label><input type="text" id="loginUsername" required></div>
+              <div class="form-group"><label for="loginPassword">Password</label><input type="password" id="loginPassword" required></div>
+              <p class="error-message" id="loginError"></p>
+              <div class="modal-actions">
+                  <button type="button" class="modal-button text" id="showRegister">Create account</button>
+                  <button type="submit" class="modal-button primary">Login</button>
+              </div>
+          </form>
+          <form id="registerForm" style="display:none;">
+              <h3>Create Account</h3>
+              <div class="form-group"><label for="registerUsername">Username</label><input type="text" id="registerUsername" required minlength="3"></div>
+              <div class="form-group"><label for="registerPassword">Password</label><input type="password" id="registerPassword" required minlength="6"></div>
+              <div class="form-group"><label for="confirmPassword">Confirm Password</label><input type="password" id="confirmPassword" required></div>
+              <p class="error-message" id="registerError"></p>
+              <div class="modal-actions">
+                  <button type="button" class="modal-button text" id="showLogin">Already have an account?</button>
+                  <button type="submit" class="modal-button primary">Register</button>
+              </div>
+          </form>
+        </div>
+        <div id="warningDialog" class="modal-dialog" style="display:none;">
+            <h3>Warning</h3>
+            <p>This file is from an unverified source. Are you sure you want to proceed?</p>
+            <div class="modal-actions">
+                <button type="button" class="modal-button text" id="warningNo">Cancel</button>
+                <button type="button" class="modal-button primary" id="warningYes">Download</button>
+            </div>
+        </div>
+    </div>
+    <div id="toast-container"></div>
+     <div id="phone-notification-banner">
+        <div class="icon">
+             <svg viewBox="0 0 24 24"><path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,16.5L6.5,12L7.91,10.59L11,13.67L16.09,8.59L17.5,10L11,16.5Z" /></svg>
+        </div>
+        <div class="content">
+            <h4 id="phone-notification-title">Download Complete</h4>
+            <p id="phone-notification-message">Your file has been saved.</p>
+        </div>
+    </div>
+  </div>
+  <button id="power-button"></button>
+  <input type="file" id="profile-pic-input" accept="image/*" style="display:none;">
+</div>
+
+<script>
+    const phoneContainer = document.getElementById('phone-container');
+    const phoneScreen = document.getElementById('phone-screen');
+    const themeToggle = document.getElementById('theme-toggle');
+    const timeDisplay = document.getElementById('time');
+    const batteryIconContainer = document.getElementById('battery-icon-container');
+    const mainContentView = document.getElementById('main-content-view');
+    const mainSearch = document.getElementById('main-search');
+    const categoryChips = document.querySelectorAll('.chip');
+    const resultsList = document.getElementById('results-list');
+    const appTitle = document.getElementById('app-title');
+    const toastContainer = document.getElementById('toast-container');
+    const powerButton = document.getElementById('power-button');
+    const bootScreen = document.getElementById('boot-screen');
+    const bootText = document.getElementById('boot-text');
+    const lockScreen = document.getElementById('lock-screen');
+    const lockScreenTime = document.getElementById('lock-screen-time');
+    const pinPad = document.getElementById('pin-pad');
+    const pinDotsContainer = document.getElementById('pin-dots');
+    const osHomeScreen = document.getElementById('os-home-screen');
+    const appGrid = document.getElementById('app-grid');
+    const appContainer = document.getElementById('app-container');
+    const gestureBarContainer = document.getElementById('gesture-bar-container');
+    const appDrawer = document.getElementById('app-drawer');
+    const drawerHandle = document.getElementById('drawer-handle');
+    const appDock = document.getElementById('app-dock');
+    const osSearchBar = document.getElementById('os-search-bar');
+    const modalOverlay = document.getElementById('modal-overlay');
+    const authDialog = document.getElementById('authDialog');
+    const warningDialog = document.getElementById('warningDialog');
+    const installDialog = document.getElementById('installDialog');
+    const installDialogTitle = document.getElementById('install-dialog-title');
+    const installFileName = document.getElementById('install-file-name');
+    const installConfirmBtn = document.getElementById('install-confirm-btn');
+    const installCancelBtn = document.getElementById('install-cancel-btn');
+    const shareDialog = document.getElementById('shareDialog');
+    const shareConfirmBtn = document.getElementById('share-confirm-btn');
+    const shareCancelBtn = document.getElementById('share-cancel-btn');
+    const fileUploadInput = document.getElementById('file-upload-input');
+    const fileNameDisplay = document.getElementById('file-name-display');
+    const shareSheetDialog = document.getElementById('shareSheetDialog');
+    const shareSheetFileName = document.getElementById('share-sheet-file-name');
+    const shareSheetGrid = document.getElementById('share-sheet-grid');
+    const fontDialog = document.getElementById('fontDialog');
+    const fontSearch = document.getElementById('font-search');
+    const fontList = document.getElementById('font-list');
+    const userAuthLinks = document.getElementById('userAuthLinks');
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+    const showRegister = document.getElementById('showRegister');
+    const showLogin = document.getElementById('showLogin');
+    const loginError = document.getElementById('loginError');
+    const registerError = document.getElementById('registerError');
+    const warningYes = document.getElementById('warningYes');
+    const warningNo = document.getElementById('warningNo');
+    const notificationBadge = document.getElementById('notification-badge');
+    const notificationChip = document.querySelector('.chip[data-category="Notif"]');
+    const menuToggle = document.getElementById('menu-toggle');
+    const sideDrawer = document.getElementById('side-drawer');
+    const drawerProfileContainer = document.getElementById('drawer-profile-container');
+    const profilePicImg = document.getElementById('profile-pic-img');
+    const profilePicInput = document.getElementById('profile-pic-input');
+    const changeFontBtn = document.getElementById('change-font-btn');
+    const downloadsBtn = document.getElementById('downloads-btn');
+    const webViewContainer = document.getElementById('web-view-container');
+    const webViewTitle = document.getElementById('web-view-title');
+    const webViewBackButton = document.getElementById('web-view-back-button');
+    const webContentFrame = document.getElementById('web-content-frame');
+    const externalLinkContent = document.getElementById('external-link-content');
+    const downloadsViewContainer = document.getElementById('downloads-view-container');
+    const downloadsBackButton = document.getElementById('downloads-back-button');
+    const downloadsList = document.getElementById('downloads-list');
+    const shareFilesBtn = document.getElementById('share-files-btn');
+    const statusBar = document.getElementById('status-bar');
+    const quickSettingsPanel = document.getElementById('quick-settings-panel');
+    const brightnessSlider = document.getElementById('brightness-slider');
+    const quickToggles = document.querySelectorAll('.toggle-btn');
+    const colorSwatches = document.querySelectorAll('.color-swatch');
+    const wifiToggleBtn = document.getElementById('wifi-toggle-btn');
+    const vpnToggleBtn = document.getElementById('vpn-toggle-btn');
+    const rootToggleBtn = document.getElementById('root-toggle-btn');
+    const osThemeToggleBtn = document.getElementById('os-theme-toggle-btn');
+    const vpnIconContainer = document.getElementById('vpn-icon-container');
+    const noWifiOverlay = document.getElementById('no-wifi-overlay');
+    const phoneNotificationBanner = document.getElementById('phone-notification-banner');
+    const phoneNotificationTitle = document.getElementById('phone-notification-title');
+    const phoneNotificationMessage = document.getElementById('phone-notification-message');
+    let users = JSON.parse(localStorage.getItem('pirateBayUsers')) || [];
+    let downloadedFiles = JSON.parse(localStorage.getItem('downloadedFiles')) || [];
+    let installedApps = JSON.parse(localStorage.getItem('installedApps')) || [];
+    let loggedInUser = null;
+    let activeCategory = null;
+    let animationObserver = null;
+    let isScreenOn = false;
+    let isLocked = true;
+    const CORRECT_PIN = '1234';
+    let enteredPin = '';
+    let titleAnimationInterval = null;
+    const fonts = [
+        { name: 'Roboto', family: "'Roboto', sans-serif" }, { name: 'Merriweather', family: "'Merriweather', serif" }, { name: 'Source Code Pro', family: "'Source Code Pro', monospace" }, { name: 'Lato', family: "'Lato', sans-serif" }, { name: 'Montserrat', family: "'Montserrat', sans-serif" }, { name: 'Open Sans', family: "'Open Sans', sans-serif" }, { name: 'Poppins', family: "'Poppins', sans-serif" }, { name: 'Nunito', family: "'Nunito', sans-serif" }, { name: 'Playfair Display', family: "'Playfair Display', serif" }, { name: 'Fira Code', family: "'Fira Code', monospace" }, { name: 'Ubuntu', family: "'Ubuntu', sans-serif" }, { name: 'Oswald', family: "'Oswald', sans-serif" }, { name: 'Raleway', family: "'Raleway', sans-serif" }, { name: 'Inter', family: "'Inter', sans-serif" }, { name: 'VT323', family: "'VT323', monospace" }
+    ];
+    const mockResults = [ { type: "Win", name: "Microsoft Office 2024 Pro Plus", size: "5.1 GB", seeders: 3100, leechers: 700 }, { type: "Win", name: "Adobe Photoshop 2025 (Pre-activated)", size: "4.3 GB", seeders: 2900, leechers: 600 }, { type: "Win", name: "Windows 11 Pro Superlite (23H2)", size: "2.8 GB", seeders: 4500, leechers: 900 }, { type: "Win", name: "FL Studio Producer Edition v22", size: "1.8 GB", seeders: 2500, leechers: 450 }, { type: "Win", name: "DaVinci Resolve Studio 19", size: "3.5 GB", seeders: 2200, leechers: 350 }, { type: "Win", name: "AutoCAD 2025", size: "2.9 GB", seeders: 1800, leechers: 300 }, { type: "Win", name: "WinRAR 7.01 Final (Registered)", size: "3.5 MB", seeders: 8500, leechers: 200 }, { type: "Win", name: "Ableton Live 12 Suite", size: "3.1 GB", seeders: 2600, leechers: 550 }, { type: "Win", name: "Topaz AI Suite 2025", size: "3.8 GB", seeders: 2400, leechers: 450 }, { type: "Win", name: "Visual Studio 2025 Enterprise", size: "35 GB", seeders: 1500, leechers: 250 }, { type: "Win", name: "Red Dead Redemption 2", size: "110.1 GB", seeders: 4200, leechers: 900 }, { type: "Win", name: "Cyberpunk 2077 Ultimate Edition", size: "102.5 GB", seeders: 3500, leechers: 750 }, { type: "Win", name: "Elden Ring: Shadow of the Erdtree", size: "60.1 GB", seeders: 5210, leechers: 950 }, { type: "Win", name: "Baldur's Gate 3", size: "135.2 GB", seeders: 4800, leechers: 1100 }, { type: "Win", name: "Grand Theft Auto VI Full PC Version", size: "97.6 GB", seeders: 4012, leechers: 862 }, { type: "Win", name: "GTA V Definitive Edition Repack", size: "65.3 GB", seeders: 1782, leechers: 345 }, { type: "Win", name: "Vegas Pro 21", size: "800 MB", seeders: 1900, leechers: 320 }, { type: "Win", name: "3ds Max 2025", size: "8.2 GB", seeders: 1200, leechers: 210 }, { type: "Win", name: "Unity Pro 2024", size: "6.5 GB", seeders: 1600, leechers: 280 }, { type: "Win", name: "Malwarebytes Premium", size: "150 MB", seeders: 6000, leechers: 1000 }, { type: "Win", name: "IDM 6.42 Registered", size: "12 MB", seeders: 9500, leechers: 1500 }, { type: "Win", name: "VMware Workstation Pro 17", size: "600 MB", seeders: 3800, leechers: 500 }, { type: "Win", name: "Substance Painter 2024", size: "2.1 GB", seeders: 1400, leechers: 230 }, { type: "Win", name: "StartAllBack AiO", size: "5 MB", seeders: 7000, leechers: 800 }, { type: "Win", name: "Wallpaper Engine", size: "500 MB", seeders: 10000, leechers: 1200 }, { type: "Win", name: "Microsoft Office 2021 LTSC", size: "4.2 GB", seeders: 9200, leechers: 1400 }, { type: "Win", name: "Adobe Acrobat Pro DC 2024", size: "1.2 GB", seeders: 8100, leechers: 1100 }, { type: "Win", name: "Adobe Illustrator 2025", size: "2.5 GB", seeders: 6500, leechers: 950 }, { type: "Win", name: "Adobe Premiere Pro 2025", size: "3.8 GB", seeders: 7200, leechers: 1000 }, { type: "Win", name: "Autodesk Maya 2025", size: "6.7 GB", seeders: 1300, leechers: 220 }, { type: "Linux", name: "Ubuntu 24.04 LTS (Noble Numbat)", size: "4.8 GB", seeders: 7800, leechers: 1500 }, { type: "Linux", name: "Arch Linux ISO (Latest)", size: "950 MB", seeders: 8500, leechers: 1300 }, { type: "Linux", name: "Kali Linux 2024.2", size: "4.1 GB", seeders: 6200, leechers: 1100 }, { type: "Linux", name: "Linux Mint 22 'Wilma'", size: "2.9 GB", seeders: 7500, leechers: 1200 }, { type: "Linux", name: "Fedora 40 Workstation", size: "2.2 GB", seeders: 5800, leechers: 900 }, { type: "Linux", name: "DaVinci Resolve Studio 18 for Linux", size: "3.2 GB", seeders: 1800, leechers: 300 }, { type: "Linux", name: "Steam Proton Experimental Build", size: "1.1 GB", seeders: 3500, leechers: 500 }, { type: "Linux", name: "Bitwig Studio 5", size: "400 MB", seeders: 1500, leechers: 250 }, { type: "Linux", name: "JetBrains Toolbox Apps (2024)", size: "3.5 GB", seeders: 4200, leechers: 600 }, { type: "Linux", name: "GIMP 2.99.18 (Development)", size: "250 MB", seeders: 3000, leechers: 400 }, { type: "Linux", name: "Blender 4.1", size: "300 MB", seeders: 6800, leechers: 800 }, { type: "Linux", name: "Krita 5.2", size: "150 MB", seeders: 4500, leechers: 600 }, { type: "Linux", name: "Inkscape 1.3", size: "120 MB", seeders: 3900, leechers: 500 }, { type: "Linux", name: "OBS Studio 30.1", size: "100 MB", seeders: 7200, leechers: 900 }, { type: "Linux", name: "Manjaro 24 'Wynsdey'", size: "3.5 GB", seeders: 6100, leechers: 1000 }, { type: "Linux", name: "Pop!_OS 22.04 LTS", size: "2.8 GB", seeders: 6300, leechers: 950 }, { type: "Linux", name: "EndeavourOS Cassini", size: "1.9 GB", seeders: 5500, leechers: 850 }, { type: "Linux", "name": "Rocky Linux 9.4", size: "8.9 GB", seeders: 2100, leechers: 300 }, { type: "Linux", "name": "Debian 12 'Bookworm'", size: "3.7 GB", seeders: 8200, leechers: 1100 }, { type: "Linux", "name": "VirtualBox 7.0", size: "110 MB", seeders: 9000, leechers: 1200 }, { type: "Linux", name: "QEMU + KVM (Latest)", size: "50 MB", seeders: 4800, leechers: 600 }, { type: "Linux", name: "Wine Staging 9.5", size: "80 MB", seeders: 5300, leechers: 700 }, { type: "Linux", name: "Lutris (All Runners)", size: "1.5 GB", seeders: 4900, leechers: 650 }, { type: "Linux", name: "Ardour 8.4", size: "120 MB", seeders: 1200, leechers: 200 }, { type: "Linux", name: "FreeCAD 0.21", size: "600 MB", seeders: 2800, leechers: 350 }, { type: "Linux", name: "Sublime Text 4", size: "20 MB", seeders: 6700, leechers: 800 }, { type: "Linux", name: "Neovim (AppImage)", size: "15 MB", seeders: 5100, leechers: 650 }, { type: "Linux", name: "Godot Engine 4.2", size: "60 MB", seeders: 3800, leechers: 500 }, { type: "Linux", name: "Steam Deck OS (HoloISO)", size: "2.7 GB", seeders: 3200, leechers: 450 }, { type: "Linux", name: "Proton GE Custom Builds", size: "800 MB", seeders: 4400, leechers: 550 }, { type: "Mac", name: "Final Cut Pro X v10.7", size: "4.5 GB", seeders: 2900, leechers: 400 }, { type: "Mac", name: "Logic Pro X v10.8", size: "1.2 GB", seeders: 2500, leechers: 350 }, { type: "Mac", name: "Adobe Photoshop 2024 for Mac", size: "3.8 GB", seeders: 3100, leechers: 550 }, { type: "Mac", name: "CleanMyMac X", size: "80 MB", seeders: 5500, leechers: 700 }, { type: "Mac", name: "Microsoft Office 2024 for Mac", size: "5.1 GB", seeders: 4200, leechers: 600 }, { type: "Mac", name: "Sketch", size: "70 MB", seeders: 1800, leechers: 300 }, { type: "Mac", name: "Affinity Designer 2", size: "700 MB", seeders: 2200, leechers: 350 }, { type: "Mac", name: "Affinity Photo 2", size: "800 MB", seeders: 2300, leechers: 380 }, { type: "Mac", name: "Affinity Publisher 2", size: "650 MB", seeders: 1900, leechers: 310 }, { type: "Mac", name: "Parallels Desktop 19", size: "350 MB", seeders: 4800, leechers: 650 }, { type: "Mac", name: "Alfred 5 Powerpack", size: "10 MB", seeders: 6200, leechers: 750 }, { type: "Mac", name: "Little Snitch 5", size: "30 MB", seeders: 3900, leechers: 500 }, { type: "Mac", name: "iStat Menus 6", size: "25 MB", seeders: 4100, leechers: 550 }, { type: "Mac", name: "Bartender 5", size: "15 MB", seeders: 3800, leechers: 480 }, { type: "Mac", name: "Things 3", size: "50 MB", seeders: 3200, leechers: 420 }, { type: "Mac", name: "Ulysses", size: "45 MB", seeders: 2800, leechers: 380 }, { type: "Mac", name: "Ableton Live 12 Suite (macOS)", size: "3.2 GB", seeders: 2700, leechers: 400 }, { type: "Mac", name: "Cinema 4D", size: "1.5 GB", seeders: 1600, leechers: 250 }, { type: "Mac", name: "ZBrush 2024", size: "2.1 GB", seeders: 1400, leechers: 230 }, { type: "Mac", name: "VMware Fusion Pro 13", size: "600 MB", seeders: 3500, leechers: 450 }, { type: "Mac", name: "Sublime Text 4 (macOS)", size: "25 MB", seeders: 6500, leechers: 780 }, { type: "Mac", name: "Transmit 5", size: "40 MB", seeders: 3300, leechers: 430 }, { type: "Mac", name: "Pixelmator Pro 3.5", size: "500 MB", seeders: 2900, leechers: 390 }, { type: "Mac", name: "Fantastical", size: "60 MB", seeders: 3600, leechers: 460 }, { type: "Mac", name: "PDF Expert", size: "55 MB", seeders: 4300, leechers: 530 }, { type: "Mac", name: "Tower (Git Client)", size: "35 MB", seeders: 2100, leechers: 310 }, { type: "Mac", name: "OmniFocus 4", size: "80 MB", seeders: 1900, leechers: 290 }, { type: "Mac", name: "ScreenFlow 10", size: "120 MB", seeders: 2400, leechers: 340 }, { type: "Mac", name: "DaVinci Resolve Studio 18 (macOS)", size: "3.3 GB", seeders: 2600, leechers: 360 }, { type: "Mac", name: "Magnet", size: "5 MB", seeders: 7200, leechers: 820 }, { type: "Droid", name: "Spotify Premium v8.9", size: "45 MB", seeders: 12500, leechers: 2100 }, { type: "Droid", name: "YouTube ReVanced Extended", size: "98 MB", seeders: 9800, leechers: 1500 }, { type: "Droid", name: "Poweramp Full Version Unlocker", size: "12 MB", seeders: 7200, leechers: 800 }, { type: "Droid", name: "Solid Explorer Pro", size: "25 MB", seeders: 6300, leechers: 750 }, { type: "Droid", name: "Tasker (Full)", size: "8 MB", seeders: 4100, leechers: 400 }, { type: "Droid", name: "Adobe Lightroom Pro (Mod)", size: "150 MB", seeders: 5800, leechers: 900 }, { type: "Droid", name: "Nova Launcher Prime v8.1", size: "15 MB", seeders: 11200, leechers: 1800 }, { type: "Droid", name: "SD Maid Pro - System Cleaning", size: "12 MB", seeders: 8200, leechers: 950 }, { type: "Droid", name: "MX Player Pro", size: "40 MB", seeders: 8500, leechers: 1300 }, { type: "Droid", name: "Inshot Pro (Video Editor)", size: "65 MB", seeders: 7600, leechers: 1200 }, { type: "Droid", name: "Moon+ Reader Pro", size: "25 MB", seeders: 6900, leechers: 600 }, { type: "Droid", name: "KWGT Pro Key", size: "18 MB", seeders: 8800, leechers: 1100 }, { type: "Droid", name: "Lawnchair 12 (Launcher)", size: "10 MB", seeders: 7300, leechers: 900 }, { type: "Droid", name: "Sleep as Android Unlock", size: "28 MB", seeders: 6700, leechers: 700 }, { type: "Droid", name: "TiviMate IPTV Player Premium", size: "20 MB", seeders: 6600, leechers: 1000 }, { type: "Droid", name: "CapCut Pro (Mod)", size: "150 MB", seeders: 8800, leechers: 1400 }, { type: "Droid", name: "FL Studio Mobile", size: "950 MB", seeders: 4700, leechers: 650 }, { type: "Droid", name: "LumaFusion (Video Editing)", size: "130 MB", seeders: 3500, leechers: 500 }, { type: "Droid", name: "Concepts (Sketching)", size: "75 MB", seeders: 2100, leechers: 300 }, { type: "Droid", name: "Kiwi Browser (Extensions)", size: "70 MB", seeders: 7700, leechers: 1150 }, { type: "Droid", name: "Textra SMS Pro", size: "18 MB", seeders: 4100, leechers: 450 }, { type: "Droid", name: "Magisk v27.0 (Stable)", size: "11 MB", seeders: 9600, leechers: 1600 }, { type: "Droid", name: "AdAway v6.0 (Root)", size: "9 MB", seeders: 7100, leechers: 1000 }, { type: "Droid", name: "Titanium Backup Pro", size: "8 MB", seeders: 5800, leechers: 850 }, { type: "Droid", name: "Greenify (Donation Package)", size: "5 MB", seeders: 6600, leechers: 900 }, { type: "Droid", name: "Swift Backup Premium", size: "15 MB", seeders: 4300, leechers: 550 }, { type: "Droid", name: "MiXplorer Silver", size: "5 MB", seeders: 6400, leechers: 780 }, { type: "Droid", name: "Smart Launcher 6 Pro", size: "15 MB", seeders: 6100, leechers: 750 }, { type: "Droid", name: "ActionDash: Digital Wellbeing", size: "15 MB", seeders: 2800, leechers: 380 }, { type: "Droid", name: "Bouncer - Temporary Permissions", size: "5 MB", seeders: 4500, leechers: 600 }, { type: "Audio", name: "Daft Punk - Discography (Lossless)", size: "15.4 GB", seeders: 1200, leechers: 250 }, { type: "Audio", name: "Hans Zimmer - Live in Prague (FLAC)", size: "1.1 GB", seeders: 1800, leechers: 300 }, { type: "Audio", name: "The Beatles - Abbey Road (24-bit Vinyl Rip)", size: "900 MB", seeders: 2500, leechers: 400 }, { type: "Audio", name: "Pink Floyd - The Wall (SACD ISO)", size: "4.2 GB", seeders: 1900, leechers: 320 }, { type: "Audio", name: "Kendrick Lamar - To Pimp A Butterfly (V0 MP3)", size: "150 MB", seeders: 5500, leechers: 800 }, { type: "Audio", name: "Boom Library - Cinematic Hits (WAV)", size: "8.5 GB", seeders: 900, leechers: 150 }, { type: "Audio", name: "808 Mafia - Drum Kit Collection", size: "2.1 GB", seeders: 2200, leechers: 350 }, { type: "Audio", name: "Frank Sinatra - Ultimate Sinatra (FLAC)", size: "1.8 GB", seeders: 1600, leechers: 280 }, { type: "Audio", name: "Miles Davis - Kind of Blue (DSD)", size: "2.5 GB", seeders: 2100, leechers: 340 }, { type: "Audio", name: "John Williams - Star Wars Saga (FLAC)", size: "5.3 GB", seeders: 3200, leechers: 450 }, { type: "Video", name: "Dune: Part Two (2024) 2160p UHD BluRay", size: "22.5 GB", seeders: 4100, leechers: 850 }, { type: "Video", name: "Oppenheimer (2023) 1080p", size: "12.1 GB", seeders: 3300, leechers: 650 }, { type: "Video", name: "Shogun (2024) S01 Complete 1080p", size: "35.6 GB", seeders: 3900, leechers: 750 }, { type: "Video", name: "The Lord of the Rings Trilogy (Extended) 4K REMUX", size: "280.0 GB", seeders: 1500, leechers: 300 }, { type: "Video", name: "Planet Earth III S01 Complete", size: "45.2 GB", seeders: 2800, leechers: 500 }, { type: "Video", name: "Breaking Bad Complete Series (1080p)", size: "150 GB", seeders: 6800, leechers: 1100 }, { type: "Video", name: "The Godfather Trilogy (Restored)", size: "60 GB", seeders: 3500, leechers: 500 }, { type: "Video", name: "Studio Ghibli Collection (1080p Dual Audio)", size: "80 GB", seeders: 4200, leechers: 600 }, { type: "Video", name: "Pulp Fiction (1994) 4K BluRay", size: "18 GB", seeders: 3800, leechers: 550 }, { type: "Video", name: "Chernobyl (2019) 2160p", size: "55 GB", seeders: 4500, leechers: 700 }, { type: "Notif", name: "A Message from the Creator", size: "N/A", seeders: "—", leechers: "—" }, { type: "Notif", name: "No Upload Button?", size: "N/A", seeders: "—", leechers: "—" }, { type: "Notif", name: "How to Use Pirate Bay App", size: "N/A", seeders: "—", leechers: "—" }, { type: "Notif", name: "Security Note", size: "N/A", seeders: "—", leechers: "—" }, { type: "Other", name: "Complete Learn to Code Course Bundle", size: "150.2 GB", seeders: 1900, leechers: 350 }, { type: "Other", name: "3D Printing Mega Pack - 1000+ STL Models", size: "50.1 GB", seeders: 1300, leechers: 280 }, { type: "Other", name: "Topaz AI Suite 2025", size: "3.8 GB", seeders: 2400, leechers: 450 }, { type: "Other", name: "Vintage Comic Book Collection (CBZ/CBR)", size: "95.5 GB", seeders: 850, leechers: 180 }, { type: "Other", name: "Miscellaneous Game Patches", size: "250 MB", seeders: 150, leechers: 20 }, ];
+    const itemDetails = {};
+    mockResults.forEach(item => { itemDetails[item.name] = { gameInfo: `Details for ${item.name}. This is a popular torrent, but download from unverified sources at your own risk.`, install: `Standard installation procedure for ${item.type}. Please see the included NFO file for specific instructions.`, uploaderNote: `A popular and well-seeded torrent. Please continue to seed after downloading to help the community.` }; });
+    Object.assign(itemDetails, {
+        "A Message from the Creator": { gameInfo: `Hello, and allow me to extend a warm and sincere welcome. My name is Delos Reyes Joemark, but within the digital spaces and coding communities I frequent, I am more commonly known by my handle, 0x20. If you’ve stumbled upon this page, you have found more than just a website; you have found the culmination of a personal passion project, a digital homage born from a deep-seated respect and nostalgia for a titan of the internet's past. This entire platform is my dedicated attempt to recreate and, in some ways, reimagine the core experience of the legendary Pirate Bay. For many of us who grew up with the internet, The Pirate Bay wasn't just a repository of files; it was a cultural phenomenon, a symbol of digital rebellion, and a sprawling, user-built library of information in an era before streaming giants and subscription models became the norm. It represented a certain freedom and a raw, unfiltered access to content. However, as the years went on, I, like many others, felt that the user experience of the original site, which can still be found at its long-standing home @thepiratebay.org, began to diverge from its initial purpose. The platform that was once a beacon of straightforward access became progressively encumbered. This is where my motivation for this project originates. What you are browsing now is a deliberately and meticulously stripped-down version of that iconic platform. My primary goal was to reverse the trend of digital bloat and create something that is fundamentally easy to use, intuitive, and respectful of your time and attention. I wanted to peel back the layers of complexity that have built up over the years—to remove the endless, often intrusive, pop-up advertisements, the distracting banner ads that can sometimes lead to malicious sites, and the convoluted interface elements that make finding what you're for a chore. In essence, my vision was to distill The Pirate Bay down to its purest form: a powerful search tool connected to a vast index of content, without any of the noise. In creating this, I am certainly not making the arrogant claim that my version is in any way 'better' than the monumental original. The Pirate Bay's legacy is etched into the very history of the internet, and its technical resilience and cultural impact are things I can only admire. Instead, I offer this project as an alternative perspective—a different path that could have been taken. Think of it as a loving restoration of a classic car, where the original, powerful engine is preserved, but the interior is redesigned with a clean, modern, and minimalist aesthetic for a smoother ride. So, I want to express my genuine gratitude for you being here. Thank you for clicking, for exploring, and for engaging with this project. Whether you're here out of curiosity, nostalgia, or a shared appreciation for a more streamlined web, your visit gives this endeavor its purpose. I hope you find my file and this recreation of Pirate Bay to be a refreshing and useful experience.` },
+        "No Upload Button?": { gameInfo: `We are currently fixing some bugs with the upload button. In the meantime, you can contact me via social media https://www.facebook.com/markdreyes9999999 to have your files uploaded.` },
+        "How to Use Pirate Bay App": { gameInfo: "This app allows you to transfer files to any device. To enable this feature, you will need to root your phone." },
+        "Security Note": { gameInfo: "We have not yet found a way to bypass the security on Windows, Mac, or Linux systems, as their security measures are very robust." }
+    });
+    function showToast(message, type = 'info', duration = 3000) { const toast = document.createElement('div'); toast.className = `toast toast--${type}`; toast.textContent = message; toastContainer.appendChild(toast); setTimeout(() => { toast.classList.add('removing'); toast.addEventListener('animationend', () => { toast.remove(); }); }, duration); }
+    function openModal(dialogId) {
+        phoneScreen.classList.remove('drawer-visible');
+        phoneScreen.classList.add('modal-visible');
+        document.querySelectorAll('.modal-dialog').forEach(d => d.style.display = 'none');
+        document.getElementById(dialogId).style.display = 'block';
+    }
+    function closeModal() { phoneScreen.classList.remove('modal-visible', 'drawer-visible', 'quick-settings-visible'); }
+    function setupAuthEventListeners() { const loginLink = document.getElementById('loginLink'); const registerLink = document.getElementById('registerLink'); if (loginLink) loginLink.addEventListener('click', e => { e.preventDefault(); showAuthForm('login'); }); if (registerLink) registerLink.addEventListener('click', e => { e.preventDefault(); showAuthForm('register'); }); }
+    function showAuthForm(formToShow) { openModal('authDialog'); loginForm.style.display = (formToShow === 'login') ? 'block' : 'none'; registerForm.style.display = (formToShow === 'register') ? 'block' : 'none'; loginError.textContent = ''; registerError.textContent = ''; }
+    function updateAuthViewState() { if (loggedInUser) { userAuthLinks.innerHTML = `<span>Hi, ${loggedInUser.username}</span><a href="#" id="logoutLink">Logout</a>`; document.getElementById('logoutLink').addEventListener('click', e => { e.preventDefault(); logout(); }); notificationChip.style.display = 'flex'; } else { userAuthLinks.innerHTML = `<a href="#" id="loginLink">Login</a><a href="#" id="registerLink">Register</a>`; setupAuthEventListeners(); notificationChip.style.display = 'none'; if (activeCategory === 'Notif') { switchToHomeView(); } } updateNotificationBadge(); }
+    function logout() { loggedInUser = null; localStorage.removeItem('loggedInUser'); updateAuthViewState(); showToast("You have been logged out.", "info"); }
+    function updateNotificationBadge() { const isRead = localStorage.getItem('notificationRead') === 'true'; notificationBadge.classList.toggle('hidden', isRead || !loggedInUser); }
+    function switchToResultsView() { mainContentView.classList.remove('home-view'); }
+    function switchToHomeView() {
+        mainContentView.classList.add('home-view');
+        activeCategory = null;
+        mainSearch.value = '';
+        categoryChips.forEach(c => c.classList.remove('active'));
+        const cards = resultsList.querySelectorAll('.torrent-card.visible');
+        if (cards.length > 0) {
+            cards.forEach(card => card.classList.remove('visible'));
+            setTimeout(() => { resultsList.innerHTML = ''; }, 400);
+        } else {
+            resultsList.innerHTML = '';
+        }
+    }
+    function renderResults(results) { if (animationObserver) animationObserver.disconnect(); resultsList.innerHTML = ""; if (results.length === 0 && !mainContentView.classList.contains('home-view')) { resultsList.innerHTML = `<p style="text-align:center; color: var(--light-secondary-text);">No results found.</p>`; return; } results.forEach(result => { const card = document.createElement('div'); card.className = 'torrent-card'; card.dataset.name = result.name; const titleHTML = `<h3>${result.name}</h3>`; card.innerHTML = `<div class="card-main-info">${titleHTML}<span class="card-type">${result.type}</span></div><div class="card-stats"><span class="stat">${result.size}</span><span class="stat seeders">${result.seeders} SE</span><span class="stat leechers">${result.leechers} LE</span></div><div class="card-details"></div>`; resultsList.appendChild(card); }); animationObserver = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); animationObserver.unobserve(entry.target); } }); }, { threshold: 0.1 }); document.querySelectorAll('.torrent-card').forEach(card => animationObserver.observe(card)); }
+    function displayDetails(card) { const wasExpanded = card.classList.contains('expanded'); document.querySelectorAll('.torrent-card.expanded').forEach(c => { c.classList.remove('expanded'); c.querySelector('.card-details').style.display = 'none'; }); if (wasExpanded) return; card.classList.add('expanded'); const detailsContainer = card.querySelector('.card-details'); detailsContainer.style.display = 'block'; const result = mockResults.find(r => r.name === card.dataset.name); const details = itemDetails[card.dataset.name] || { gameInfo: "Details not available for this item." }; let content = ''; if (details.gameInfo) content += `<h4>Info</h4><p>${details.gameInfo.replace(/\n/g, '<br>')}</p>`; if (details.install) content += `<h4>Install</h4><p>${details.install.replace(/\n/g, '<br>')}</p>`; if (details.uploaderNote) content += `<h4>Note</h4><p>${details.uploaderNote.replace(/\n/g, '<br>')}</p>`; if (result && result.type !== 'Notif') { content += `<button class="download-button" data-name="${card.dataset.name}">Download</button>`; } detailsContainer.innerHTML = content; }
+    function filterAndRender() { const query = mainSearch.value.trim().toLowerCase(); let baseResults = loggedInUser ? mockResults : mockResults.filter(r => r.type !== "Notif"); let resultsToRender = []; if (query) { resultsToRender = baseResults.filter(r => r.name.toLowerCase().includes(query)); } else if (activeCategory) { resultsToRender = (activeCategory === "All") ? baseResults : baseResults.filter(r => r.type === activeCategory); } renderResults(resultsToRender); }
+    function openWebView(title, url, type) { phoneScreen.classList.add('web-view-visible'); webViewTitle.textContent = title; if (type === 'local') { webContentFrame.style.display = 'block'; externalLinkContent.style.display = 'none'; webContentFrame.src = url; } else { webContentFrame.style.display = 'none'; externalLinkContent.style.display = 'block'; externalLinkContent.innerHTML = `<p>You are about to open an external link. Continue to ${url}?</p><a href="${url}" target="_blank" class="download-button">Open in New Tab</a>`; } }
+    function closeAllViews() {
+        phoneScreen.classList.remove('web-view-visible', 'downloads-view-visible');
+        webContentFrame.src = 'about:blank';
+        switchToHomeView();
+    }
+    function updateTime() { const now = new Date(); const timeString = now.getHours() + ":" + now.getMinutes().toString().padStart(2, '0'); timeDisplay.textContent = timeString; lockScreenTime.textContent = timeString; }
+    function updateBattery() { if ('getBattery' in navigator) { navigator.getBattery().then(battery => { const update = () => { let level = Math.floor(battery.level * 100); let icon; if (battery.charging) { icon = `<svg viewBox="0 0 24 24"><path d="M20 10V8.3C20 7.6 19.4 7 18.7 7H17V5.7C17 5 16.4 4.3 15.7 4.3H8.3C7.6 4.3 7 5 7 5.7V7H5.3C4.6 7 4 7.6 4 8.3V18.7C4 19.4 4.6 20 5.3 20H12.3C12.7 20.6 13.3 21 14 21C14.7 21 15.4 20.6 15.7 20H18.7C19.4 20 20 19.4 20 18.7V18H14V13H17L11 4V9H8L14 18V13H12V10H20Z" /></svg>`; } else { icon = `<svg viewBox="0 -2 24 24"><path d="M0 4C0 2.89543 0.895431 2 2 2H19C20.1046 2 21 2.89543 21 4V16C21 17.1046 20.1046 18 19 18H2C0.895431 18 0 17.1046 0 16V4Z" stroke-width="2" fill="none" stroke="currentColor"/><path d="M23 6V14" stroke-width="2" stroke-linecap="round"/><rect x="2" y="4" width="${17 * (level/100)}" height="12" rx="1" ry="1" fill="currentColor"/></svg>`; } batteryIconContainer.innerHTML = icon; }; battery.addEventListener('levelchange', update); battery.addEventListener('chargingchange', update); update(); }); } }
+    function hackerEffect(targetElement) {
+        if (titleAnimationInterval) clearInterval(titleAnimationInterval);
+        const originalText = "PIRATE BAY";
+        const chars = "!<>-_\\/[]{}—=+*^?#";
+        const colors = ['#4CAF50', '#F44336', '#6CA3E8'];
+        titleAnimationInterval = setInterval(() => {
+            targetElement.innerHTML = originalText.split("").map((letter) => {
+                if (letter === ' ') return ' ';
+                if (Math.random() > 0.25) {
+                    return `<span style="color: inherit;">${letter}</span>`;
+                }
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                const randomChar = chars[Math.floor(Math.random() * chars.length)];
+                return `<span style="color: ${randomColor};">${randomChar}</span>`;
+            }).join("");
+        }, 80);
+    }
+    function titleHackerEffect() { const originalTitle = document.title; const chars = "!<>-_\\/[]{}—=+*^?#$"; setInterval(() => { document.title = originalTitle.split("").map(letter => (Math.random() > 0.4 ? letter : chars[Math.floor(Math.random() * chars.length)])).join(""); }, 80); }
+    let notificationTimeout;
+    function showPhoneNotification(title, message) {
+        clearTimeout(notificationTimeout);
+        phoneNotificationTitle.textContent = title;
+        phoneNotificationMessage.textContent = message;
+        phoneNotificationBanner.classList.add('visible');
+        notificationTimeout = setTimeout(() => {
+            phoneNotificationBanner.classList.remove('visible');
+        }, 3500);
+    }
+    function renderDownloadsView() {
+        downloadsList.innerHTML = '';
+        if (downloadedFiles.length === 0) {
+            downloadsList.innerHTML = `<p style="text-align:center; color: var(--light-secondary-text);">No downloads yet.</p>`;
+            return;
+        }
+        downloadedFiles.forEach((file, index) => {
+            const item = document.createElement('div');
+            item.className = 'download-item-card';
+            item.dataset.index = index;
+            item.innerHTML = `
+                <div class="card-main-info" style="gap: 4px;">
+                    <h3>${file.name}</h3>
+                    <span class="card-type">${file.type}</span>
+                </div>
+                <div class="card-stats">
+                    <span class="stat">${file.size}</span>
+                </div>
+            `;
+            downloadsList.appendChild(item);
+        });
+    }
+    function updateRootState() {
+        const isRooted = rootToggleBtn.classList.contains('active');
+        shareFilesBtn.style.display = isRooted ? 'flex' : 'none';
+        localStorage.setItem('rootState', isRooted);
+    }
+    function applyFont(font) {
+        appContainer.style.setProperty('--body-font', font.family);
+        localStorage.setItem('appFont', font.name);
+    }
+    function populateFontList(filter = '') {
+        fontList.innerHTML = '';
+        const filteredFonts = fonts.filter(font => font.name.toLowerCase().includes(filter.toLowerCase()));
+        filteredFonts.forEach(font => {
+            const li = document.createElement('li');
+            li.className = 'font-item';
+            li.textContent = font.name;
+            li.style.fontFamily = font.family;
+            li.addEventListener('click', () => {
+                applyFont(font);
+                showToast(`Font changed to ${font.name}`, 'success');
+                closeModal();
+            });
+            fontList.appendChild(li);
+        });
+    }
+    function updatePinDots() {
+        const dots = pinDotsContainer.querySelectorAll('.pin-dot');
+        dots.forEach((dot, index) => {
+            if (index < enteredPin.length) {
+                dot.classList.add('filled');
+            } else {
+                dot.classList.remove('filled');
+            }
+        });
+    }
+    function checkPin() {
+        if (enteredPin === CORRECT_PIN) {
+            unlockScreen();
+        } else {
+            pinDotsContainer.classList.add('shake');
+            showToast('Incorrect PIN', 'error', 1500);
+            setTimeout(() => {
+                pinDotsContainer.classList.remove('shake');
+                enteredPin = '';
+                updatePinDots();
+            }, 500);
+        }
+    }
+    function unlockScreen() {
+        isLocked = false;
+        lockScreen.style.opacity = '0';
+        setTimeout(() => {
+            lockScreen.style.display = 'none';
+            enteredPin = '';
+            updatePinDots();
+            showOsHomeScreen();
+        }, 300);
+    }
+    function createGlitter() {
+        const container = document.getElementById('os-home-screen');
+        let glitterContainer = document.getElementById('glitter-container');
+        if (glitterContainer) {
+            glitterContainer.remove();
+        }
+        glitterContainer = document.createElement('div');
+        glitterContainer.id = 'glitter-container';
+        container.prepend(glitterContainer);
+        const numParticles = 150;
+        for (let i = 0; i < numParticles; i++) {
+            const glitter = document.createElement('div');
+            glitter.className = 'glitter';
+            const size = Math.random() * 2 + 1;
+            glitter.style.width = `${size}px`;
+            glitter.style.height = `${size}px`;
+            glitter.style.top = `${Math.random() * 100}%`;
+            glitter.style.left = `${Math.random() * 100}%`;
+            glitter.style.animationDelay = `${Math.random() * 2}s`;
+            glitter.style.animationDuration = `${Math.random() * 3 + 2}s`;
+            if (phoneContainer.dataset.osTheme === 'dark' && Math.random() > 0.8) {
+                 const colors = ['#f0f8ff', '#e6e6fa', '#add8e6', '#b0c4de', '#fffff0'];
+                 glitter.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            }
+            glitterContainer.appendChild(glitter);
+        }
+    }
+    function showOsHomeScreen() {
+        osHomeScreen.style.display = 'block';
+        appContainer.style.display = 'none';
+        gestureBarContainer.style.display = 'flex';
+        appDrawer.classList.remove('open');
+        closeAllViews();
+        createGlitter();
+        if (titleAnimationInterval) clearInterval(titleAnimationInterval);
+    }
+    function showPirateBayApp() {
+        osHomeScreen.style.display = 'none';
+        appContainer.style.display = 'flex';
+        gestureBarContainer.style.display = 'flex';
+        hackerEffect(appTitle);
+    }
+    function generateAppIcons() {
+        const defaultApps = ['Pirate Bay', 'Settings', 'Files', 'Mail', 'Browser', 'Camera', 'Photos', 'Clock', 'Maps', 'Weather', 'Notes', 'Reminders', 'Stocks', 'Music', 'Podcasts', 'TV', 'Health', 'Wallet', 'Calculator', 'Voice Memos', 'Compass', 'Contacts', 'Messages', 'Phone', 'FaceTime', 'Books', 'App Store', 'Home', 'News', 'Translate'];
+        const dockApps = ['Phone', 'Messages', 'Browser', 'Pirate Bay'];
+        const installedAppNames = installedApps.map(app => app.name);
+        const allAppNames = [...new Set([...defaultApps, ...installedAppNames])];
+        const iconMap = {
+            'Pirate Bay': `<svg fill="#FFF" viewBox="0 0 24 24"><path d="M20.5,14L20,13.5V11H18.5V10H17V8.5H15.5V10H14V11H12.5V10H11V8.5H9.5V10H8V11H6.5V13.5L6,14H4V4H6L7,5H8.5L9,4H10V3H14V4H15L15.5,5H17L18,4H20V14H20.5M18,12V13H15.5V12H18M6,16L7.5,21H16.5L18,16H6Z" /></svg>`,
+            'Browser': `<svg fill="#FFF" viewBox="0 0 24 24"><path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M14.5,14.5L18,18L13,16.5V11L11,13V7.5L6,6L7.5,11L9.5,9.5L14.5,14.5Z" /></svg>`,
+            'Messages': `<svg fill="#FFF" viewBox="0 0 24 24"><path d="M22,10A1,1 0 0,1 23,11V18A1,1 0 0,1 22,19H18A1,1 0 0,1 17,18V17H7V18A1,1 0 0,1 6,19H2A1,1 0 0,1 1,18V11A1,1 0 0,1 2,10H3V4A1,1 0 0,1 4,3H10A1,1 0 0,1 11,4V5H13V4A1,1 0 0,1 14,3H20A1,1 0 0,1 21,4V10H22M5,10V15H19V10H5M7,5V8H9V5H7M15,5V8H17V5H15Z" /></svg>`,
+            'Phone': `<svg fill="#FFF" viewBox="0 0 24 24"><path d="M12,2C17.52,2 22,6.48 22,12C22,17.52 17.52,22 12,22C6.48,22 2,17.52 2,12C2,6.48 6.48,2 12,2M12,4C7.58,4 4,7.58 4,12C4,16.42 7.58,20 12,20C16.42,20 20,16.42 20,12C20,7.58 16.42,4 12,4M12,6C15.31,6 18,8.69 18,12C18,15.31 15.31,18 12,18C8.69,18 6,15.31 6,12C6,8.69 8.69,6 12,6M12,8C9.79,8 8,9.79 8,12C8,14.21 9.79,16 12,16C14.21,16 16,14.21 16,12C16,9.79 14.21,8 12,8Z" /></svg>`,
+            'Settings': `<svg fill="#FFF" viewBox="0 0 24 24"><path d="M19.44 12.99L16.56 15.87L15.87 16.56L12.99 19.44L12.01 19.44L9.13 16.56L8.44 15.87L5.56 12.99L5.56 12.01L8.44 9.13L9.13 8.44L12.01 5.56L12.99 5.56L15.87 8.44L16.56 9.13L19.44 12.01L19.44 12.99M12 8.25A3.75 3.75 0 0 0 8.25 12A3.75 3.75 0 0 0 12 15.75A3.75 3.75 0 0 0 15.75 12A3.75 3.75 0 0 0 12 8.25Z" /></svg>`,
+            'Files': `<svg fill="#FFF" viewBox="0 0 24 24"><path d="M5,4H19A2,2 0 0,1 21,6V10H15.84L14.41,11.41L13,10H11L9.59,11.41L8.16,10H3V6A2,2 0 0,1 5,4M3,12H9.09L12,14.91L14.91,12H21V20A2,2 0 0,1 19,22H5A2,2 0 0,1 3,20V12Z" /></svg>`,
+            'Mail': `<svg fill="#FFF" viewBox="0 0 24 24"><path d="M15,2A1,1 0 0,0 14,3V4.18C12.94,4.64 12,5.77 12,7V11H8V9H6V11H4V9H2V11H1.5L2,22H15L15.5,11H14V9H13V11H12V7C12,6.14 12.5,5.32 13.25,4.88V10H15V9H17V10H18.88C18.96,9.54 19,9 19,8.5A4.5,4.5 0 0,0 14.5,4A4.5,4.5 0 0,0 15,2M13,20H4L3.6,13H13.4L13,20Z" /></svg>`,
+            'Camera': `<svg fill="#FFF" viewBox="0 0 24 24"><path d="M9.5,4.5L11,3H15L16.5,4.5H19A2,2 0 0,1 21,6.5V19.5A2,2 0 0,1 19,21.5H7A2,2 0 0,1 5,19.5V6.5A2,2 0 0,1 7,4.5H9.5M13,17.5A4.5,4.5 0 0,0 17.5,13A4.5,4.5 0 0,0 13,8.5A4.5,4.5 0 0,0 8.5,13A4.5,4.5 0 0,0 13,17.5M13,10.5A2.5,2.5 0 0,1 15.5,13A2.5,2.5 0 0,1 13,15.5A2.5,2.5 0 0,1 10.5,13A2.5,2.5 0 0,1 13,10.5Z" /></svg>`,
+            'Photos': `<svg fill="#FFF" viewBox="0 0 24 24"><path d="M12,4A7,7 0 0,1 19,11C19,12.5 18.5,14 17.6,15.1L19.1,16.6C20.5,15.2 21.5,13.2 21.5,11A9.5,9.5 0 0,0 12,1.5A9.5,9.5 0 0,0 2.5,11C2.5,13.2 3.5,15.2 4.9,16.6L6.4,15.1C5.5,14 5,12.5 5,11A7,7 0 0,1 12,4M12,6A5,5 0 0,0 7,11C7,13.4 8.6,15.4 10.9,15.9L12.4,14.4C11.9,14.1 11.4,13.7 11.1,13.2C10.8,12.7 10.7,12.1 10.7,11.5L9,11.5A3,3 0 0,1 12,8.5A3,3 0 0,1 15,11.5L13.3,11.5C13.3,12.1 13.2,12.7 12.9,13.2C12.6,13.7 12.1,14.1 11.6,14.4L13.1,15.9C15.4,15.4 17,13.4 17,11A5,5 0 0,0 12,6M12,20L9,17H15L12,20Z" /></svg>`,
+            'Clock': `<svg fill="#FFF" viewBox="0 0 24 24"><path d="M6,2V8H6V8L10,12L6,16V16H6V22H18V16H18V16L14,12L18,8V8H18V2H6M8,7H16V4H8V7M8,17V20H16V17L12,13L8,17Z" /></svg>`,
+            'Maps': `<svg fill="#FFF" viewBox="0 0 24 24"><path d="M18,4H6A2,2 0 0,0 4,6V18A2,2 0 0,0 6,20H18A2,2 0 0,0 20,18V6A2,2 0 0,0 18,4M13,16L11,14L9,16L6,13L9,10L11,12L13,10L16,13L13,16Z" /></svg>`,
+            'Weather': `<svg fill="#FFF" viewBox="0 0 24 24"><path d="M12,2A9,9 0 0,0 3,11C3,14.04 4.5,16.88 7,18.93V22H9V20H15V22H17V18.93C19.5,16.88 21,14.04 21,11A9,9 0 0,0 12,2M8.5,8A1.5,1.5 0 0,1 10,9.5A1.5,1.5 0 0,1 8.5,11A1.5,1.5 0 0,1 7,9.5A1.5,1.5 0 0,1 8.5,8M15.5,8A1.5,1.5 0 0,1 17,9.5A1.5,1.5 0 0,1 15.5,11A1.5,1.5 0 0,1 14,9.5A1.5,1.5 0 0,1 15.5,8M10,14H14V16L12,18L10,16V14Z" /></svg>`,
+            'Notes': `<svg fill="#FFF" viewBox="0 0 24 24"><path d="M14,10H19.5L14,4.5V10M5,3C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V11L15,5H5Z" /></svg>`,
+            'Calculator': `<svg fill="#FFF" viewBox="0 0 24 24"><path d="M7,2H17A2,2 0 0,1 19,4V20A2,2 0 0,1 17,22H7A2,2 0 0,1 5,20V4A2,2 0 0,1 7,2M7,6V8H17V6H7M7,10V12H17V10H7M7,14V16H17V14H7M7,18V20H17V18H7Z" /></svg>`,
+            'Music': `<svg fill="#FFF" viewBox="0 0 24 24"><path d="M21,3V15.5A3.5,3.5 0 0,1 17.5,19A3.5,3.5 0 0,1 14,15.5A3.5,3.5 0 0,1 17.5,12C18.04,12 18.55,12.12 19,12.34V6.47L9,8.6V17.5A3.5,3.5 0 0,1 5.5,21A3.5,3.5 0 0,1 2,17.5A3.5,3.5 0 0,1 5.5,14C6.04,14 6.55,14.12 7,14.34V6L21,3Z" /></svg>`,
+            'Health': `<svg fill="#FFF" viewBox="0 0 24 24"><path d="M13.2,20.5C12.8,20.8 12.4,21 12,21C11.6,21 11.2,20.8 10.8,20.5L3,12.7L2.6,12.3C1.6,11.3 1,10 1,8.5C1,6 3,4 5.5,4C6.9,4 8.2,4.8 9,6L12,10.2L15,6C15.8,4.8 17.1,4 18.5,4C21,4 23,6 23,8.5C23,10 22.4,11.3 21.4,12.3L21,12.7L13.2,20.5M16.5,7.7L15,10L16.5,12.3H19.5V13.8H16.5L15,16L13.5,13.8H10.5V12.3H13.5L15,10L16.5,7.7Z" /></svg>`,
+            'Wallet': `<svg fill="#FFF" viewBox="0 0 24 24"><path d="M20,13C21.1,13 22,12.1 22,11V5C22,3.9 21.1,3 20,3H4C2.9,3 2,3.9 2,5V11C2,12.1 2.9,13 4,13H20M12,14C10,14 8.4,14.9 7.2,16.2C6,17.5 5.5,19 5.5,19H18.5S18,17.5 16.8,16.2C15.6,14.9 14,14 12,14M4,5H20V11H4V5Z" /></svg>`,
+            'Stocks': `<svg fill="#FFF" viewBox="0 0 24 24"><path d="M3.5,18.5L9.5,12.5L13.5,16.5L22,6.92L20.59,5.5L13.5,13.5L9.5,9.5L2,17L3.5,18.5Z" /></svg>`,
+            'Reminders': `<svg fill="#FFF" viewBox="0 0 24 24"><path d="M16.6,10.9L15.9,12L16.6,13.1L15.5,13.8L14.8,12.7V17H13.2V12.7L12.5,13.8L11.4,13.1L12.1,12L11.4,10.9L12.5,10.2L13.2,11.3V7H14.8V11.3L15.5,10.2L16.6,10.9M18,8A4,4 0 0,1 14,12A4,4 0 0,1 10,8A4,4 0 0,1 14,4A4,4 0 0,1 18,8Z" /></svg>`,
+            'Podcasts': `<svg fill="#FFF" viewBox="0 0 24 24"><path d="M12,3C8.69,3 6,5.69 6,9V15C6,18.31 8.69,21 12,21C15.31,21 18,18.31 18,15V9C18,5.69 15.31,3 12,3M16,15A4,4 0 0,1 12,19A4,4 0 0,1 8,15V9A4,4 0 0,1 12,5A4,4 0 0,1 16,9V15M10,9H14V11H10V9M10,13H14V15H10V13Z" /></svg>`,
+            'TV': `<svg fill="#FFF" viewBox="0 0 24 24"><path d="M21,3H3C1.89,3 1,3.89 1,5V17A2,2 0 0,0 3,19H8V21H16V19H21A2,2 0 0,0 23,17V5C23,3.89 22.1,3 21,3M21,17H3V5H21V17Z" /></svg>`,
+            'Contacts': `<svg fill="#FFF" viewBox="0 0 24 24"><path d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z" /></svg>`,
+            'Compass': `<svg fill="#FFF" viewBox="0 0 24 24"><path d="M14.5,12L12,14.5L9.5,12L12,9.5L14.5,12M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4Z" /></svg>`,
+            'FaceTime': `<svg fill="#FFF" viewBox="0 0 24 24"><path d="M17,12L12,15V9L17,12M20,4H4A2,2 0 0,0 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6A2,2 0 0,0 20,4Z" /></svg>`,
+            'Books': `<svg fill="#FFF" viewBox="0 0 24 24"><path d="M18,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V4A2,2 0 0,0 18,2M13,3.5V11.5L10.5,9.8L8,11.5V3.5H13Z" /></svg>`,
+            'App Store': `<svg fill="#FFF" viewBox="0 0 24 24"><path d="M12,3L2,12L12,21L22,12L12,3M7,12L12,17L17,12L12,7L7,12Z" /></svg>`,
+            'Home': `<svg fill="#FFF" viewBox="0 0 24 24"><path d="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z" /></svg>`,
+            'News': `<svg fill="#FFF" viewBox="0 0 24 24"><path d="M20,3H4A2,2 0 0,0 2,5V19A2,2 0 0,0 4,21H20A2,2 0 0,0 22,19V5A2,2 0 0,0 20,3M12,14H7V12.5H12V14M17,11H7V9.5H17V11M17,8H7V6.5H17V8Z" /></svg>`,
+            'Translate': `<svg fill="#FFF" viewBox="0 0 24 24"><path d="M12.87,15.07L10.33,12.54L10.36,12.5L13.89,8.96L12.12,7.19L8.59,10.72L8.56,10.69L11.1,8.16L9.68,6.74L6.2,10.22L6.18,10.2L3.64,7.67L2.22,9.09L4.76,11.62L4.73,11.65L1.2,15.18L2.62,16.6L6.16,13.07L6.19,13.1L8.72,15.63L10.14,14.21L7.6,11.68L7.63,11.65L11.16,8.12L12.93,9.89L9.4,13.42L9.43,13.45L11.96,16L13.38,14.58L12.87,15.07M18.5,10.4L12.5,4.4L11.08,5.82L17.08,11.82L18.5,10.4M22,5.5L12,15.5L10.59,14.09L20.59,4.09L22,5.5Z" /></svg>`,
+            'Spotify Premium v8.9': `<svg fill="#FFF" viewBox="0 0 24 24"><path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M7.1,17.95C6.83,18.25 6.4,18.3 6.1,18.05C5.77,17.8 5.72,17.37 5.97,17.07C7.6,15.25 10.5,14.5 14.7,15.55C15.1,15.65 15.3,16.05 15.2,16.45C15.1,16.85 14.7,17.05 14.3,16.95C10.5,16 8.05,16.65 6.6,17.95H7.1M7.9,15.7C7.65,16 7.2,16.05 6.9,15.8C6.6,15.55 6.55,15.1 6.8,14.8C8.5,13.2 11,12.55 14,13.45C14.3,13.55 14.55,13.9 14.45,14.2C14.35,14.5 14,14.75 13.7,14.65C11.35,13.85 9.1,14.4 7.9,15.7M8.8,13.35C8.6,13.65 8.2,13.7 7.9,13.5C7.6,13.3 7.55,12.9 7.75,12.6C9.25,11.25 11.1,10.85 13.4,11.55C13.65,11.65 13.8,11.95 13.7,12.2C13.6,12.45 13.3,12.6 13.05,12.5C11.15,11.9 9.6,12.25 8.8,13.35Z" /></svg>`,
+            'YouTube ReVanced Extended': `<svg fill="#FFF" viewBox="0 0 24 24"><path d="M10,16.5V7.5L16,12M20,4.4C19.4,4.2 15.7,4 12,4C8.3,4 4.6,4.19 4,4.38C2.44,4.9 2,8.4 2,12C2,15.59 2.44,19.1 4,19.61C4.6,19.81 8.3,20 12,20C15.7,20 19.4,19.81 20,19.61C21.56,19.1 22,15.59 22,12C22,8.4 21.56,4.9 20,4.4Z" /></svg>`,
+            'Poweramp Full Version Unlocker': `<svg fill="#FFF" viewBox="0 0 24 24"><path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M10,16.5V7.5L16,12L10,16.5Z" /></svg>`,
+            'Solid Explorer Pro': `<svg fill="#FFF" viewBox="0 0 24 24"><path d="M6,4H18A2,2 0 0,1 20,6V18A2,2 0 0,1 18,20H6A2,2 0 0,1 4,18V6A2,2 0 0,1 6,4M6,8V18H18V8H6Z" /></svg>`,
+            'Tasker (Full)': `<svg fill="#FFF" viewBox="0 0 24 24"><path d="M11,15H6.5L13,22V17H17.5L11,10V15M13,2V10H17.5L11,17V12H6.5L13,5V2Z" /></svg>`,
+            'Adobe Lightroom Pro (Mod)': `<svg fill="#FFF" viewBox="0 0 24 24"><path d="M6,3H18A2,2 0 0,1 20,5V19A2,2 0 0,1 18,21H6A2,2 0 0,1 4,19V5A2,2 0 0,1 6,3M7,6V18H9.5V13H12.5V18H15V11H12.5V6H7M15.5,6H17.5V10H15.5V6Z" /></svg>`,
+            'Nova Launcher Prime v8.1': `<svg fill="#FFF" viewBox="0 0 24 24"><path d="M12,3L2,12H5V20H19V12H22L12,3M12,8.75A2.25,2.25 0 0,1 14.25,11A2.25,2.25 0 0,1 12,13.25A2.25,2.25 0 0,1 9.75,11A2.25,2.25 0 0,1 12,8.75Z" /></svg>`,
+            'SD Maid Pro - System Cleaning': `<svg fill="#FFF" viewBox="0 0 24 24"><path d="M15,22H9V19H15V22M19.33,14.67L18.42,12.42L19.67,10.33L18.83,9.5L16.67,10.67L14.42,9.58L13.67,7H10.33L9.58,9.58L7.33,10.67L6.5,9.5L5.33,10.33L6.58,12.42L5.67,14.67L6.5,15.5L8.67,14.33L10.92,15.42L11.67,18H15.33L16.08,15.42L18.33,14.33L19.17,15.5L19.33,14.67M9.33,3H14.67L16,6H8L9.33,3Z" /></svg>`,
+            'MX Player Pro': `<svg fill="#FFF" viewBox="0 0 24 24"><path d="M8,18.13V5.87L17,12M18,12L7,5V19L18,12Z" /></svg>`,
+            'Inshot Pro (Video Editor)': `<svg fill="#FFF" viewBox="0 0 24 24"><path d="M13.8,11.41L12,9.61L10.2,11.41L11.41,10.2L9.61,8.4L11.41,8.4L12,6.8L12.59,8.4H14.39L12.59,10.2L13.8,11.41M13,2H11V7L13,9V2M11,15L13,17V22H11V15M9,13H15V11H9V13M21,11V13H17V11H21M7,11V13H3V11H7Z" /></svg>`,
+            'Moon+ Reader Pro': `<svg fill="#FFF" viewBox="0 0 24 24"><path d="M22,17.5C22,19.43 20.43,21 18.5,21C16.57,21 15,19.43 15,17.5C15,15.57 16.57,14 18.5,14C20.43,14 22,15.57 22,17.5M12.5,17.5L9.5,20.5L6.5,17.5L3.5,20.5L2,19L5,16L2,13L3.5,11.5L6.5,14.5L9.5,11.5L12.5,14.5L15.5,11.5L17,13L14,16L17,19L15.5,20.5L12.5,17.5M20,2H4A2,2 0 0,0 2,4V10A2,2 0 0,0 4,12H13.81A5.5,5.5 0 0,1 13,17.5A5.5,5.5 0 0,1 18.5,23C21.54,23 24,20.54 24,17.5C24,15.21 22.5,13.26 20.5,12.42V4C20.5,3.17 19.83,2.5 19,2.5V2H20Z" /></svg>`,
+            'KWGT Pro Key': `<svg fill="#FFF" viewBox="0 0 24 24"><path d="M9.1,7.5L12,12.1L14.9,7.5H17.2L13.2,13.8L17.2,20H14.9L12,15.4L9.1,20H6.8L10.8,13.8L6.8,7.5H9.1Z" /></svg>`,
+            'Lawnchair 12 (Launcher)': `<svg fill="#FFF" viewBox="0 0 24 24"><path d="M22,9V19H15V13H9V19H2V9L12,2L22,9Z" /></svg>`,
+            'Sleep as Android Unlock': `<svg fill="#FFF" viewBox="0 0 24 24"><path d="M12,2A9,9 0 0,0 3,11V17H6V11A6,6 0 0,1 12,5A6,6 0 0,1 18,11V12.1L19,13.1V11A7,7 0 0,0 5,11V18H19.1L20.7,19.6C20.4,19.7 20.2,19.8 20,19.9V11A8,8 0 0,0 4,11V18.1L2.9,19.2C3,19.5 3,19.8 3,20A1,1 0 0,0 4,21H20.9L22,22.1L23.1,21L12,9.9L10.9,11H8V9H9.9L12,7Z" /></svg>`,
+            'TiviMate IPTV Player Premium': `<svg fill="#FFF" viewBox="0 0 24 24"><path d="M10,8V16L15,12L10,8M21,3H3A2,2 0 0,0 1,5V19A2,2 0 0,0 3,21H21A2,2 0 0,0 23,19V5A2,2 0 0,0 21,3Z" /></svg>`,
+            'CapCut Pro (Mod)': `<svg fill="#FFF" viewBox="0 0 24 24"><path d="M5,3H19A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V5A2,2 0 0,1 5,3M18,9H16V6H13V8H11V6H8V9H6V15H8V18H11V16H13V18H16V15H18V9Z" /></svg>`,
+            'FL Studio Mobile': `<svg fill="#FFF" viewBox="0 0 24 24"><path d="M15,8H13V16H15V8M11,13H9V16H11V13M19,5H5A2,2 0 0,0 3,7V17A2,2 0 0,0 5,19H19A2,2 0 0,0 21,17V7A2,2 0 0,0 19,5Z" /></svg>`,
+            'LumaFusion (Video Editing)': `<svg fill="#FFF" viewBox="0 0 24 24"><path d="M12,2C6.5,2 2,6.5 2,12C2,17.5 6.5,22 12,22C17.5,22 22,17.5 22,12C22,6.5 17.5,2 12,2M12,10A2,2 0 0,1 14,12C14,13.1 13.1,14 12,14C10.9,14 10,13.1 10,12C10,10.9 10.9,10 12,10Z" /></svg>`,
+            'Kiwi Browser (Extensions)': `<svg fill="#FFF" viewBox="0 0 24 24"><path d="M13.5,12A1.5,1.5 0 0,0 15,10.5A1.5,1.5 0 0,0 13.5,9A1.5,1.5 0 0,0 12,10.5A1.5,1.5 0 0,0 13.5,12M12,2C17.5,2 22,6.5 22,12C22,17.5 17.5,22 12,22C6.5,22 2,17.5 2,12C2,6.5 6.5,2 12,2Z" /></svg>`,
+            'Magisk v27.0 (Stable)': `<svg fill="#FFF" viewBox="0 0 24 24"><path d="M6,3H18L18,10.88C17.3,10.33 16.5,10 15.5,10C13.5,10 12,11.5 12,13.5C12,15.5 13.5,17 15.5,17C16.5,17 17.3,16.67 17.94,16.12L18,21H6L6,3Z" /></svg>`,
+            'generic': `<svg fill="#FFF" viewBox="0 0 24 24"><path d="M4,6H20V18H4V6M20,4A2,2 0 0,1 22,6V18A2,2 0 0,1 20,20H4A2,2 0 0,1 2,18V6A2,2 0 0,1 4,4H20Z" /></svg>`
+        };
+        appGrid.innerHTML = '';
+        appDock.innerHTML = '';
+        allAppNames.forEach(name => {
+            const appIcon = document.createElement('a');
+            appIcon.href = '#';
+            appIcon.className = 'app-icon';
+            appIcon.dataset.appName = name;
+            const iconBg = document.createElement('div');
+            iconBg.className = 'icon-bg';
+            let iconSvg = iconMap[name] || iconMap['generic'];
+            appIcon.dataset.app = (name === 'Pirate Bay') ? 'pirate-bay' : 'mock';
+            iconBg.innerHTML = iconSvg;
+            const appNameSpan = document.createElement('span');
+            appNameSpan.textContent = name;
+            appIcon.appendChild(iconBg);
+            appIcon.appendChild(appNameSpan);
+            appGrid.appendChild(appIcon);
+            if(dockApps.includes(name)) {
+                appDock.appendChild(appIcon.cloneNode(true));
+            }
+        });
+    }
+
+    showLogin.addEventListener('click', e => { e.preventDefault(); showAuthForm('login'); });
+    showRegister.addEventListener('click', e => { e.preventDefault(); showAuthForm('register'); });
+    modalOverlay.addEventListener('click', closeModal);
+    warningNo.addEventListener('click', closeModal);
+    installCancelBtn.addEventListener('click', closeModal);
+    shareCancelBtn.addEventListener('click', closeModal);
+    loginForm.addEventListener('submit', e => { e.preventDefault(); const user = users.find(u => u.username === loginUsername.value && u.pass === loginPassword.value); if (user) { loggedInUser = user; localStorage.setItem('loggedInUser', JSON.stringify(user)); updateAuthViewState(); closeModal(); showToast(`Welcome back, ${user.username}!`, 'success'); } else { loginError.textContent = "Invalid credentials."; showToast('Invalid username or password.', 'error'); } });
+    registerForm.addEventListener('submit', e => { e.preventDefault(); if (registerPassword.value !== confirmPassword.value) { registerError.textContent = "Passwords do not match."; showToast('Passwords do not match.', 'error'); return; } if (users.find(u => u.username === registerUsername.value)) { registerError.textContent = "Username already taken."; showToast('Username is already taken.', 'error'); return; } users.push({ username: registerUsername.value, pass: registerPassword.value }); localStorage.setItem('pirateBayUsers', JSON.stringify(users)); localStorage.setItem('notificationRead', 'false'); updateAuthViewState(); showAuthForm('login'); showToast('Account created successfully! Please log in.', 'success'); });
+    categoryChips.forEach(chip => { chip.addEventListener('click', () => { const category = chip.dataset.category; const wasActive = chip.classList.contains('active'); if (category === 'Notif' && !loggedInUser) { showAuthForm('login'); return; } if (wasActive) { switchToHomeView(); } else { switchToResultsView(); activeCategory = category; mainSearch.value = ''; categoryChips.forEach(c => c.classList.remove('active')); chip.classList.add('active'); if (category === "Notif") { localStorage.setItem('notificationRead', 'true'); updateNotificationBadge(); } filterAndRender(); } }); });
+    mainSearch.addEventListener('input', () => { const query = mainSearch.value.trim(); if (query.length > 0) { switchToResultsView(); activeCategory = null; categoryChips.forEach(c => c.classList.remove('active')); filterAndRender(); } else { if (activeCategory) { filterAndRender(); } else { switchToHomeView(); } } });
+    menuToggle.addEventListener('click', () => phoneScreen.classList.toggle('drawer-visible'));
+    sideDrawer.querySelectorAll('a:not(#change-font-btn):not(#downloads-btn)').forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetLink = e.target.closest('a');
+            const type = targetLink.dataset.linkType;
+            const title = targetLink.dataset.title;
+            const url = targetLink.dataset.url;
+            openWebView(title, url, type);
+            phoneScreen.classList.remove('drawer-visible');
+        });
+    });
+    webViewBackButton.addEventListener('click', closeAllViews);
+    downloadsBackButton.addEventListener('click', closeAllViews);
+    resultsList.addEventListener('click', e => {
+        const card = e.target.closest('.torrent-card');
+        if (!card) return;
+        if (e.target.matches('.download-button')) {
+            e.stopPropagation();
+            if (!wifiToggleBtn.classList.contains('active')) {
+                showToast('Connect to internet to download.', 'error');
+                return;
+            }
+            if (loggedInUser) {
+                const itemName = e.target.dataset.name;
+                const fileToDownload = mockResults.find(r => r.name === itemName);
+                openModal('warningDialog');
+                warningYes.onclick = () => {
+                    if (fileToDownload && !downloadedFiles.some(f => f.name === itemName)) {
+                        downloadedFiles.push(fileToDownload);
+                        localStorage.setItem('downloadedFiles', JSON.stringify(downloadedFiles));
+                    }
+                    if (fileToDownload.type !== 'Droid') {
+                        const fileContent = `This is a simulated download for:\n\nName: ${fileToDownload.name}\nType: ${fileToDownload.type}\nSize: ${fileToDownload.size}`;
+                        const blob = new Blob([fileContent], { type: 'text/plain' });
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = `${fileToDownload.name}.txt`;
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+                    }
+                    closeModal();
+                    showPhoneNotification('Download Started', `"${fileToDownload.name}" is downloading.`);
+                    setTimeout(() => {
+                         showPhoneNotification('Download Complete', `"${fileToDownload.name}" has been saved.`);
+                    }, 4000);
+                };
+            } else {
+                showAuthForm('login');
+            }
+        } else {
+            displayDetails(card);
+        }
+    });
+    themeToggle.addEventListener('click', () => { phoneScreen.classList.toggle('dark-mode'); localStorage.setItem('darkModeEnabled', phoneScreen.classList.contains('dark-mode')); });
+    statusBar.addEventListener('click', () => phoneScreen.classList.toggle('quick-settings-visible'));
+    brightnessSlider.addEventListener('input', (e) => {
+        phoneScreen.style.filter = `brightness(${e.target.value})`;
+        localStorage.setItem('phoneBrightness', e.target.value);
+    });
+    quickToggles.forEach(btn => {
+        if(btn.id !== 'wifi-toggle-btn' && btn.id !== 'vpn-toggle-btn' && btn.id !== 'root-toggle-btn' && btn.id !== 'os-theme-toggle-btn') {
+             btn.addEventListener('click', () => {
+                btn.classList.toggle('active');
+                const isOn = btn.classList.contains('active');
+                const message = isOn ? btn.dataset.toastOn : btn.dataset.toastOff;
+                showToast(message, 'info');
+            });
+        }
+    });
+    osThemeToggleBtn.addEventListener('click', () => {
+        const currentTheme = phoneContainer.dataset.osTheme || 'dark';
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        phoneContainer.dataset.osTheme = newTheme;
+        osThemeToggleBtn.classList.toggle('active', newTheme === 'dark');
+        const message = newTheme === 'dark' ? osThemeToggleBtn.dataset.toastOn : osThemeToggleBtn.dataset.toastOff;
+        showToast(message, 'info');
+        localStorage.setItem('osTheme', newTheme);
+        createGlitter();
+    });
+    wifiToggleBtn.addEventListener('click', () => {
+        wifiToggleBtn.classList.toggle('active');
+        const isOn = wifiToggleBtn.classList.contains('active');
+        const message = isOn ? wifiToggleBtn.dataset.toastOn : wifiToggleBtn.dataset.toastOff;
+        showToast(message, 'info');
+        localStorage.setItem('wifiState', isOn);
+        noWifiOverlay.classList.toggle('visible', !isOn);
+        mainSearch.disabled = !isOn;
+        if (!isOn) {
+            shareFilesBtn.style.filter = 'blur(4px)';
+            shareFilesBtn.style.pointerEvents = 'none';
+        } else {
+            shareFilesBtn.style.filter = 'none';
+            shareFilesBtn.style.pointerEvents = 'auto';
+        }
+    });
+    vpnToggleBtn.addEventListener('click', () => {
+        vpnToggleBtn.classList.toggle('active');
+        const isOn = vpnToggleBtn.classList.contains('active');
+        const message = isOn ? vpnToggleBtn.dataset.toastOn : vpnToggleBtn.dataset.toastOff;
+        showToast(message, 'info');
+        localStorage.setItem('vpnState', isOn);
+        vpnIconContainer.style.display = isOn ? 'inline' : 'none';
+    });
+    rootToggleBtn.addEventListener('click', () => {
+        rootToggleBtn.classList.toggle('active');
+        const isOn = rootToggleBtn.classList.contains('active');
+        const message = isOn ? rootToggleBtn.dataset.toastOn : rootToggleBtn.dataset.toastOff;
+        showToast(message, isOn ? 'success' : 'error');
+        updateRootState();
+    });
+    colorSwatches.forEach(swatch => {
+        swatch.addEventListener('click', () => {
+            const color = swatch.dataset.color;
+            document.documentElement.setAttribute('data-theme', color);
+            localStorage.setItem('appTheme', color);
+            colorSwatches.forEach(s => s.classList.remove('active'));
+            swatch.classList.add('active');
+        });
+    });
+    changeFontBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        phoneScreen.classList.remove('drawer-visible');
+        populateFontList();
+        openModal('fontDialog');
+    });
+    fontSearch.addEventListener('input', () => {
+        populateFontList(fontSearch.value);
+    });
+    downloadsBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        renderDownloadsView();
+        phoneScreen.classList.remove('drawer-visible');
+        phoneScreen.classList.add('downloads-view-visible');
+    });
+    downloadsList.addEventListener('click', (e) => {
+        const card = e.target.closest('.download-item-card');
+        if (!card) return;
+        const fileIndex = card.dataset.index;
+        const file = downloadedFiles[fileIndex];
+        const incompatibleTypes = ['Win', 'Mac', 'Linux'];
+        if (incompatibleTypes.includes(file.type)) {
+            showToast(`This application is not compatible with Droid.`, 'error');
+            return;
+        }
+        installDialogTitle.textContent = file.type === 'Droid' ? "Install App?" : "Open File?";
+        installFileName.textContent = file.name;
+        installConfirmBtn.textContent = file.type === 'Droid' ? "Install" : "Open";
+        openModal('installDialog');
+        installConfirmBtn.onclick = () => {
+            closeModal();
+            if (file.type === 'Droid') {
+                showToast(`Installing ${file.name}...`, 'info');
+                setTimeout(() => {
+                    const newApp = { name: file.name, type: 'Droid' };
+                    if (!installedApps.some(app => app.name === newApp.name)) {
+                        installedApps.push(newApp);
+                        localStorage.setItem('installedApps', JSON.stringify(installedApps));
+                        generateAppIcons();
+                    }
+                    showToast(`${file.name} has been installed.`, 'success');
+                }, 1500);
+            } else {
+                 showToast(`Opening ${file.name}...`, 'info');
+            }
+        };
+    });
+    shareFilesBtn.addEventListener('click', () => {
+        openModal('shareDialog');
+    });
+    fileUploadInput.addEventListener('change', (e) => {
+        if (e.target.files.length > 0) {
+            fileNameDisplay.textContent = e.target.files[0].name;
+        } else {
+            fileNameDisplay.textContent = 'No file selected.';
+        }
+    });
+    shareConfirmBtn.addEventListener('click', () => {
+        if (fileUploadInput.files.length > 0) {
+            if (!wifiToggleBtn.classList.contains('active')) {
+                showToast('Internet connection is required to share files.', 'error');
+                return;
+            }
+            const fileName = fileUploadInput.files[0].name;
+            shareSheetFileName.textContent = fileName;
+            openModal('shareSheetDialog');
+        } else {
+            showToast('Please choose a file first.', 'error');
+        }
+    });
+    shareSheetGrid.addEventListener('click', (e) => {
+        const target = e.target.closest('.share-target');
+        if (target) {
+            const appName = target.dataset.app;
+            const fileName = shareSheetFileName.textContent;
+            const text = `Check out this file: ${fileName}`;
+            let url = '';
+            switch(appName) {
+                case 'Facebook':
+                    url = `https://www.facebook.com/sharer/sharer.php?u=example.com&quote=${encodeURIComponent(text)}`;
+                    window.open(url, '_blank');
+                    break;
+                case 'Mail':
+                    url = `mailto:?subject=File Share&body=${encodeURIComponent(text)}`;
+                    window.location.href = url;
+                    break;
+                case 'Messages':
+                    break;
+            }
+            closeModal();
+            showToast(`Sharing ${fileName} to ${appName}...`, 'info');
+            setTimeout(() => {
+                showToast(`File shared to ${appName}.`, 'success');
+            }, 1500);
+            fileNameDisplay.textContent = 'No file selected.';
+            fileUploadInput.value = '';
+        }
+    });
+    drawerProfileContainer.addEventListener('click', () => profilePicInput.click());
+    profilePicInput.addEventListener('change', (e) => {
+        if (e.target.files && e.target.files[0]) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const imageDataUrl = event.target.result;
+                profilePicImg.src = imageDataUrl;
+                localStorage.setItem('profilePic', imageDataUrl);
+                showToast('Profile picture updated!', 'success');
+            }
+            reader.readAsDataURL(e.target.files[0]);
+        }
+    });
+    powerButton.addEventListener('click', () => {
+        isScreenOn = !isScreenOn;
+        if (isScreenOn) {
+            phoneScreen.classList.remove('screen-off');
+            bootScreen.style.display = 'flex';
+            bootText.classList.add('glitch');
+            setTimeout(() => {
+                bootScreen.style.display = 'none';
+                bootText.classList.remove('glitch');
+                lockScreen.style.display = 'flex';
+                lockScreen.style.opacity = '1';
+            }, 2000);
+        } else {
+            isLocked = true;
+            enteredPin = '';
+            updatePinDots();
+            phoneScreen.classList.add('screen-off');
+            gestureBarContainer.style.display = 'none';
+            osHomeScreen.style.display = 'none';
+            appContainer.style.display = 'none';
+        }
+    });
+    pinPad.addEventListener('click', (e) => {
+        const button = e.target.closest('.pin-button');
+        if (!button) return;
+        const { value } = button.dataset;
+        if (value === 'backspace') {
+            enteredPin = enteredPin.slice(0, -1);
+        } else if (value && enteredPin.length < 4) {
+            enteredPin += value;
+        }
+        updatePinDots();
+        if (enteredPin.length === 4) {
+            checkPin();
+        }
+    });
+    gestureBarContainer.addEventListener('click', () => {
+        showOsHomeScreen();
+    });
+    drawerHandle.addEventListener('click', () => {
+        appDrawer.classList.toggle('open');
+    });
+    osSearchBar.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase().trim();
+        const allApps = document.querySelectorAll('#app-grid .app-icon');
+        allApps.forEach(app => {
+            const appName = app.dataset.appName.toLowerCase();
+            if (appName.includes(query)) {
+                app.style.display = 'flex';
+            } else {
+                app.style.display = 'none';
+            }
+        });
+    });
+    const clickHandler = (e) => {
+        e.preventDefault();
+        const app = e.target.closest('.app-icon');
+        if (!app) return;
+        const appType = app.dataset.app;
+        if (appType === 'pirate-bay') {
+            showPirateBayApp();
+        } else {
+            showToast(`This is just a mock app design. There's no functioning ${app.dataset.appName}.`, 'error');
+        }
+    };
+    appGrid.addEventListener('click', clickHandler);
+    appDock.addEventListener('click', clickHandler);
+    function initialize() {
+        phoneScreen.classList.add('screen-off');
+        const savedAppDarkMode = localStorage.getItem('darkModeEnabled') === 'true';
+        phoneScreen.classList.toggle('dark-mode', savedAppDarkMode);
+        generateAppIcons();
+        const savedUser = JSON.parse(localStorage.getItem('loggedInUser'));
+        if (savedUser && users.find(u => u.username === savedUser.username)) { loggedInUser = savedUser; }
+        updateAuthViewState();
+        updateTime();
+        setInterval(updateTime, 30000);
+        updateBattery();
+        const savedBrightness = localStorage.getItem('phoneBrightness');
+        if (savedBrightness) {
+            phoneScreen.style.filter = `brightness(${savedBrightness})`;
+            brightnessSlider.value = savedBrightness;
+        }
+        const savedProfilePic = localStorage.getItem('profilePic');
+        if (savedProfilePic) { profilePicImg.src = savedProfilePic; }
+        const wifiState = localStorage.getItem('wifiState') !== 'false';
+        wifiToggleBtn.classList.toggle('active', wifiState);
+        noWifiOverlay.classList.toggle('visible', !wifiState);
+        mainSearch.disabled = !wifiState;
+        if (!wifiState) {
+            shareFilesBtn.style.filter = 'blur(4px)';
+            shareFilesBtn.style.pointerEvents = 'none';
+        } else {
+            shareFilesBtn.style.filter = 'none';
+            shareFilesBtn.style.pointerEvents = 'auto';
+        }
+        const savedOsTheme = localStorage.getItem('osTheme') || 'dark';
+        phoneContainer.dataset.osTheme = savedOsTheme;
+        osThemeToggleBtn.classList.toggle('active', savedOsTheme === 'dark');
+        const vpnState = localStorage.getItem('vpnState') === 'true';
+        vpnToggleBtn.classList.toggle('active', vpnState);
+        vpnIconContainer.style.display = vpnState ? 'inline' : 'none';
+        const rootState = localStorage.getItem('rootState') === 'true';
+        rootToggleBtn.classList.toggle('active', rootState);
+        updateRootState();
+        const savedTheme = localStorage.getItem('appTheme') || 'default';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        document.querySelector(`.color-swatch.active`)?.classList.remove('active');
+        document.querySelector(`.color-swatch[data-color="${savedTheme}"]`)?.classList.add('active');
+        const savedFontName = localStorage.getItem('appFont') || 'Roboto';
+        const savedFont = fonts.find(f => f.name === savedFontName) || fonts[0];
+        applyFont(savedFont);
+        titleHackerEffect();
+    }
+    initialize();
+</script>
+
+</body>
+</html>

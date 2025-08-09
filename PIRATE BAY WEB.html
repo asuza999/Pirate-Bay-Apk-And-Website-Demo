@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Pirate Bay Recreation</title>
+
+  <!-- This line sets the icon for the browser tab -->
+  <link rel="icon" type="image/png" href="" sizes="192x192" />
+
+  <!-- This line sets the icon for saving to the home screen on Apple devices -->
+  <link rel="apple-touch-icon" href="" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Press Start 2P', cursive;
+    }
+    html, body {
+      margin: 0; padding: 0; height: 100%;
+      background-color: white;
+      color: black;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    body.dark-mode {
+      background-color: #121212;
+      color: #e0e0e0;
+    }
+    #toggleButton {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      z-index: 1001;
+      user-select: none;
+    }
+    #toggleButton input[type="checkbox"] {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    #toggleButton .slider {
+      position: relative;
+      cursor: pointer;
+      background-color: #d3d3d3;
+      border-radius: 20px;
+      width: 50px;
+      height: 26px;
+      display: inline-block;
+      transition: background-color 0.3s ease;
+    }
+    #toggleButton .slider::before {
+      content: "";
+      position: absolute;
+      height: 22px;
+      width: 22px;
+      left: 2px;
+      top: 2px;
+      background-color: black;
+      border-radius: 50%;
+      transition: transform 0.3s ease, background-color 0.3s ease;
+      box-shadow: 0 0 3px rgba(0,0,0,0.2);
+    }
+    #toggleButton input:checked + .slider {
+      background-color: #7a7a7a;
+    }
+    #toggleButton input:checked + .slider::before {
+      background-color: white;
+      transform: translateX(24px);
+    }
+    #toggleButton input:focus + .slider {
+      box-shadow: 0 0 3px 2px #2196F3;
+    }
+    #backButton {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      z-index: 1000;
+      width: 40px;
+      height: 40px;
+      background-color: #e9e9e9;
+      color: #333;
+      border-radius: 50%;
+      display: none; /* Controlled by JS */
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      user-select: none;
+      border: 1px solid #aaa;
+      padding: 8px;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: translateX(-50%) scale(1);
+      transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.2s ease, background-color 0.2s ease;
+    }
+    #backButton:hover {
+      background-color: #d3d3d3;
+      transform: translateX(-50%) scale(1.1);
+    }
+    #backButton.visible {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+    #backButton svg {
+      width: 100%;
+      height: 100%;
+      fill: currentColor;
+    }
+    body.dark-mode #backButton {
+      background-color: #333;
+      color: #ddd;
+      border-color: #555;
+    }
+    body.dark-mode #backButton:hover {
+      background-color: #444;
+    }
+    .logo-wrapper {
+      margin-bottom: 14px;
+      display: inline-block;
+    }
+    body.dark-mode .logo-wrapper {
+      background: white;
+      border-radius: 18px;
+      padding: 4px 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+    .top-wrapper {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: top 0.4s ease;
+      z-index: 10;
+      width: 100%;
+    }
+    .top-wrapper.scrolled {
+      position: relative;
+      top: 0;
+      left: 0;
+      transform: none;
+      padding-top: 60px; /* Make space for buttons */
+      margin-bottom: 20px;
+    }
+    .top-wrapper img {
+      width: 220px;
+      display: block;
+    }
+    #searchInput {
+      padding: 10px;
+      width: 300px;
+      font-size: 14px;
+      border: 2px solid black;
+      background-color: #f5f5f5;
+      color: black;
+      margin-bottom: 20px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    body.dark-mode #searchInput {
+      background-color: #222;
+      color: #e0e0e0;
+      border-color: #555;
+    }
+    #categorySearchBar {
+        display: none; /* Hidden by default */
+        align-self: flex-end;
+        margin-right: 2.5%;
+        margin-bottom: 10px;
+        padding: 10px;
+        width: 250px;
+        font-size: 13px;
+        border: 2px solid black;
+        background-color: #f5f5f5;
+        color: black;
+        border-radius: 8px; /* Smooth edges */
+        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
+    body.dark-mode #categorySearchBar {
+        background-color: #222;
+        color: #e0e0e0;
+        border-color: #555;
+    }
+    #featuresContainer {
+      display: block;
+      transition: opacity 0.3s ease-out, max-height 0.3s ease-out;
+      max-height: 300px; /* Generous height to contain content */
+      overflow: hidden;
+      opacity: 1;
+    }
+    #featuresContainer.hidden {
+      max-height: 0;
+      opacity: 0;
+      pointer-events: none;
+    }
+    .search-footer-links {
+      font-size: 14px;
+      margin-bottom: 20px;
+      text-align: center;
+      line-height: 1.5;
+      user-select: none;
+    }
+    .search-footer-links a {
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .search-footer-links a:hover {
+      text-decoration: underline;
+    }
+    .nav-links a {
+      color: #007bff;
+      font-weight: bold;
+    }
+    body.dark-mode .nav-links a {
+      color: #80c0ff;
+    }
+    #logoutLink {
+      color: red;
+    }
+    .category-buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .category-button {
+      background-color: #e9e9e9;
+      color: black;
+      border: 1.5px solid #aaa;
+      padding: 10px 16px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      user-select: none;
+    }
+    .category-button:hover {
+      background-color: #d3d3d3;
+    }
+    body.dark-mode .category-button {
+      background-color: #333;
+      color: #ddd;
+      border-color: #555;
+    }
+    body.dark-mode .category-button:hover {
+      background-color: #444;
+    }
+    #contentWrapper {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .results-table {
+      width: 95%;
+      margin: 0 auto 30px auto;
+      border-collapse: collapse;
+      font-size: 14px;
+      display: none;
+    }
+    .results-table th,
+    .results-table td {
+      border: 1px solid #999;
+      padding: 10px;
+      text-align: left;
+      transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
+    .results-table th {
+      background-color: #e5e5e5;
+    }
+    body.dark-mode .results-table th {
+      background-color: #333;
+      color: #ddd;
+      border-color: #555;
+    }
+    body.dark-mode .results-table td {
+      border-color: #555;
+    }
+    .results-table tr:not(.game-detail-row):hover {
+      background-color: #d3f1ff;
+    }
+    body.dark-mode .results-table tr:not(.game-detail-row):hover {
+      background-color: #444;
+    }
+    .detail-toggle-link {
+      color: #0000EE;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    body.dark-mode .detail-toggle-link {
+      color: #80c0ff;
+    }
+    .detail-toggle-link:hover {
+      text-decoration: underline;
+    }
+    .game-detail-row td {
+      background-color: #f0f0f0;
+      padding: 20px;
+      border-top: 2px solid #999;
+      border-bottom: 2px solid #999;
+      font-size: 13px;
+      line-height: 1.6;
+      transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
+    body.dark-mode .game-detail-row td {
+      background-color: #222;
+      border-color: #555;
+      color: #ddd;
+    }
+    .game-detail-content h4 {
+      margin-top: 10px;
+      margin-bottom: 5px;
+      color: #444;
+      transition: color 0.3s ease;
+    }
+    body.dark-mode .game-detail-content h4 {
+      color: #a0a0a0;
+    }
+    .game-detail-content p {
+      margin-bottom: 5px;
+      color: inherit;
+    }
+    .game-detail-content strong {
+      color: #666;
+      transition: color 0.3s ease;
+    }
+    body.dark-mode .game-detail-content strong {
+      color: #bbb;
+    }
+    .game-detail-content .screens img {
+      max-width: 120px;
+      height: auto;
+      margin-right: 8px;
+      margin-bottom: 8px;
+      border: 1px solid #ddd;
+      padding: 2px;
+      vertical-align: middle;
+      background: #fff;
+      border-radius: 5px;
+      transition: background 0.3s ease;
+    }
+    .game-detail-content .screens {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .download-button {
+      display: inline-block;
+      margin: 18px 0 0 0;
+      padding: 7px 16px;
+      background: #007bff;
+      color: white;
+      font-size: 13px;
+      border-radius: 14px;
+      font-weight: bold;
+      border: none;
+      text-decoration: none;
+      cursor: pointer;
+      letter-spacing: 1px;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.08);
+      transition: background 0.25s;
+      user-select: none;
+    }
+    .download-button:hover {
+      background: #0056b3;
+    }
+    #modalOverlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.36);
+      z-index: 9999;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      transition: background-color 0.3s ease;
+    }
+    body.dark-mode #modalOverlay {
+      background: rgba(0,0,0,0.6);
+    }
+    .modal-content {
+      display: none;
+    }
+    #authModal {
+      background: #f0f0f0;
+      padding: 25px;
+      border: 2px solid black;
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+      position: relative;
+      border-radius: 10px;
+    }
+    body.dark-mode #authModal {
+      background: #222;
+      border-color: #555;
+    }
+    #authModal h3 {
+      font-size: 20px;
+      margin-top: 0;
+      margin-bottom: 20px;
+    }
+    #authModal .form-group {
+      margin-bottom: 15px;
+      text-align: left;
+    }
+    #authModal label {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 14px;
+    }
+    #authModal input {
+      width: 100%;
+      padding: 8px;
+      font-size: 14px;
+      border: 2px solid black;
+      background-color: #fff;
+      color: black;
+      border-radius: 5px;
+    }
+    body.dark-mode #authModal input {
+      background-color: #333;
+      border-color: #555;
+      color: #e0e0e0;
+    }
+    #authModal .auth-button {
+      background-color: #e9e9e9;
+      color: black;
+      border: 1.5px solid #aaa;
+      padding: 10px 16px;
+      font-size: 14px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 10px;
+      border-radius: 5px;
+    }
+    body.dark-mode #authModal .auth-button {
+      background-color: #333;
+      color: #ddd;
+      border-color: #555;
+    }
+    #authModal .auth-button:hover {
+      background-color: #d3d3d3;
+    }
+    body.dark-mode #authModal .auth-button:hover {
+      background-color: #444;
+    }
+    #authModal .switch-link {
+      margin-top: 20px;
+      font-size: 12px;
+      color: #007bff;
+      cursor: pointer;
+    }
+    body.dark-mode #authModal .switch-link {
+      color: #80c0ff;
+    }
+    #authModal .close-button {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 24px;
+      cursor: pointer;
+      color: #888;
+    }
+    #authModal .error-message {
+      color: #cb2d2d;
+      font-size: 12px;
+      margin-top: 15px;
+      min-height: 14px;
+    }
+    body.dark-mode #authModal .error-message {
+      color: #ff5555;
+    }
+    #registerForm { display: none; }
+    #downloadWarningModal {
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 6px 32px rgba(0,0,0,0.20);
+        padding: 38px 32px 26px 32px;
+        max-width: 420px;
+        min-width: 320px;
+        text-align: center;
+        position: relative;
+    }
+    body.dark-mode #downloadWarningModal {
+        background: #2c2c2c;
+        box-shadow: 0 6px 22px rgba(255,255,255,0.05);
+    }
+    #downloadWarningModal h3 { margin: 0 0 12px 0; font-size: 20px; letter-spacing: 1px; }
+    #warningTitle { color: #e53935; }
+    #downloadWarningModal p { line-height: 1.6; font-size: 15px; margin-bottom: 24px; color: black; }
+    body.dark-mode #downloadWarningModal p { color: #e0e0e0; }
+    .modal-actions { display: flex; justify-content: center; gap: 20px; }
+    .modal-btn { font-family: inherit; font-size: 15px; font-weight: bold; padding: 10px 26px; border-radius: 10px; border: none; outline: none; cursor: pointer; transition: background 0.22s, color 0.22s; letter-spacing: .5px; user-select: none; }
+    .modal-btn-yes { background: #e53935; color: #fff; }
+    .modal-btn-no { background: #e0e0e0; color: #464646; }
+    .modal-btn-yes:hover { background: #ab2020; }
+    .modal-btn-no:hover { background: #888; color: #fff; }
+    body.dark-mode .modal-btn-no { background: #555; color: #fff; }
+    body.dark-mode .modal-btn-no:hover { background: #666; }
+  </style>
+</head>
+<body>
+
+  <label id="toggleButton" tabindex="0" title="Toggle Dark Mode">
+    <input type="checkbox" id="toggleCheckbox" aria-checked="false" aria-label="Toggle dark mode" />
+    <span class="slider"></span>
+  </label>
+
+  <div id="topWrapper" class="top-wrapper">
+    <span class="logo-wrapper" id="logoWrapper">
+      <img src="/home/admin/Desktop/New Folder/4f4d7775-b3d8-4057-b8c7-5956b47db4d8_removalai_preview.png" alt="Logo" />
+    </span>
+    <input type="text" id="searchInput" placeholder="Search..." />
+    <div id="featuresContainer">
+      <div id="userAuthLinks" class="search-footer-links nav-links">
+        <a href="#" id="loginLink" title="Login to your account">Login</a> |
+        <a href="#" id="registerLink" title="Register a new account">Register</a>
+      </div>
+      <div class="search-footer-links nav-links">
+        <a href="#" title="Get the TOR v3 address">TOR (New v3)</a> |
+        <a href="#" title="Learn about our VPN partner">VPN</a> |
+        <a href="https://pirates-forum.org/" title="Go to the Forum" target="_blank" rel="noopener noreferrer">Forum</a>
+      </div>
+      <div class="category-buttons">
+        <button class="category-button">All</button>
+        <button class="category-button">Audio</button>
+        <button class="category-button">Video</button>
+        <button class="category-button">Applications</button>
+        <button class="category-button">Games</button>
+        <button class="category-button">Notification</button>
+        <button class="category-button">Other</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="contentWrapper">
+    <input type="text" id="categorySearchBar" placeholder="Search..." />
+    <table id="resultsTable" class="results-table" aria-live="polite" aria-relevant="all" aria-label="Search results">
+      <thead>
+        <tr>
+          <th>Type</th><th>Name</th><th>Uploaded</th><th>Size</th><th>Seeders</th><th>Leechers</th>
+        </tr>
+      </thead>
+      <tbody id="resultsBody"></tbody>
+    </table>
+  </div>
+
+  <div id="modalOverlay">
+    <div id="authModal" class="modal-content">
+      <span class="close-button" id="closeAuthModal">×</span>
+      <form id="loginForm">
+        <h3>Login</h3>
+        <div class="form-group">
+          <label for="loginUsername">Username</label>
+          <input type="text" id="loginUsername" required>
+        </div>
+        <div class="form-group">
+          <label for="loginPassword">Password</label>
+          <input type="password" id="loginPassword" required>
+        </div>
+        <button type="submit" class="auth-button">Login</button>
+        <p class="error-message" id="loginError"></p>
+        <p class="switch-link" id="showRegister">Need an account? Register</p>
+      </form>
+      <form id="registerForm">
+        <h3>Register</h3>
+        <div class="form-group">
+          <label for="registerUsername">Username</label>
+          <input type="text" id="registerUsername" required minlength="3">
+        </div>
+        <div class="form-group">
+          <label for="registerPassword">Password</label>
+          <input type="password" id="registerPassword" required minlength="6">
+        </div>
+        <div class="form-group">
+          <label for="confirmPassword">Confirm Password</label>
+          <input type="password" id="confirmPassword" required>
+        </div>
+        <button type="submit" class="auth-button">Register</button>
+        <p class="error-message" id="registerError"></p>
+        <p class="switch-link" id="showLogin">Already have an account? Login</p>
+      </form>
+    </div>
+
+    <div id="downloadWarningModal" class="modal-content">
+        <h3 id="warningTitle">WARNING</h3>
+        <p>Are you sure you want to download this file? This file has not been verified as safe.</p>
+        <div class="modal-actions">
+            <button class="modal-btn modal-btn-yes" id="warningYes">Yes</button>
+            <button class="modal-btn modal-btn-no" id="warningNo">No</button>
+        </div>
+    </div>
+  </div>
+
+  <div id="backButton" title="Back to Main Page">
+    <svg viewBox="0 0 24 24">
+      <path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" />
+    </svg>
+  </div>
+
+  <script>
+    // --- ELEMENT SELECTORS ---
+    const toggleCheckbox = document.getElementById('toggleCheckbox');
+    const searchInput = document.getElementById("searchInput");
+    const topWrapper = document.getElementById("topWrapper");
+    const resultsTable = document.getElementById("resultsTable");
+    const resultsBody = document.getElementById("resultsBody");
+    const featuresContainer = document.getElementById("featuresContainer");
+    const categoryButtons = document.querySelectorAll(".category-button");
+    const backButton = document.getElementById("backButton");
+    const contentWrapper = document.getElementById('contentWrapper');
+    const categorySearchBar = document.getElementById('categorySearchBar');
+    const logoWrapper = document.getElementById('logoWrapper');
+
+    const modalOverlay = document.getElementById('modalOverlay');
+    const closeAuthModal = document.getElementById('closeAuthModal');
+    const loginLink = document.getElementById('loginLink');
+    const registerLink = document.getElementById('registerLink');
+    const userAuthLinks = document.getElementById('userAuthLinks');
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+    const showRegister = document.getElementById('showRegister');
+    const showLogin = document.getElementById('showLogin');
+    const loginError = document.getElementById('loginError');
+    const registerError = document.getElementById('registerError');
+    const downloadWarningModal = document.getElementById('downloadWarningModal');
+    const warningYes = document.getElementById('warningYes');
+    const warningNo = document.getElementById('warningNo');
+
+    // --- STATE VARIABLES ---
+    let users = JSON.parse(localStorage.getItem('pirateBayUsers')) || [];
+    let loggedInUser = null;
+    let currentDetailRow = null;
+    let activeCategoryFilter = 'All';
+
+    // --- DATA ---
+    const longInfoParagraph = "Hello, and allow me to extend a warm and sincere welcome. My name is Delos Reyes Joemark, but within the digital spaces and coding communities I frequent, I am more commonly known by my handle, 0x20. If you’ve stumbled upon this page, you have found more than just a website; you have found the culmination of a personal passion project, a digital homage born from a deep-seated respect and nostalgia for a titan of the internet's past. This entire platform is my dedicated attempt to recreate and, in some ways, reimagine the core experience of the legendary Pirate Bay. For many of us who grew up with the internet, The Pirate Bay wasn't just a repository of files; it was a cultural phenomenon, a symbol of digital rebellion, and a sprawling, user-built library of information in an era before streaming giants and subscription models became the norm. It represented a certain freedom and a raw, unfiltered access to content. However, as the years went on, I, like many others, felt that the user experience of the original site, which can still be found at its long-standing home @thepiratebay.org, began to diverge from its initial purpose. The platform that was once a beacon of straightforward access became progressively encumbered. This is where my motivation for this project originates. What you are browsing now is a deliberately and meticulously stripped-down version of that iconic platform. My primary goal was to reverse the trend of digital bloat and create something that is fundamentally easy to use, intuitive, and respectful of your time and attention. I wanted to peel back the layers of complexity that have built up over the years—to remove the endless, often intrusive, pop-up advertisements, the distracting banner ads that can sometimes lead to malicious sites, and the convoluted interface elements that make finding what you're for a chore. In essence, my vision was to distill The Pirate Bay down to its purest form: a powerful search tool connected to a vast index of content, without any of the noise. In creating this, I am certainly not making the arrogant claim that my version is in any way 'better' than the monumental original. The Pirate Bay's legacy is etched into the very history of the internet, and its technical resilience and cultural impact are things I can only admire. Instead, I offer this project as an alternative perspective—a different path that could have been taken. Think of it as a loving restoration of a classic car, where the original, powerful engine is preserved, but the interior is redesigned with a clean, modern, and minimalist aesthetic for a smoother ride. So, I want to express my genuine gratitude for you being here. Thank you for clicking, for exploring, and for engaging with this project. Whether you're here out of curiosity, nostalgia, or a shared appreciation for a more streamlined web, your visit gives this endeavor its purpose. I hope you find my file and this recreation of Pirate Bay to be a refreshing and useful experience.";
+    const uploadButtonUpdate = `We are currently fixing some bugs with the upload button. In the meantime, you can contact me via social media <a href="https://www.facebook.com/markdreyes9999999" target="_blank" rel="noopener noreferrer">https://www.facebook.com/markdreyes9999999</a> to have your files uploaded.`;
+
+    const mockResults = [ { type: "Games", name: "Grand Theft Auto VI Full PC Version", uploaded: "07-20 2025", size: "97.6 GB", seeders: 4012, leechers: 862 }, { type: "Games", name: "GTA V Definitive Edition Repack", uploaded: "07-14 2025", size: "65.3 GB", seeders: 1782, leechers: 345 }, { type: "Games", name: "GTA San Andreas-HOODLUM Plus SAMP Multiplayer", uploaded: "2012-06-21", size: "3.94 GiB", seeders: 546, leechers: 65 }, { type: "Games", name: "Cyberpunk 2077 Ultimate Edition", uploaded: "06-15 2025", size: "102.5 GB", seeders: 3500, leechers: 750 }, { type: "Games", name: "Elden Ring: Shadow of the Erdtree", uploaded: "06-21 2025", size: "55.0 GB", seeders: 5120, leechers: 1200 }, { type: "Games", name: "The Witcher 3: Wild Hunt - Complete Edition", uploaded: "05-30 2025", size: "48.2 GB", seeders: 2800, leechers: 450 }, { type: "Games", name: "Red Dead Redemption 2", uploaded: "04-10 2025", size: "110.1 GB", seeders: 4200, leechers: 900 }, { type: "Games", name: "Baldur's Gate 3", uploaded: "03-25 2025", size: "125.3 GB", seeders: 4800, leechers: 1100 }, { type: "Games", name: "Stardew Valley", uploaded: "02-18 2025", size: "1.2 GB", seeders: 6000, leechers: 300 }, { type: "Games", name: "Hollow Knight", uploaded: "01-05 2025", size: "5.1 GB", seeders: 3200, leechers: 250 }, { type: "Games", name: "Minecraft Java & Bedrock Edition", uploaded: "06-30 2025", size: "2.5 GB", seeders: 7500, leechers: 500 }, { type: "Applications", name: "GTA VI Crack Installer", uploaded: "07-19 2025", size: "128 MB", seeders: 1342, leechers: 213 }, { type: "Applications", name: "Rockstar Game Launcher Installer", uploaded: "07-12 2025", size: "90 MB", seeders: 322, leechers: 52 }, { type: "Applications", name: "Adobe Photoshop 2025", uploaded: "06-28 2025", size: "4.3 GB", seeders: 2900, leechers: 600 }, { type: "Applications", name: "Microsoft Office 2024 Professional Plus", uploaded: "05-15 2025", size: "5.1 GB", seeders: 3100, leechers: 700 }, { type: "Applications", name: "FL Studio Producer Edition v22", uploaded: "04-20 2025", size: "1.8 GB", seeders: 2500, leechers: 450 }, { type: "Applications", name: "DaVinci Resolve Studio 19", uploaded: "03-10 2025", size: "3.5 GB", seeders: 2200, leechers: 350 }, { type: "Applications", name: "AutoCAD 2025", uploaded: "02-25 2025", size: "2.9 GB", seeders: 1800, leechers: 300 }, { type: "Applications", name: "WinRAR 7.01 Final", uploaded: "01-15 2025", size: "3.5 MB", seeders: 8500, leechers: 200 }, { type: "Applications", name: "Ableton Live 12 Suite", uploaded: "06-05 2025", size: "3.1 GB", seeders: 2600, leechers: 550 }, { type: "Video", name: "GTA 6 Leaked Gameplay Trailer", uploaded: "07-21 2025", size: "1.4 GB", seeders: 986, leechers: 132 }, { type: "Video", name: "GTA VI E3 Presentation", uploaded: "07-16 2025", size: "2.1 GB", seeders: 667, leechers: 102 }, { type: "Video", name: "Dune: Part Two (2024) 2160p UHD BluRay", uploaded: "06-12 2025", size: "22.5 GB", seeders: 4100, leechers: 850 }, { type: "Video", name: "Oppenheimer (2023) 1080p", uploaded: "05-22 2025", size: "12.1 GB", seeders: 3300, leechers: 650 }, { type: "Video", name: "The Lord of the Rings Trilogy (Extended) 4K REMUX", uploaded: "04-01 2025", size: "280.0 GB", seeders: 1500, leechers: 300 }, { type: "Video", name: "Planet Earth III S01 Complete", uploaded: "03-18 2025", size: "45.2 GB", seeders: 2800, leechers: 500 }, { type: "Video", name: "Shogun (2024) S01 Complete 1080p", uploaded: "02-28 2025", size: "35.6 GB", seeders: 3900, leechers: 750 }, { type: "Video", name: "Top Gear The Complete Collection", uploaded: "01-10 2025", size: "1.2 TB", seeders: 800, leechers: 150 }, { type: "Audio", name: "GTA 6 Soundtrack Collection", uploaded: "07-17 2025", size: "560 MB", seeders: 842, leechers: 114 }, { type: "Audio", name: "Daft Punk - Discography (Lossless)", uploaded: "06-25 2025", size: "15.4 GB", seeders: 1200, leechers: 250 }, { type: "Audio", name: "Hans Zimmer - Live in Prague (FLAC)", uploaded: "05-18 2025", size: "1.1 GB", seeders: 1800, leechers: 300 }, { type: "Audio", name: "Taylor Swift - The Tortured Poets Department (MP3 320)", uploaded: "04-19 2025", size: "256 MB", seeders: 5500, leechers: 900 }, { type: "Audio", name: "A-Z Audiobooks Collection - 500+ Classics", uploaded: "03-05 2025", size: "80.7 GB", seeders: 950, leechers: 200 }, { type: "Audio", name: "Ultimate Sound Effects Library for Video Editing", uploaded: "02-01 2025", size: "25.3 GB", seeders: 2100, leechers: 400 }, { type: "Other", name: "3D Printing Mega Pack - 1000+ STL Models", uploaded: "06-20 2025", size: "50.1 GB", seeders: 1300, leechers: 280 }, { type: "Other", name: "Complete Learn to Code Course Bundle (2025)", uploaded: "05-10 2025", size: "150.2 GB", seeders: 1900, leechers: 350 }, { type: "Other", name: "Topaz AI Suite 2025", uploaded: "04-25 2025", size: "3.8 GB", seeders: 2400, leechers: 450 }, { type: "Other", name: "Vintage Comic Book Collection (CBZ/CBR)", uploaded: "03-30 2025", size: "95.5 GB", seeders: 850, leechers: 180 }, { type: "Other", name: "Miscellaneous Game Patches", uploaded: "2024-01-01", size: "250 MB", seeders: 150, leechers: 20 }, { type: "Notification", name: "A Message from the Creator", uploaded: "Today", size: "N/A", seeders: "—", leechers: "0" }, { type: "Notification", name: "No Upload Button?", uploaded: "Today", size: "N/A", seeders: "—", leechers: "—" } ];
+
+    // --- COMPLETE GAME DETAILS OBJECT ---
+    const gameDetails = {
+        "A Message from the Creator": { message: `<p>${longInfoParagraph.replace(/\n/g, '<br>')}</p>` },
+        "No Upload Button?": { message: `<p>${uploadButtonUpdate}</p>` },
+        "Grand Theft Auto VI Full PC Version": { fullType: "Games > PC", files: "12", size: "97.6 GB", uploadedBy: "0x20", infoHash: "A1B2C3D4E5F6G7H8I9J0K1L2M3N4O5P6Q7R8S9T0", multiplayer: "This release supports online play through a dedicated community server. Instructions included.", gameInfo: "The highly anticipated next installment in the Grand Theft Auto series. Explore the sprawling, neon-soaked streets of Vice City and beyond in the most immersive and detailed open world ever created.", install: "1. Unpack the release.\n2. Mount or burn the ISO.\n3. Install the game.\n4. Copy the crack from the Crack directory to your installation dir.\n5. Play the game.", uploaderNote: "This is the full, uncompressed game. Tested on Windows 11. Enjoy the release and please seed!" },
+        "GTA V Definitive Edition Repack": { fullType: "Games > PC", files: "8", size: "65.3 GB", uploadedBy: "FitGirl", infoHash: "B2C3D4E5F6G7H8I9J0K1L2M3N4O5P6Q7R8S9T0A1", gameInfo: "A fan-made definitive edition of Grand Theft Auto V, bundling the base game with numerous graphics mods, bug fixes, and quality-of-life improvements for the ultimate single-player experience.", install: "1. Run setup.exe.\n2. Follow the on-screen instructions.\n3. Play from the desktop shortcut created.", uploaderNote: "This is a repack, heavily compressed for a smaller download size. Installation may take some time. All DLCs included." },
+        "GTA San Andreas-HOODLUM Plus SAMP Multiplayer": { fullType: "Games > PC", files: "4", size: "3.94 GiB", uploadedBy: "HOODLUM", infoHash: "C3D4E5F6G7H8I9J0K1L2M3N4O5P6Q7R8S9T0A1B2", multiplayer: "San Andreas Multiplayer (SAMP) client included. See readme for server list.", gameInfo: "The classic Grand Theft Auto: San Andreas. This version is clean and perfect for installing mods or playing multiplayer.", install: "1. Unzip the file.\n2. Run gta_sa.exe to play singleplayer.\n3. Run samp.exe to play multiplayer.", uploaderNote: "A classic that never gets old. Clean rip." },
+        "Cyberpunk 2077 Ultimate Edition": { fullType: "Games > PC", files: "15", size: "102.5 GB", uploadedBy: "DODI", infoHash: "D4E5F6G7H8I9J0K1L2M3N4O5P6Q7R8S9T0A1B2C3", gameInfo: "Ultimate Edition including the base game and the Phantom Liberty expansion. All patches and updates included.", install: "Standard installation procedure. Pre-cracked.", uploaderNote: "The game is now in a great state. Highly recommend." },
+        "Elden Ring: Shadow of the Erdtree": { fullType: "Games > PC", files: "10", size: "55.0 GB", uploadedBy: "PLAZA", infoHash: "E5F6G7H8I9J0K1L2M3N4O5P6Q7R8S9T0A1B2C3D4", gameInfo: "The complete Elden Ring experience, including the massive Shadow of the Erdtree DLC.", install: "Mount ISO, install, copy crack. Enjoy.", uploaderNote: "The expansion is incredible. Prepare to die." },
+        "The Witcher 3: Wild Hunt - Complete Edition": { fullType: "Games > PC", files: "20", size: "48.2 GB", uploadedBy: "GOG", infoHash: "F6G7H8I9J0K1L2M3N4O5P6Q7R8S9T0A1B2C3D4E5", gameInfo: "The critically acclaimed RPG, The Witcher 3, with both Hearts of Stone and Blood and Wine expansions. This is the DRM-free GOG version.", install: "Run the installer. No crack needed.", uploaderNote: "One of the best games ever made. DRM-free goodness." },
+        "Red Dead Redemption 2": { fullType: "Games > PC", files: "22", size: "110.1 GB", uploadedBy: "EMPRESS", infoHash: "G7H8I9J0K1L2M3N4O5P6Q7R8S9T0A1B2C3D4E5F6", gameInfo: "Rockstar's masterpiece open-world western. Live the life of an outlaw in a stunningly realistic world.", install: "Follow instructions in the .nfo file.", uploaderNote: "The definitive cowboy experience." },
+        "Baldur's Gate 3": { fullType: "Games > PC", files: "18", size: "125.3 GB", uploadedBy: "GOG", infoHash: "H8I9J0K1L2M3N4O5P6Q7R8S9T0A1B2C3D4E5F6G7", gameInfo: "Larian Studios' award-winning D&D RPG. DRM-free GOG version.", install: "Run the setup file and play.", uploaderNote: "Game of the Year for a reason. Enjoy this masterpiece." },
+        "Stardew Valley": { fullType: "Games > PC", files: "1", size: "1.2 GB", uploadedBy: "GOG", infoHash: "I9J0K1L2M3N4O5P6Q7R8S9T0A1B2C3D4E5F6G7H8", gameInfo: "The beloved indie farming simulator. Build your farm, make friends, and explore.", install: "DRM-free. Unzip and play.", uploaderNote: "Relaxing and addictive. Supports mods." },
+        "Hollow Knight": { fullType: "Games > PC", files: "3", size: "5.1 GB", uploadedBy: "GOG", infoHash: "J0K1L2M3N4O5P6Q7R8S9T0A1B2C3D4E5F6G7H8I9", gameInfo: "A challenging and atmospheric metroidvania with beautiful hand-drawn art.", install: "DRM-free. Install and play.", uploaderNote: "A must-play for fans of the genre." },
+        "Minecraft Java & Bedrock Edition": { fullType: "Games > PC", files: "2", size: "2.5 GB", uploadedBy: "Microsoft", infoHash: "K1L2M3N4O5P6Q7R8S9T0A1B2C3D4E5F6G7H8I9J0", gameInfo: "The official launcher for both Java and Bedrock editions of Minecraft.", install: "Requires a valid Microsoft account with game ownership to play.", uploaderNote: "This is the official launcher, not a cracked version." },
+        "GTA VI Crack Installer": { fullType: "Applications > PC", files: "1", size: "128 MB", uploadedBy: "xX_Cr4ck3r_Xx", infoHash: "L2M3N4O5P6Q7R8S9T0A1B2C3D4E5F6G7H8I9J0K1", gameInfo: "A standalone crack installer for the GTA VI release.", install: "Run this in your game directory AFTER installing the game.", uploaderNote: "USE WITH CAUTION. Some antivirus may flag this as a false positive." },
+        "Rockstar Game Launcher Installer": { fullType: "Applications > PC", files: "1", size: "90 MB", uploadedBy: "Rockstar", infoHash: "M3N4O5P6Q7R8S9T0A1B2C3D4E5F6G7H8I9J0K1L2", gameInfo: "The official Rockstar Games Launcher.", install: "Run the installer.", uploaderNote: "Required for RDR2 and modern GTA titles if you own them." },
+        "Adobe Photoshop 2025": { fullType: "Applications > Windows", files: "5", size: "4.3 GB", uploadedBy: "m0nkrus", infoHash: "N4O5P6Q7R8S9T0A1B2C3D4E5F6G7H8I9J0K1L2M3", gameInfo: "The industry-standard image editing and manipulation software. Version 2025 includes new AI-powered features.", install: "1. Disconnect from the internet.\n2. Run the installer.\n3. The application is pre-activated.\n4. Block the application in your firewall.", uploaderNote: "Multilingual version. No crack needed." },
+        "Microsoft Office 2024 Professional Plus": { fullType: "Applications > Windows", files: "6", size: "5.1 GB", uploadedBy: "Activator", infoHash: "O5P6Q7R8S9T0A1B2C3D4E5F6G7H8I9J0K1L2M3N4", gameInfo: "The full suite of Microsoft Office applications.", install: "Install using setup.exe then run the included activation script.", uploaderNote: "Includes Word, Excel, PowerPoint, Outlook, etc." },
+        "FL Studio Producer Edition v22": { fullType: "Applications > Audio", files: "3", size: "1.8 GB", uploadedBy: "R2R", infoHash: "P6Q7R8S9T0A1B2C3D4E5F6G7H8I9J0K1L2M3N4O5", gameInfo: "A complete software music production environment or Digital Audio Workstation (DAW).", install: "Install and use the keygen to register.", uploaderNote: "Unleash your creativity." },
+        "DaVinci Resolve Studio 19": { fullType: "Applications > Video", files: "4", size: "3.5 GB", uploadedBy: "TeamVR", infoHash: "Q7R8S9T0A1B2C3D4E5F6G7H8I9J0K1L2M3N4O5P6", gameInfo: "The world's only solution that combines editing, color correction, visual effects, motion graphics and audio post production all in one software tool.", install: "Pre-activated version. Install and run.", uploaderNote: "Much better than Premiere Pro. Fight me." },
+        "AutoCAD 2025": { fullType: "Applications > Windows", files: "2", size: "2.9 GB", uploadedBy: "X-FORCE", infoHash: "R8S9T0A1B2C3D4E5F6G7H8I9J0K1L2M3N4O5P6Q7", gameInfo: "CAD software for architects, engineers, and construction professionals.", install: "Follow instructions from the keygen.", uploaderNote: "The industry standard for a reason." },
+        "WinRAR 7.01 Final": { fullType: "Applications > Utilities", files: "1", size: "3.5 MB", uploadedBy: "rar-is-forever", infoHash: "S9T0A1B2C3D4E5F6G7H8I9J0K1L2M3N4O5P6Q7R8", gameInfo: "A powerful archiver and archive manager. This version is registered.", install: "Run the installer. It includes the registration key.", uploaderNote: "Stop paying for WinRAR." },
+        "Ableton Live 12 Suite": { fullType: "Applications > Audio", files: "5", size: "3.1 GB", uploadedBy: "R2R", infoHash: "T0A1B2C3D4E5F6G7H8I9J0K1L2M3N4O5P6Q7R8S9", gameInfo: "A fast, fluid and flexible software for music creation and performance.", install: "Use keygen to authorize.", uploaderNote: "The best DAW for live performance." },
+        "GTA 6 Leaked Gameplay Trailer": { fullType: "Video > Clips", files: "1", size: "1.4 GB", uploadedBy: "Insider", infoHash: "U1B2C3D4E5F6G7H8I9J0K1L2M3N4O5P6Q7R8S9T0", gameInfo: "High-quality direct recording of the infamous leaked gameplay trailer.", uploaderNote: "Watch it before it gets taken down again." },
+        "GTA VI E3 Presentation": { fullType: "Video > Clips", files: "1", size: "2.1 GB", uploadedBy: "E3-Archive", infoHash: "V2C3D4E5F6G7H8I9J0K1L2M3N4O5P6Q7R8S9T0A1", gameInfo: "Full 4K recording of the official E3 presentation.", uploaderNote: "For archival purposes." },
+        "Dune: Part Two (2024) 2160p UHD BluRay": { fullType: "Video > Movies", files: "3", size: "22.5 GB", uploadedBy: "SPARKS", infoHash: "W3D4E5F6G7H8I9J0K1L2M3N4O5P6Q7R8S9T0A1B2", gameInfo: "Paul Atreides unites with Chani and the Fremen while on a warpath of revenge against the conspirators who destroyed his family.", uploaderNote: "Incredible video and audio quality. Includes bonus features." },
+        "Oppenheimer (2023) 1080p": { fullType: "Video > Movies", files: "1", size: "12.1 GB", uploadedBy: "YTS", infoHash: "X4E5F6G7H8I9J0K1L2M3N4O5P6Q7R8S9T0A1B2C3", gameInfo: "The story of American scientist J. Robert Oppenheimer and his role in the development of the atomic bomb.", uploaderNote: "Great quality for the file size." },
+        "The Lord of the Rings Trilogy (Extended) 4K REMUX": { fullType: "Video > Movies", files: "6", size: "280.0 GB", uploadedBy: "Framestor", infoHash: "Y5F6G7H8I9J0K1L2M3N4O5P6Q7R8S9T0A1B2C3D4", gameInfo: "The complete extended editions of the Lord of the Rings trilogy in full, uncompressed 4K BluRay quality.", uploaderNote: "For true connoisseurs. Massive file size but worth every byte." },
+        "Planet Earth III S01 Complete": { fullType: "Video > TV Shows", files: "8", size: "45.2 GB", uploadedBy: "BBC-Fan", infoHash: "Z6G7H8I9J0K1L2M3N4O5P6Q7R8S9T0A1B2C3D4E5", gameInfo: "The complete third series of the landmark nature documentary.", uploaderNote: "Stunning visuals as always from Attenborough." },
+        "Shogun (2024) S01 Complete 1080p": { fullType: "Video > TV Shows", files: "10", size: "35.6 GB", uploadedBy: "FX-Rips", infoHash: "A7H8I9J0K1L2M3N4O5P6Q7R8S9T0A1B2C3D4E5F6", gameInfo: "Complete first season of the critically acclaimed historical drama.", uploaderNote: "Fantastic show. English subtitles are included for Japanese parts." },
+        "Top Gear The Complete Collection": { fullType: "Video > TV Shows", files: "223", size: "1.2 TB", uploadedBy: "ClarksonFan", infoHash: "B8I9J0K1L2M3N4O5P6Q7R8S9T0A1B2C3D4E5F6G7", gameInfo: "Every episode from the Clarkson, Hammond, and May era of Top Gear (Series 1-22) plus all specials.", uploaderNote: "This took forever to compile. Please seed for others. Ambitious but rubbish." },
+        "GTA 6 Soundtrack Collection": { fullType: "Audio > Music", files: "88", size: "560 MB", uploadedBy: "RadioFan", infoHash: "C9J0K1L2M3N4O5P6Q7R8S9T0A1B2C3D4E5F6G7H8", gameInfo: "A collection of songs expected to be on the various radio stations in GTA 6.", uploaderNote: "Based on leaks and speculation. MP3 320kbps." },
+        "Daft Punk - Discography (Lossless)": { fullType: "Audio > Music", files: "120", size: "15.4 GB", uploadedBy: "FLAC-Addict", infoHash: "D0K1L2M3N4O5P6Q7R8S9T0A1B2C3D4E5F6G7H8I9", gameInfo: "Complete studio album discography in high-quality FLAC format.", uploaderNote: "For the audiophiles." },
+        "Hans Zimmer - Live in Prague (FLAC)": { fullType: "Audio > Music", files: "25", size: "1.1 GB", uploadedBy: "ConcertGoer", infoHash: "E1L2M3N4O5P6Q7R8S9T0A1B2C3D4E5F6G7H8I9J0", gameInfo: "Live concert recording of Hans Zimmer's most iconic scores.", uploaderNote: "Incredible live performance." },
+        "Taylor Swift - The Tortured Poets Department (MP3 320)": { fullType: "Audio > Music", files: "31", size: "256 MB", uploadedBy: "Swiftie4Ever", infoHash: "F2M3N4O5P6Q7R8S9T0A1B2C3D4E5F6G7H8I9J0K1", gameInfo: "The latest album from Taylor Swift, including all bonus tracks.", uploaderNote: "Enjoy the new album!" },
+        "A-Z Audiobooks Collection - 500+ Classics": { fullType: "Audio > Audiobooks", files: "512", size: "80.7 GB", uploadedBy: "Bookworm", infoHash: "G3N4O5P6Q7R8S9T0A1B2C3D4E5F6G7H8I9J0K1L2", gameInfo: "A huge collection of classic literature in audiobook format.", uploaderNote: "Sorted by author. Mostly MP3 format." },
+        "Ultimate Sound Effects Library for Video Editing": { fullType: "Audio > Sound", files: "10000", size: "25.3 GB", uploadedBy: "VideoEditor", infoHash: "H4O5P6Q7R8S9T0A1B2C3D4E5F6G7H8I9J0K1L2M3", gameInfo: "A massive library of royalty-free sound effects for any project.", uploaderNote: "Your new go-to SFX pack." },
+        "3D Printing Mega Pack - 1000+ STL Models": { fullType: "Other > 3D", files: "1245", size: "50.1 GB", uploadedBy: "Maker", infoHash: "I5P6Q7R8S9T0A1B2C3D4E5F6G7H8I9J0K1L2M3N4", gameInfo: "A giant collection of STL files for 3D printing, from useful gadgets to miniatures.", uploaderNote: "Happy printing!" },
+        "Complete Learn to Code Course Bundle (2025)": { fullType: "Other > E-learning", files: "892", size: "150.2 GB", uploadedBy: "CodeGuru", infoHash: "J6Q7R8S9T0A1B2C3D4E5F6G7H8I9J0K1L2M3N4O5", gameInfo: "A comprehensive bundle of courses covering Python, JavaScript, C++, Web Development, and more.", uploaderNote: "Everything you need to become a developer." },
+        "Topaz AI Suite 2025": { fullType: "Other > Applications", files: "4", size: "3.8 GB", uploadedBy: "PhotoPro", infoHash: "K7R8S9T0A1B2C3D4E5F6G7H8I9J0K1L2M3N4O5P6", gameInfo: "Includes Topaz Photo AI, Video AI, and Gigapixel AI. Pre-activated.", install: "Run the installers. The apps are pre-activated.", uploaderNote: "Enhance your photos and videos with the power of AI." },
+        "Vintage Comic Book Collection (CBZ/CBR)": { fullType: "Other > Comics", files: "2500", size: "95.5 GB", uploadedBy: "ComicFan", infoHash: "L8S9T0A1B2C3D4E5F6G7H8I9J0K1L2M3N4O5P6Q7", gameInfo: "A massive collection of Golden, Silver, and Bronze age comics.", uploaderNote: "For the true comic book historians." },
+        "Miscellaneous Game Patches": { fullType: "Other > Patches", files: "50", size: "250 MB", uploadedBy: "Modder", infoHash: "M9T0A1B2C3D4E5F6G7H8I9J0K1L2M3N4O5P6Q7R8", gameInfo: "A collection of no-cd patches, widescreen fixes, and other miscellaneous patches for older games.", uploaderNote: "Might have what you're for to get an old game running." }
+    };
+
+    // --- MODAL & AUTH FUNCTIONS ---
+    function openModal(modalId) { modalOverlay.style.display = 'flex'; document.querySelectorAll('.modal-content').forEach(modal => modal.style.display = 'none'); const modalToShow = document.getElementById(modalId); if (modalToShow) { modalToShow.style.display = 'block'; } }
+    function openAuthModal(view) { openModal('authModal'); loginError.textContent = ''; registerError.textContent = ''; if (view === 'register') { loginForm.style.display = 'none'; registerForm.style.display = 'block'; } else { loginForm.style.display = 'block'; registerForm.style.display = 'none'; } }
+    function closeModal() { modalOverlay.style.display = 'none'; }
+    function updateHeaderForLogin(username) { userAuthLinks.innerHTML = `Welcome, ${username} | <a href="#" id="logoutLink" title="Logout">Logout</a>`; document.getElementById('logoutLink').addEventListener('click', (e) => { e.preventDefault(); logout(); }); }
+    function updateHeaderForLogout() { userAuthLinks.innerHTML = `<a href="#" id="loginLink" title="Login to your account">Login</a> | <a href="#" id="registerLink" title="Register a new account">Register</a>`; document.getElementById('loginLink').addEventListener('click', (e) => { e.preventDefault(); openAuthModal('login'); }); document.getElementById('registerLink').addEventListener('click', (e) => { e.preventDefault(); openAuthModal('register'); }); }
+    function logout() { loggedInUser = null; localStorage.removeItem('loggedInUser'); updateHeaderForLogout(); }
+    loginLink.addEventListener('click', (e) => { e.preventDefault(); openAuthModal('login'); });
+    registerLink.addEventListener('click', (e) => { e.preventDefault(); openAuthModal('register'); });
+    closeAuthModal.addEventListener('click', closeModal);
+    modalOverlay.addEventListener('click', (e) => { if (e.target === modalOverlay) closeModal(); });
+    showRegister.addEventListener('click', () => openAuthModal('register'));
+    showLogin.addEventListener('click', () => openAuthModal('login'));
+    registerForm.addEventListener('submit', (e) => { e.preventDefault(); const username = document.getElementById('registerUsername').value; const pass = document.getElementById('registerPassword').value; const confirmPass = document.getElementById('confirmPassword').value; if (pass !== confirmPass) { registerError.textContent = "Passwords do not match."; return; } if (users.find(user => user.username === username)) { registerError.textContent = "Username is already taken."; return; } users.push({ username, pass }); localStorage.setItem('pirateBayUsers', JSON.stringify(users)); registerError.textContent = "Registration successful! You can now log in."; setTimeout(() => openAuthModal('login'), 1500); });
+    loginForm.addEventListener('submit', (e) => { e.preventDefault(); const username = document.getElementById('loginUsername').value; const pass = document.getElementById('loginPassword').value; const user = users.find(u => u.username === username && u.pass === pass); if (user) { loggedInUser = user; localStorage.setItem('loggedInUser', JSON.stringify(user)); loginError.textContent = ''; updateHeaderForLogin(user.username); closeModal(); } else { loginError.textContent = "Invalid username or password."; } });
+
+    // --- Core UI Functions ---
+    function showMainView() {
+      topWrapper.classList.remove("scrolled");
+      featuresContainer.classList.remove("hidden");
+      resultsTable.style.display = "none";
+      backButton.style.display = 'none';
+      logoWrapper.style.display = 'inline-block';
+      searchInput.style.display = 'block';
+      categorySearchBar.style.display = 'none';
+      searchInput.value = "";
+      hideAllDetails();
+      resultsBody.innerHTML = "";
+      activeCategoryFilter = 'All';
+    }
+
+    function filterAndRender() {
+        const categoryQuery = categorySearchBar.value.trim().toLowerCase();
+        let filteredResults;
+        const filterType = activeCategoryFilter;
+
+        filteredResults = (filterType === "All")
+          ? mockResults.filter(r => r.type !== 'Notification')
+          : mockResults.filter(r => r.type === filterType);
+
+        if (categoryQuery) {
+            filteredResults = filteredResults.filter(r => r.name.toLowerCase().includes(categoryQuery));
+        }
+        renderResults(filteredResults);
+    }
+
+    // --- Dark Mode Persistence ---
+    toggleCheckbox.addEventListener('change', () => {
+        document.body.classList.toggle('dark-mode', toggleCheckbox.checked);
+        localStorage.setItem('darkModeEnabled', toggleCheckbox.checked);
+    });
+    const applyStoredTheme = () => {
+        const isDarkMode = localStorage.getItem('darkModeEnabled') === 'true';
+        toggleCheckbox.checked = isDarkMode;
+        if (isDarkMode) {
+            document.body.classList.add('dark-mode');
+        }
+    };
+    applyStoredTheme();
+
+    searchInput.addEventListener("input", () => {
+      const query = searchInput.value.trim().toLowerCase();
+      if (query) {
+        topWrapper.classList.add("scrolled");
+        featuresContainer.classList.add("hidden");
+        resultsTable.style.display = "table";
+        backButton.style.display = 'none';
+        const filteredByName = mockResults.filter(r => r.name.toLowerCase().includes(query) && r.type !== 'Notification');
+        renderResults(filteredByName);
+      } else {
+        showMainView();
+      }
+    });
+
+    categoryButtons.forEach(button => {
+      button.addEventListener('click', (e) => {
+        const buttonText = e.currentTarget.textContent.trim();
+        activeCategoryFilter = buttonText;
+        logoWrapper.style.display = 'none';
+        searchInput.style.display = 'none';
+        featuresContainer.classList.add("hidden");
+        categorySearchBar.value = '';
+        if (buttonText === 'Notification') {
+            categorySearchBar.style.display = 'none';
+        } else {
+            categorySearchBar.style.display = 'block';
+        }
+        topWrapper.classList.add("scrolled");
+        resultsTable.style.display = "table";
+        backButton.style.display = 'flex';
+        filterAndRender();
+      });
+    });
+
+    backButton.addEventListener('click', showMainView);
+    categorySearchBar.addEventListener('input', filterAndRender);
+
+    // --- RENDERING & MISC FUNCTIONS ---
+    function hideAllDetails() { if (currentDetailRow) { currentDetailRow.remove(); currentDetailRow = null; } }
+    function renderResults(filtered) { resultsBody.innerHTML = ""; hideAllDetails(); filtered.forEach(result => { const row = document.createElement("tr"); row.innerHTML = `<td>${result.type}</td><td><a class="detail-toggle-link" href="#" data-game-name="${result.name}" tabindex="0">${result.name}</a></td><td>${result.uploaded}</td><td>${result.size}</td><td>${result.seeders}</td><td>${result.leechers}</td>`; resultsBody.appendChild(row); const link = row.querySelector(".detail-toggle-link"); link.addEventListener("click", (event) => { event.preventDefault(); const gameName = event.currentTarget.dataset.gameName; const clickedRow = event.currentTarget.closest("tr"); if (currentDetailRow && currentDetailRow.previousElementSibling === clickedRow) { hideAllDetails(); } else { hideAllDetails(); displayGameDetails(gameName, clickedRow); } }); }); }
+    function displayGameDetails(gameName, targetRow) { const details = gameDetails[gameName]; const colSpan = resultsTable.querySelector("thead tr").children.length; if (details) { let detailContent = `<div class="game-detail-content">`; if (details.message) { detailContent += details.message; } else { detailContent += `<h4>General Info:</h4><p><strong>Type:</strong> ${details.fullType}</p><p><strong>Files:</strong> ${details.files}</p><p><strong>Size:</strong> ${details.size}</p><p><strong>Uploaded By:</strong> ${details.uploadedBy}</p><p><strong>Info Hash:</strong> ${details.infoHash}</p>`; if (details.multiplayer && !details.multiplayer.startsWith("N/A")) { detailContent += `<h4>Multiplayer:</h4><p>${details.multiplayer.replace(/\n/g, '<br>')}</p>`; } if (details.gameInfo) { detailContent += `<h4>Game Info:</h4><p>${details.gameInfo.replace(/\n/g, '<br>')}</p>`; } if (details.install) { detailContent += `<h4>Install Instructions:</h4><p>${details.install.replace(/\n/g, '<br>')}</p>`; } if (details.uploaderNote) { detailContent += `<h4>Uploader Note:</h4><p>${details.uploaderNote.replace(/\n/g, '<br>')}</p>`; } detailContent += `<a href="#" class="download-button" tabindex="0" data-filename="${gameName}.txt" data-filecontent="This is a placeholder for ${gameName}.">Download</a>`; } detailContent += `</div>`; const detailRow = document.createElement("tr"); detailRow.classList.add("game-detail-row"); detailRow.innerHTML = `<td colspan="${colSpan}">${detailContent}</td>`; targetRow.after(detailRow); currentDetailRow = detailRow; const downloadButton = detailRow.querySelector('.download-button'); if (downloadButton) { downloadButton.addEventListener('click', (e) => { e.preventDefault(); const fileName = e.target.dataset.filename; const fileContent = e.target.dataset.filecontent; if (loggedInUser) { openModal('downloadWarningModal'); warningYes.onclick = () => { downloadFile(fileName, fileContent); closeModal(); }; warningNo.onclick = closeModal; } else { openAuthModal('login'); loginError.textContent = "You must be logged in to download files."; } }); } detailRow.scrollIntoView({ behavior: "smooth", block: "nearest" }); } else { const detailRow = document.createElement("tr"); detailRow.classList.add("game-detail-row"); detailRow.innerHTML = `<td colspan="${colSpan}"><p>Details for "${gameName}" are not available.</p></td>`; targetRow.after(detailRow); currentDetailRow = detailRow; detailRow.scrollIntoView({ behavior: "smooth", block: "nearest" }); } }
+    function downloadFile(fileName, content) { const blob = new Blob([content], { type: 'text/plain' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = fileName; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url); }
+    let hoverTimeout; const hoverTriggerElements = [contentWrapper, backButton]; hoverTriggerElements.forEach(element => { element.addEventListener('mouseenter', () => { clearTimeout(hoverTimeout); if (backButton.style.display === 'flex') { backButton.classList.add('visible'); } }); element.addEventListener('mouseleave', () => { hoverTimeout = setTimeout(() => { backButton.classList.remove('visible'); }, 50); }); });
+
+    // --- INITIALIZATION ON PAGE LOAD ---
+    const initializeSession = () => {
+        const savedUser = JSON.parse(localStorage.getItem('loggedInUser'));
+        if (savedUser) {
+            const userExists = users.find(u => u.username === savedUser.username && u.pass === savedUser.pass);
+            if (userExists) {
+                loggedInUser = userExists;
+                updateHeaderForLogin(loggedInUser.username);
+            } else {
+                localStorage.removeItem('loggedInUser');
+            }
+        }
+    };
+    initializeSession();
+
+    // --- HACKED TITLE ANIMATION (runs in background via Web Worker) ---
+    try {
+      // Define the worker's code as a string.
+      const workerCode = `
+        const originalTitle = "Pirate Bay Recreation";
+        const chars = "!<>-_\\\\/[]{}—=+*^?#________";
+        const DURATION_NORMAL = 2000; // ms to show original title
+        const SCRAMBLE_SPEED = 50; // ms per character update
+        const DECODE_SPEED = 75; // ms to decode each character
+        const DURATION_SCRAMBLE = 30000; // 30 seconds for gibberish
+
+        let intervalId;
+
+        // Decodes the text back to the original
+        const decode = () => {
+            let iteration = 0;
+            clearInterval(intervalId);
+
+            intervalId = setInterval(() => {
+                const text = originalTitle
+                    .split("")
+                    .map((letter, index) => {
+                        if(index < iteration) {
+                            return originalTitle[index];
+                        }
+                        return chars[Math.floor(Math.random() * chars.length)];
+                    })
+                    .join("");
+
+                postMessage(text); // Send title to the main page
+
+                if(iteration >= originalTitle.length){
+                    clearInterval(intervalId);
+                    setTimeout(scramble, DURATION_NORMAL); // Pause on the real title
+                }
+
+                iteration += 1 / (DECODE_SPEED / SCRAMBLE_SPEED);
+            }, SCRAMBLE_SPEED);
+        };
+
+        // Scrambles the text for 30 seconds
+        const scramble = () => {
+            let scrambleInterval = setInterval(() => {
+                let randomText = '';
+                for (let i = 0; i < originalTitle.length; i++) {
+                    randomText += chars[Math.floor(Math.random() * chars.length)];
+                }
+                postMessage(randomText); // Send scrambled title
+            }, SCRAMBLE_SPEED);
+
+            // After 30 seconds, stop scrambling and start decoding
+            setTimeout(() => {
+                clearInterval(scrambleInterval);
+                decode();
+            }, DURATION_SCRAMBLE);
+        };
+
+        scramble(); // Start the animation loop
+      `;
+
+      // Create a Blob from the worker code string.
+      const blob = new Blob([workerCode], { type: 'application/javascript' });
+
+      // Create an object URL for the Blob.
+      const workerUrl = URL.createObjectURL(blob);
+
+      // Create and start the Web Worker.
+      const titleWorker = new Worker(workerUrl);
+
+      // Listen for messages (new titles) from the worker.
+      titleWorker.onmessage = (event) => {
+        document.title = event.data;
+      };
+
+    } catch (e) {
+      console.error("Failed to start title animation worker.", e);
+      // Fallback for older browsers or environments that don't support workers
+      document.title = "Pirate Bay Recreation";
+    }
+
+  </script>
+</body>
+</html>

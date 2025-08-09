@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VoidVPN - Secure Your World</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --font-pixel: 'Press Start 2P', cursive;
+      --font-sans: 'Poppins', sans-serif;
+      --color-black: #000000;
+      --color-off-black: #121212;
+      --color-white: #FFFFFF;
+      --color-light-gray: #a0a0a0;
+      --accent-blue: #0091ff;
+      --accent-blue-darker: #007de6;
+      --border-radius-smooth: 12px;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background-color: var(--color-black);
+      font-family: var(--font-sans);
+      color: var(--color-white);
+      line-height: 1.7;
+      transition: overflow 0.3s ease;
+    }
+
+    body.modal-open {
+      overflow: hidden;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* --- Header --- */
+    .main-header {
+      padding: 25px 0;
+      position: absolute;
+      width: 100%;
+      z-index: 10;
+    }
+    .main-header .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      font-family: var(--font-pixel);
+      font-size: 1.2rem;
+      color: var(--color-white);
+      text-decoration: none;
+      letter-spacing: 1px;
+    }
+    .main-nav a {
+      font-family: var(--font-pixel);
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--color-light-gray);
+      margin-left: 25px;
+      font-size: 0.8rem;
+      transition: color 0.2s ease;
+    }
+    .main-nav a:hover {
+      color: var(--color-white);
+    }
+
+    /* --- Button --- */
+    .btn {
+      font-family: var(--font-pixel);
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--color-white);
+      background-color: var(--accent-blue);
+      padding: 14px 24px;
+      border-radius: var(--border-radius-smooth);
+      font-size: 0.8rem;
+      display: inline-block;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.3s ease;
+      box-shadow: 0 0 20px rgba(0, 145, 255, 0.3);
+      letter-spacing: 1px;
+    }
+    .btn:hover {
+      background-color: var(--accent-blue-darker);
+      transform: translateY(-3px);
+      box-shadow: 0 0 30px rgba(0, 145, 255, 0.5);
+    }
+
+    /* --- Hero Section --- */
+    .hero {
+      padding: 180px 0 100px 0;
+      text-align: center;
+      background: linear-gradient(180deg, var(--color-off-black) 0%, var(--color-black) 100%);
+    }
+    .hero h1 {
+      font-family: var(--font-pixel);
+      text-transform: uppercase;
+      font-size: 2.5rem;
+      line-height: 1.4;
+      margin: 0 auto 25px auto;
+      max-width: 800px;
+    }
+    .hero p {
+      font-size: 1.1rem;
+      color: var(--color-light-gray);
+      max-width: 600px;
+      margin: 0 auto 40px auto;
+    }
+
+    /* --- Sections & Cards --- */
+    .section {
+      padding: 80px 0;
+    }
+    .section-title {
+      font-family: var(--font-pixel);
+      text-transform: uppercase;
+      text-align: center;
+      font-size: 2rem;
+      margin-top: 0;
+      margin-bottom: 60px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+    }
+    .card {
+      background-color: var(--color-off-black);
+      padding: 35px;
+      border-radius: var(--border-radius-smooth);
+      border: 1px solid #222;
+      text-align: center;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+    .card:hover {
+        transform: translateY(-5px);
+        border-color: var(--accent-blue);
+    }
+    .card-icon {
+      font-size: 3rem;
+      color: var(--accent-blue);
+      margin-bottom: 20px;
+    }
+    .card h3 {
+      font-family: var(--font-pixel);
+      text-transform: uppercase;
+      font-size: 1rem;
+      margin-bottom: 10px;
+    }
+    .card p {
+      color: var(--color-light-gray);
+      margin: 0;
+    }
+
+    /* --- Pricing Section --- */
+    .pricing-card {
+      text-align: left;
+    }
+    .pricing-card.popular {
+      border: 1px solid var(--accent-blue);
+      box-shadow: 0 0 25px rgba(0, 145, 255, 0.2);
+    }
+    .pricing-card .price {
+      font-family: var(--font-pixel);
+      font-size: 1.8rem;
+      text-align: center;
+      margin: 20px 0;
+    }
+    .price span {
+      font-size: 0.8rem;
+      color: var(--color-light-gray);
+    }
+    .pricing-card ul {
+      list-style: none;
+      padding: 0;
+      margin: 30px 0;
+    }
+    .pricing-card li {
+      margin-bottom: 12px;
+      padding-left: 28px;
+      position: relative;
+    }
+    .pricing-card li::before {
+      content: '✓';
+      color: var(--accent-blue);
+      position: absolute;
+      left: 0;
+      font-size: 1.2rem;
+    }
+    .pricing-card .btn {
+        width: 100%;
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    /* --- Modal Styles --- */
+    #modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.7);
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+    #modal-overlay.visible {
+        opacity: 1;
+        visibility: visible;
+    }
+    .modal-content {
+        background-color: var(--color-off-black);
+        padding: 40px;
+        border-radius: var(--border-radius-smooth);
+        border: 1px solid #333;
+        width: 90%;
+        max-width: 450px;
+        position: relative;
+        transform: scale(0.9);
+        transition: transform 0.3s ease;
+    }
+    #modal-overlay.visible .modal-content {
+        transform: scale(1);
+    }
+    .modal-close {
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        font-size: 2rem;
+        color: var(--color-light-gray);
+        cursor: pointer;
+        transition: color 0.2s ease;
+    }
+    .modal-close:hover {
+        color: var(--color-white);
+    }
+    .modal-content h2 {
+        font-family: var(--font-pixel);
+        text-transform: uppercase;
+        font-size: 1.2rem;
+        text-align: center;
+        margin-top: 0;
+        margin-bottom: 25px;
+        line-height: 1.5;
+    }
+    .form-group {
+        margin-bottom: 20px;
+    }
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--color-light-gray);
+    }
+    .form-group input {
+        width: 100%;
+        padding: 12px;
+        background-color: #000;
+        border: 1px solid #333;
+        border-radius: 8px;
+        color: var(--color-white);
+        font-family: var(--font-sans);
+        font-size: 1rem;
+    }
+    .modal-content .btn {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    /* --- Footer --- */
+    .main-footer {
+      padding: 60px 0;
+      border-top: 1px solid #222;
+      text-align: center;
+      color: var(--color-light-gray);
+    }
+    .footer-nav a {
+        font-family: var(--font-pixel);
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        color: var(--color-light-gray);
+        text-decoration: none;
+        margin: 0 15px;
+        transition: color 0.2s ease;
+    }
+    .footer-nav a:hover {
+        color: var(--color-white);
+    }
+    .copyright {
+        margin-top: 30px;
+        font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="main-header">
+    <div class="container">
+      <a href="#" class="logo">VoidVPN</a>
+      <nav class="main-nav">
+        <a href="#features" class="nav-link">Features</a>
+        <a href="#pricing" class="nav-link">Pricing</a>
+        <a href="#" class="external-link">Support</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <h1>Navigate the Void, Securely.</h1>
+        <p>Your digital footprint vanishes. Experience true anonymity with our next-generation VPN, cloaking your connection in absolute privacy.</p>
+        <a href="#pricing" class="btn nav-link">Embrace the Void</a>
+      </div>
+    </section>
+
+    <section id="features" class="section">
+      <div class="container">
+        <h2 class="section-title">Forged in Darkness</h2>
+        <div class="grid">
+          <div class="card">
+            <div class="card-icon">🛡️</div>
+            <h3>Quantum Encryption</h3>
+            <p>Our AES-256 encryption protocol creates an unbreakable shield around your data.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">⚡</div>
+            <h3>Light-Speed Tunnels</h3>
+            <p>Experience zero-latency connections for seamless 4K streaming and gaming.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">🌌</div>
+            <h3>Zero-Log Universe</h3>
+            <p>We keep no records of your activity. Your secrets are safe within the void.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="pricing" class="section">
+      <div class="container">
+        <h2 class="section-title">Choose Your Path</h2>
+        <div class="grid">
+          <div class="card pricing-card">
+            <h3>Standard Issue</h3>
+            <div class="price">$5.99<span>/month</span></div>
+            <ul>
+              <li>Quantum Encryption</li>
+              <li>5 Simultaneous Connections</li>
+              <li>High-Speed Servers</li>
+            </ul>
+            <button class="btn modal-trigger" data-plan="Standard Issue">Get Standard</button>
+          </div>
+
+          <div class="card pricing-card popular">
+            <h3>Void Walker</h3>
+            <div class="price">$9.99<span>/month</span></div>
+            <ul>
+              <li>Quantum Encryption</li>
+              <li>10 Simultaneous Connections</li>
+              <li>Light-Speed Servers</li>
+              <li>Built-in Ad & Tracker Blocker</li>
+              <li>Priority Support</li>
+            </ul>
+            <button class="btn modal-trigger" data-plan="Void Walker">Become a Walker</button>
+          </div>
+
+          <div class="card pricing-card">
+            <h3>Team Unit</h3>
+            <div class="price">$24.99<span>/month</span></div>
+            <ul>
+              <li>Quantum Encryption</li>
+              <li>25 Simultaneous Connections</li>
+              <li>Dedicated Business Servers</li>
+              <li>Centralized Billing</li>
+            </ul>
+            <button class="btn modal-trigger" data-plan="Team Unit">Deploy Unit</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="main-footer">
+    <div class="container">
+      <div class="footer-nav">
+        <a href="#" class="external-link">About</a>
+        <a href="#" class="external-link">Privacy</a>
+        <a href="#" class="external-link">Terms</a>
+      </div>
+      <p class="copyright">© 2025 VoidVPN. All Rights Reserved. Into the void we go.</p>
+    </div>
+  </footer>
+
+  <!-- Modal Structure -->
+  <div id="modal-overlay">
+    <div class="modal-content">
+      <span class="modal-close">×</span>
+      <h2 id="modal-plan-title"></h2>
+      <form>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" placeholder="you@example.com" required>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="Create a strong password" required>
+        </div>
+        <button type="submit" class="btn">Create Secure Account</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+      // --- Smooth Scrolling for Navigation Links ---
+      const navLinks = document.querySelectorAll('.nav-link');
+      navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          const targetId = this.getAttribute('href');
+          const targetSection = document.querySelector(targetId);
+          if (targetSection) {
+            targetSection.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }
+        });
+      });
+
+      // --- Modal Functionality ---
+      const modalOverlay = document.getElementById('modal-overlay');
+      const modalPlanTitle = document.getElementById('modal-plan-title');
+      const modalTriggers = document.querySelectorAll('.modal-trigger');
+      const modalClose = document.querySelector('.modal-close');
+
+      function openModal(planName) {
+        modalPlanTitle.textContent = `Sign Up for ${planName}`;
+        modalOverlay.classList.add('visible');
+        document.body.classList.add('modal-open');
+      }
+
+      function closeModal() {
+        modalOverlay.classList.remove('visible');
+        document.body.classList.remove('modal-open');
+      }
+
+      modalTriggers.forEach(button => {
+        button.addEventListener('click', function() {
+          const planName = this.getAttribute('data-plan');
+          openModal(planName);
+        });
+      });
+
+      modalClose.addEventListener('click', closeModal);
+      modalOverlay.addEventListener('click', function(e) {
+        if (e.target === modalOverlay) {
+          closeModal();
+        }
+      });
+
+      // Handle form submission inside modal
+      const modalForm = document.querySelector('#modal-overlay form');
+      modalForm.addEventListener('submit', function(e){
+        e.preventDefault();
+        alert('Thank you for signing up! (This is a demonstration)');
+        closeModal();
+      });
+
+      // --- External Link Simulation ---
+      const externalLinks = document.querySelectorAll('.external-link');
+      externalLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          const pageName = this.textContent;
+          alert(`Navigating to the "${pageName}" page. (This is a demonstration)`);
+        });
+      });
+
+    });
+  </script>
+
+</body>
+</html>
